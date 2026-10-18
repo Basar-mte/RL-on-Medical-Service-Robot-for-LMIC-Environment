@@ -1,0 +1,197 @@
+{
+  "tier": "real",
+  "lidar_plane_z_m": 0.1535,
+  "poses_tested": 46,
+  "ray_tolerance_m": 0.001,
+  "policy_tolerance_m": 0.005,
+  "max_ray_delta_m": 0.049208641052246094,
+  "max_policy_48ray_delta_m": 0.0016400814056396484,
+  "poses_with_ray_delta": 17,
+  "passed": true,
+  "per_pose": {
+    "37.0,15.0": {
+      "max_ray_delta_m": 0.001270294189453125,
+      "max_policy_delta_m": 0.00010371208190917969
+    },
+    "35.0,15.0": {
+      "max_ray_delta_m": 0.00013256072998046875,
+      "max_policy_delta_m": 9.1552734375e-05
+    },
+    "31.0,15.0": {
+      "max_ray_delta_m": 0.013066291809082031,
+      "max_policy_delta_m": 1.0728836059570312e-06
+    },
+    "28.0,15.0": {
+      "max_ray_delta_m": 0.015239715576171875,
+      "max_policy_delta_m": 9.298324584960938e-06
+    },
+    "24.0,15.0": {
+      "max_ray_delta_m": 0.00054931640625,
+      "max_policy_delta_m": 7.152557373046875e-07
+    },
+    "20.0,15.0": {
+      "max_ray_delta_m": 0.01598072052001953,
+      "max_policy_delta_m": 5.0067901611328125e-05
+    },
+    "18.5,15.0": {
+      "max_ray_delta_m": 0.015242576599121094,
+      "max_policy_delta_m": 9.298324584960938e-05
+    },
+    "14.0,15.0": {
+      "max_ray_delta_m": 0.015331268310546875,
+      "max_policy_delta_m": 2.574920654296875e-05
+    },
+    "9.0,15.0": {
+      "max_ray_delta_m": 0.015240669250488281,
+      "max_policy_delta_m": 9.655952453613281e-06
+    },
+    "5.0,14.0": {
+      "max_ray_delta_m": 0.015101432800292969,
+      "max_policy_delta_m": 5.0067901611328125e-06
+    },
+    "2.0,15.0": {
+      "max_ray_delta_m": 1.9073486328125e-05,
+      "max_policy_delta_m": 1.7881393432617188e-05
+    },
+    "20.0,16.5": {
+      "max_ray_delta_m": 0.015680313110351562,
+      "max_policy_delta_m": 7.152557373046875e-07
+    },
+    "20.0,13.5": {
+      "max_ray_delta_m": 0.015011787414550781,
+      "max_policy_delta_m": 0.0016400814056396484
+    },
+    "35.9,16.0": {
+      "max_ray_delta_m": 0.0015649795532226562,
+      "max_policy_delta_m": 0.0010857582092285156
+    },
+    "5.0,12.6": {
+      "max_ray_delta_m": 0.00013828277587890625,
+      "max_policy_delta_m": 0.00013875961303710938
+    },
+    "5.0,10.0": {
+      "max_ray_delta_m": 3.719329833984375e-05,
+      "max_policy_delta_m": 3.5762786865234375e-05
+    },
+    "5.0,7.5": {
+      "max_ray_delta_m": 5.340576171875e-05,
+      "max_policy_delta_m": 2.574920654296875e-05
+    },
+    "3.0,5.0": {
+      "max_ray_delta_m": 9.5367431640625e-05,
+      "max_policy_delta_m": 9.584426879882812e-05
+    },
+    "7.0,4.0": {
+      "max_ray_delta_m": 0.04920768737792969,
+      "max_policy_delta_m": 0.00011873245239257812
+    },
+    "13.0,12.6": {
+      "max_ray_delta_m": 4.100799560546875e-05,
+      "max_policy_delta_m": 3.8623809814453125e-05
+    },
+    "13.0,9.0": {
+      "max_ray_delta_m": 7.581710815429688e-05,
+      "max_policy_delta_m": 2.9325485229492188e-05
+    },
+    "13.0,7.5": {
+      "max_ray_delta_m": 2.8133392333984375e-05,
+      "max_policy_delta_m": 2.5033950805664062e-05
+    },
+    "11.0,4.0": {
+      "max_ray_delta_m": 0.0006723403930664062,
+      "max_policy_delta_m": 3.4689903259277344e-05
+    },
+    "15.0,5.0": {
+      "max_ray_delta_m": 6.103515625e-05,
+      "max_policy_delta_m": 1.1444091796875e-05
+    },
+    "23.5,12.6": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "23.5,7.5": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "31.0,12.6": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "31.0,7.5": {
+      "max_ray_delta_m": 4.76837158203125e-07,
+      "max_policy_delta_m": 0.0
+    },
+    "33.0,4.0": {
+      "max_ray_delta_m": 0.049208641052246094,
+      "max_policy_delta_m": 1.2516975402832031e-05
+    },
+    "6.5,17.4": {
+      "max_ray_delta_m": 0.00010013580322265625,
+      "max_policy_delta_m": 7.152557373046875e-07
+    },
+    "6.5,20.0": {
+      "max_ray_delta_m": 5.245208740234375e-06,
+      "max_policy_delta_m": 1.7881393432617188e-06
+    },
+    "6.5,23.5": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "3.0,27.0": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "10.0,26.0": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "20.0,17.4": {
+      "max_ray_delta_m": 1.9073486328125e-06,
+      "max_policy_delta_m": 0.0
+    },
+    "20.0,23.5": {
+      "max_ray_delta_m": 6.67572021484375e-06,
+      "max_policy_delta_m": 7.152557373046875e-06
+    },
+    "16.0,27.0": {
+      "max_ray_delta_m": 0.03441810607910156,
+      "max_policy_delta_m": 0.00018024444580078125
+    },
+    "24.0,20.0": {
+      "max_ray_delta_m": 0.000293731689453125,
+      "max_policy_delta_m": 1.430511474609375e-06
+    },
+    "33.5,17.4": {
+      "max_ray_delta_m": 0.0002307891845703125,
+      "max_policy_delta_m": 0.000171661376953125
+    },
+    "33.5,23.5": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "37.0,27.0": {
+      "max_ray_delta_m": 0.0,
+      "max_policy_delta_m": 0.0
+    },
+    "30.0,21.0": {
+      "max_ray_delta_m": 0.0006742477416992188,
+      "max_policy_delta_m": 0.0006737709045410156
+    },
+    "18.5,10.0": {
+      "max_ray_delta_m": 4.1484832763671875e-05,
+      "max_policy_delta_m": 4.1484832763671875e-05
+    },
+    "18.5,4.0": {
+      "max_ray_delta_m": 0.0024442672729492188,
+      "max_policy_delta_m": 2.002716064453125e-05
+    },
+    "17.0,14.6": {
+      "max_ray_delta_m": 0.0027151107788085938,
+      "max_policy_delta_m": 0.0011286735534667969
+    },
+    "35.0,16.4": {
+      "max_ray_delta_m": 0.0014286041259765625,
+      "max_policy_delta_m": 7.152557373046875e-06
+    }
+  }
+}

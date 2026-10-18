@@ -116,10 +116,21 @@ class TestLMICHospitalNavEnv:
     def teardown_method(self):
         self.env.close()
 
+    OBS_SHAPES = {
+        "lidar": (48,), "robot_state": (5,), "pedestrians": (20,),
+        "context": (14,), "goal": (3,), "camera": (84, 84, 3),
+    }
+
+    def _assert_obs_shapes(self, obs):
+        assert set(obs.keys()) == set(self.OBS_SHAPES.keys())
+        for key, shape in self.OBS_SHAPES.items():
+            assert obs[key].shape == shape, f"{key}: {obs[key].shape} != {shape}"
+        assert obs["lidar"].dtype == np.float32
+        assert obs["camera"].dtype == np.uint8
+
     def test_reset(self):
         obs, info = self.env.reset(seed=0)
-        assert obs.shape == (85,)
-        assert obs.dtype == np.float32
+        self._assert_obs_shapes(obs)
         assert "dist_to_goal" in info
         assert "context_vector" in info
 
@@ -127,7 +138,7 @@ class TestLMICHospitalNavEnv:
         self.env.reset(seed=0)
         action = self.env.action_space.sample()
         obs, reward, terminated, truncated, info = self.env.step(action)
-        assert obs.shape == (85,)
+        self._assert_obs_shapes(obs)
         assert isinstance(reward, float)
         assert isinstance(terminated, bool)
         assert isinstance(truncated, bool)
@@ -136,18 +147,54 @@ class TestLMICHospitalNavEnv:
 
     def test_obs_bounds(self):
         obs, _ = self.env.reset(seed=1)
-        assert (obs >= self.env.observation_space.low - 1e-5).all()
-        assert (obs <= self.env.observation_space.high + 1e-5).all()
+        for key, subspace in self.env.observation_space.spaces.items():
+            if key == "camera":
+                assert obs[key].dtype == np.uint8
+                assert (obs[key] >= 0).all() and (obs[key] <= 255).all()
+                continue
+            assert (obs[key] >= subspace.low - 1e-5).all()
+            assert (obs[key] <= subspace.high + 1e-5).all()
 
     def test_action_space(self):
-        assert self.env.action_space.low[0] == pytest.approx(0.0)
+        from envs.lmic_hospital_env import MAX_STEER, MIN_LINEAR
+        assert self.env.action_space.low[0] == pytest.approx(MIN_LINEAR)
         assert self.env.action_space.high[0] == pytest.approx(0.8)
+        assert self.env.action_space.low[1] == pytest.approx(-MAX_STEER)
+        assert self.env.action_space.high[1] == pytest.approx(MAX_STEER)
         assert self.env.action_space.shape == (2,)
+
+    def test_no_camera_mode(self):
+        """use_camera=False drops the camera key entirely (no render cost)
+        and the env still resets/steps/check_env's cleanly."""
+        from envs.lmic_hospital_env import LMICHospitalNavEnv
+        from stable_baselines3.common.env_checker import check_env
+        env = LMICHospitalNavEnv(seed=7, use_camera=False)
+        try:
+            assert "camera" not in env.observation_space.spaces
+            obs, _ = env.reset(seed=7)
+            assert set(obs.keys()) == {"lidar", "robot_state", "pedestrians", "context", "goal"}
+            obs, r, term, trunc, info = env.step(env.action_space.sample())
+            assert "camera" not in obs
+            check_env(env)
+        finally:
+            env.close()
+
+    def test_no_pivot_at_zero_velocity(self):
+        """Ackermann kinematics: heading must not change when v=0, regardless
+        of steering angle (unlike the old differential-drive model, which
+        could pivot in place)."""
+        from envs.lmic_hospital_env import MAX_STEER
+        self.env.reset(seed=0)
+        h0 = self.env._robot_heading
+        self.env.step(np.array([0.0, MAX_STEER], dtype=np.float32))
+        assert self.env._robot_heading == pytest.approx(h0)
+        self.env.step(np.array([0.0, -MAX_STEER], dtype=np.float32))
+        assert self.env._robot_heading == pytest.approx(h0)
 
     def test_multiple_resets(self):
         for seed in range(5):
             obs, info = self.env.reset(seed=seed)
-            assert obs.shape == (85,)
+            self._assert_obs_shapes(obs)
 
     def test_task_options(self):
         from envs.lmic_hospital_env import TASK_IDS
@@ -187,11 +234,13 @@ class TestRewardComponents:
     def test_navigation_reward(self):
         from rewards.components import navigation_reward
         action = np.array([0.5, 0.0])
-        # Moving toward goal: prev > curr
-        r = navigation_reward(5.0, 4.0, False, action)
+        # Physically plausible per-step progress (max v*dt = 0.08 m) — a 1 m
+        # single-step jump would saturate the [-2, 6] clip and mask the
+        # goal-bonus ordering this test checks.
+        r = navigation_reward(5.0, 4.92, False, action)
         assert r > 0.0
         # On goal
-        r_done = navigation_reward(1.0, 0.0, True, action)
+        r_done = navigation_reward(0.66, 0.58, True, action)
         assert r_done > r
 
     def test_safety_reward(self):
@@ -265,23 +314,37 @@ class TestCulturalReward:
 
 class TestCWN:
     def test_output_shape(self):
-        from rewards.cwn import CWN
+        from rewards.cwn import CWN, CONTEXT_DIM
         cwn = CWN()
-        ctx = np.random.rand(12).astype(np.float32)
+        # eval() so the forward pass actually runs — in training mode the
+        # 50k warmup returns equal weights without touching the network,
+        # which would let a context-dimension mismatch pass silently.
+        cwn.eval()
+        ctx = np.random.rand(CONTEXT_DIM).astype(np.float32)
         w = cwn.get_weights(ctx)
         assert w.shape == (4,)
         assert abs(w.sum() - 1.0) < 1e-5
 
     def test_batch(self):
-        from rewards.cwn import CWN
+        from rewards.cwn import CWN, CONTEXT_DIM
         cwn = CWN()
-        ctx = np.random.rand(8, 12).astype(np.float32)
+        cwn.eval()
+        ctx = np.random.rand(8, CONTEXT_DIM).astype(np.float32)
         w = cwn.get_weights(ctx)
         assert w.shape == (8, 4)
         np.testing.assert_allclose(w.sum(axis=1), 1.0, atol=1e-5)
 
+    def test_context_dim_matches_env(self):
+        from rewards.cwn import CONTEXT_DIM
+        from envs.lmic_hospital_env import LMICHospitalNavEnv
+        env = LMICHospitalNavEnv(use_camera=False)
+        try:
+            assert env.observation_space["context"].shape == (CONTEXT_DIM,)
+        finally:
+            env.close()
+
     def test_fixed_weight_source(self):
-        from rewards.cwn import FixedWeightSource
+        from rewards.cwn import FixedWeightSource, CONTEXT_DIM
         fws = FixedWeightSource("equal")
-        w = fws.get_weights(np.zeros(12, dtype=np.float32))
+        w = fws.get_weights(np.zeros(CONTEXT_DIM, dtype=np.float32))
         np.testing.assert_allclose(w, [0.25, 0.25, 0.25, 0.25], atol=1e-6)

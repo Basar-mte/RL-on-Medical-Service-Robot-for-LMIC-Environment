@@ -1,0 +1,5 @@
+tier,lidar_plane_z_m,poses_tested,ray_tolerance_m,policy_tolerance_m,max_ray_delta_m,max_policy_48ray_delta_m,poses_with_ray_delta,passed
+furnished,0.1535,46,0.001,0.005,11.6709,11.6638,43,0
+open,0.1535,46,0.001,0.005,0.0002,0.0002,0,1
+real,0.1535,46,0.001,0.005,0.0492,0.0016,17,1
+walled,0.1535,46,0.001,0.005,0.0002,0.0001,0,1

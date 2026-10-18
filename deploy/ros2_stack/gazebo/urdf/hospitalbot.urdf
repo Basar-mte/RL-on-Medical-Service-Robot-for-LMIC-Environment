@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!-- Ackermann robot matching the sim: wheelbase 0.20 m, 360deg/12 m LiDAR.
+     For modern Gazebo (gz-sim / Harmonic + ros_gz, pairs with ROS 2 Humble).
+     The AckermannSteering plugin consumes /cmd_vel (v, yaw-rate) and publishes
+     /odom + odom->base_link TF. gz_cmd_adapter converts the controller's
+     [v, steering] into that yaw-rate. LiDAR publishes to gz topic /scan
+     (bridged to ROS by the launch file). Tune inertias/friction to reduce slip
+     so the robot responds like the bicycle model. -->
+<robot name="hospitalbot">
+
+  <link name="base_link">
+    <inertial><mass value="6.0"/><inertia ixx="0.05" iyy="0.08" izz="0.10" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual><geometry><box size="0.35 0.24 0.12"/></geometry>
+      <material name="body"><color rgba="0.2 0.4 0.7 1"/></material></visual>
+    <collision><geometry><box size="0.35 0.24 0.12"/></geometry></collision>
+  </link>
+
+  <!-- LiDAR: forward-facing, matches LD19 (360 deg, 12 m) -->
+  <link name="laser">
+    <inertial><mass value="0.1"/><inertia ixx="1e-4" iyy="1e-4" izz="1e-4" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual><geometry><cylinder radius="0.03" length="0.04"/></geometry></visual>
+  </link>
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/><child link="laser"/><origin xyz="0.15 0 0.12" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="laser">
+    <sensor name="lidar" type="gpu_lidar">
+      <update_rate>10</update_rate>
+      <topic>scan</topic>
+      <gz_frame_id>laser</gz_frame_id>
+      <lidar>
+        <scan><horizontal>
+          <samples>360</samples><resolution>1</resolution>
+          <min_angle>-3.14159</min_angle><max_angle>3.14159</max_angle>
+        </horizontal></scan>
+        <range><min>0.10</min><max>12.0</max><resolution>0.01</resolution></range>
+      </lidar>
+      <always_on>1</always_on><visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+  <!-- wheels (rear drive at x=-0.10, front steer at x=+0.10 -> wheelbase 0.20) -->
+  <link name="rl_wheel"><inertial><mass value="0.3"/><inertia ixx="1e-3" iyy="1e-3" izz="1e-3" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual><geometry><cylinder radius="0.05" length="0.03"/></geometry></visual>
+    <collision><geometry><cylinder radius="0.05" length="0.03"/></geometry></collision></link>
+  <link name="rr_wheel"><inertial><mass value="0.3"/><inertia ixx="1e-3" iyy="1e-3" izz="1e-3" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual><geometry><cylinder radius="0.05" length="0.03"/></geometry></visual>
+    <collision><geometry><cylinder radius="0.05" length="0.03"/></geometry></collision></link>
+  <link name="fl_wheel"><inertial><mass value="0.3"/><inertia ixx="1e-3" iyy="1e-3" izz="1e-3" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual><geometry><cylinder radius="0.05" length="0.03"/></geometry></visual>
+    <collision><geometry><cylinder radius="0.05" length="0.03"/></geometry></collision></link>
+  <link name="fr_wheel"><inertial><mass value="0.3"/><inertia ixx="1e-3" iyy="1e-3" izz="1e-3" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual><geometry><cylinder radius="0.05" length="0.03"/></geometry></visual>
+    <collision><geometry><cylinder radius="0.05" length="0.03"/></geometry></collision></link>
+
+  <joint name="rl_joint" type="continuous"><parent link="base_link"/><child link="rl_wheel"/>
+    <origin xyz="-0.10 0.13 -0.05" rpy="-1.5708 0 0"/><axis xyz="0 0 1"/></joint>
+  <joint name="rr_joint" type="continuous"><parent link="base_link"/><child link="rr_wheel"/>
+    <origin xyz="-0.10 -0.13 -0.05" rpy="-1.5708 0 0"/><axis xyz="0 0 1"/></joint>
+  <joint name="fl_joint" type="continuous"><parent link="base_link"/><child link="fl_wheel"/>
+    <origin xyz="0.10 0.13 -0.05" rpy="-1.5708 0 0"/><axis xyz="0 0 1"/></joint>
+  <joint name="fr_joint" type="continuous"><parent link="base_link"/><child link="fr_wheel"/>
+    <origin xyz="0.10 -0.13 -0.05" rpy="-1.5708 0 0"/><axis xyz="0 0 1"/></joint>
+
+  <gazebo>
+    <!-- Fortress (Ignition Gazebo 6) naming, matching ROS 2 Humble's official pairing. -->
+    <plugin filename="ignition-gazebo-ackermann-steering-system" name="ignition::gazebo::systems::AckermannSteering">
+      <topic>cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <frame_id>odom</frame_id><child_frame_id>base_link</child_frame_id>
+      <left_joint>rl_joint</left_joint><right_joint>rr_joint</right_joint>
+      <left_steering_joint>fl_joint</left_steering_joint><right_steering_joint>fr_joint</right_steering_joint>
+      <wheel_base>0.20</wheel_base><wheel_separation>0.26</wheel_separation>
+      <wheel_radius>0.05</wheel_radius>
+      <min_velocity>-0.3</min_velocity><max_velocity>0.8</max_velocity>
+      <min_angle>-0.5236</min_angle><max_angle>0.5236</max_angle>
+      <odom_publish_frequency>50</odom_publish_frequency>
+    </plugin>
+  </gazebo>
+</robot>

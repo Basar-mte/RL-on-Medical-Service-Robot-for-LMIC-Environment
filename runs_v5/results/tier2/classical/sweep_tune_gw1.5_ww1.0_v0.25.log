@@ -1,0 +1,3 @@
+  planner_sf2+shield ep 50/100 SR 0.840 (43 s)
+  planner_sf2+shield ep 100/100 SR 0.870 (82 s)
+[classical] tier2 planner_sf2+shield: {'sr': 0.87, 'collision': 0.0, 'timeout': 0.13, 'n': 100} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\classical\planner_sf2_tune_gw1.5_ww1.0_v0.25_shield.json

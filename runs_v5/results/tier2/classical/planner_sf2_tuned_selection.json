@@ -1,0 +1,8 @@
+{
+ "selected_on": "seed_base 5000, 100 eps shielded",
+ "best": {
+  "goal_weight": 1.5,
+  "wall_weight": 1.0,
+  "vmin": 0.4
+ }
+}

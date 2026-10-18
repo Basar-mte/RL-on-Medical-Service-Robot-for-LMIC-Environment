@@ -1,0 +1,144 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+    Property Tree Widget:
+      Expanded: ~
+    Tree Height: 760
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Background Color: 255; 255; 255
+    Fixed Frame: map
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Alpha: 0.18
+      Color: 120; 120; 130
+      Cell Size: 5
+      Plane Cell Count: 10
+      Reference Frame: map
+    - Class: rviz_default_plugins/Map
+      Name: SLAM Map
+      Enabled: true
+      Topic:
+        Value: /map
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+      Color Scheme: map
+      Alpha: 1.0
+      Draw Behind: true
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Room Labels
+      Enabled: true
+      Topic:
+        Value: /sim_markers
+        Durability Policy: Transient Local
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Pedestrians (ground truth)
+      Enabled: true
+      Topic:
+        Value: /pedestrian_markers
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/Path
+      Name: Cultural Route (/rl_route)
+      Enabled: true
+      Topic:
+        Value: /rl_route
+        Durability Policy: Volatile
+      Color: 20; 110; 230
+      Line Style: Billboards
+      Line Width: 0.12
+      Alpha: 1.0
+    - Class: rviz_default_plugins/Path
+      Name: Nav2 Plan (/plan)
+      Enabled: false
+      Topic:
+        Value: /plan
+      Color: 150; 150; 150
+      Line Style: Billboards
+      Line Width: 0.05
+    - Class: rviz_default_plugins/PointStamped
+      Name: Policy Waypoint (/rl_goal)
+      Enabled: true
+      Topic:
+        Value: /rl_goal
+      Color: 240; 120; 0
+      Radius: 0.22
+      Alpha: 1.0
+    - Class: rviz_default_plugins/LaserScan
+      Name: LD19 Scan
+      Enabled: true
+      Topic:
+        Value: /scan
+        Reliability Policy: Best Effort
+      Color: 220; 30; 40
+      Color Transformer: FlatColor
+      Size (m): 0.07
+      Style: Points
+      Alpha: 0.95
+      Decay Time: 0
+    - Class: rviz_default_plugins/RobotModel
+      Name: MentorPi
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+        Durability Policy: Transient Local
+      Alpha: 1.0
+      Visual Enabled: true
+      Collision Enabled: false
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: false
+      Show Names: true
+      Show Axes: true
+      Show Arrows: false
+      Marker Scale: 0.6
+    - Class: rviz_default_plugins/Pose
+      Name: Patrol Goal
+      Enabled: true
+      Topic:
+        Value: /patrol_goal
+      Color: 200; 30; 160
+      Shape: Arrow
+      Alpha: 1.0
+      Shaft Length: 0.6
+      Shaft Radius: 0.08
+      Head Length: 0.25
+      Head Radius: 0.16
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Value: /goal_pose
+  Views:
+    Current:
+      Class: rviz_default_plugins/TopDownOrtho
+      Name: Floor plan (top-down)
+      Target Frame: map
+      X: 20
+      Y: 15
+      Scale: 26
+      Angle: 0
+    Saved:
+      - Class: rviz_default_plugins/TopDownOrtho
+        Name: Floor plan (top-down)
+        Target Frame: map
+        X: 20
+        Y: 15
+        Scale: 26
+        Angle: 0
+      - Class: rviz_default_plugins/Orbit
+        Name: Chase (3D)
+        Target Frame: base_link
+        Distance: 7
+        Pitch: 0.62
+        Yaw: 3.1
+Window Geometry:
+  Height: 1040
+  Width: 1600
+  Displays:
+    collapsed: false

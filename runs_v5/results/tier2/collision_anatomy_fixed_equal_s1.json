@@ -1,0 +1,199 @@
+{
+ "ends": {
+  "success": 267,
+  "collision": 19,
+  "timeout": 14
+ },
+ "rows": [
+  {
+   "task": "restock",
+   "v_cmd": 0.7835620045661926,
+   "v_raw": 0.7835620045661926,
+   "reverse": false,
+   "ped_bearing_deg": -77.78769656453598,
+   "ped_dist": 0.5199999895530846,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7869939208030701,
+   "v_raw": 0.7869939208030701,
+   "reverse": false,
+   "ped_bearing_deg": -73.02878186390656,
+   "ped_dist": 0.7199999896116321,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "idle_return",
+   "v_cmd": 0.7920796275138855,
+   "v_raw": 0.7920796275138855,
+   "reverse": false,
+   "ped_bearing_deg": -73.16204690303908,
+   "ped_dist": 0.5199999894201434,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "STAT_medicine",
+   "v_cmd": 0.7879987359046936,
+   "v_raw": 0.7879987359046936,
+   "reverse": false,
+   "ped_bearing_deg": 98.35861166793995,
+   "ped_dist": 1.770432371399525,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "specimen",
+   "v_cmd": 0.7797487378120422,
+   "v_raw": 0.7797487378120422,
+   "reverse": false,
+   "ped_bearing_deg": -139.9685723436229,
+   "ped_dist": 3.9171419436117842,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "STAT_medicine",
+   "v_cmd": 0.7832806706428528,
+   "v_raw": 0.7832806706428528,
+   "reverse": false,
+   "ped_bearing_deg": 74.31007179613417,
+   "ped_dist": 0.7199999896381664,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "STAT_medicine",
+   "v_cmd": 0.7948982119560242,
+   "v_raw": 0.7948982119560242,
+   "reverse": false,
+   "ped_bearing_deg": -59.38489519858866,
+   "ped_dist": 0.5199999895328591,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.762071430683136,
+   "v_raw": 0.762071430683136,
+   "reverse": false,
+   "ped_bearing_deg": -58.788722134189015,
+   "ped_dist": 0.5199999894095199,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "idle_return",
+   "v_cmd": 0.7846953272819519,
+   "v_raw": 0.7846953272819519,
+   "reverse": false,
+   "ped_bearing_deg": -176.392949513964,
+   "ped_dist": 2.023360387552504,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "specimen",
+   "v_cmd": 0.7802634835243225,
+   "v_raw": 0.7802634835243225,
+   "reverse": false,
+   "ped_bearing_deg": 36.83764421500366,
+   "ped_dist": 3.16549854563263,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7778412699699402,
+   "v_raw": 0.7778412699699402,
+   "reverse": false,
+   "ped_bearing_deg": 141.32727825209483,
+   "ped_dist": 2.6636062659902366,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7871684432029724,
+   "v_raw": 0.7871684432029724,
+   "reverse": false,
+   "ped_bearing_deg": 88.9511979577111,
+   "ped_dist": 1.9482288240057188,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "specimen",
+   "v_cmd": 0.7864024043083191,
+   "v_raw": 0.7864024043083191,
+   "reverse": false,
+   "ped_bearing_deg": -77.79554074792664,
+   "ped_dist": 0.7199999897034141,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "idle_return",
+   "v_cmd": 0.7619543671607971,
+   "v_raw": 0.7619543671607971,
+   "reverse": false,
+   "ped_bearing_deg": -79.9256923245529,
+   "ped_dist": 0.5382301982026275,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "specimen",
+   "v_cmd": 0.7704523205757141,
+   "v_raw": 0.7704523205757141,
+   "reverse": false,
+   "ped_bearing_deg": 71.154797656103,
+   "ped_dist": 0.5199999895434689,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "STAT_medicine",
+   "v_cmd": 0.7874662280082703,
+   "v_raw": 0.7874662280082703,
+   "reverse": false,
+   "ped_bearing_deg": 75.57203165308853,
+   "ped_dist": 0.5199999895013488,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "specimen",
+   "v_cmd": 0.7855071425437927,
+   "v_raw": 0.7855071425437927,
+   "reverse": false,
+   "ped_bearing_deg": -66.06839953544088,
+   "ped_dist": 0.5199999892550285,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7796569466590881,
+   "v_raw": 0.7796569466590881,
+   "reverse": false,
+   "ped_bearing_deg": 48.47771117389387,
+   "ped_dist": 1.459179334852047,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7784621119499207,
+   "v_raw": 0.7784621119499207,
+   "reverse": false,
+   "ped_bearing_deg": -75.94063017827841,
+   "ped_dist": 0.5199999895071761,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  }
+ ]
+}

@@ -1,0 +1,174 @@
+"""Generates the Gazebo hospital.world and hospital_zones.png from layout.py,
+so the Gazebo world and the training env's zone/wall geometry never drift
+apart. Run manually after editing layout.py.
+"""
+import os
+import numpy as np
+from PIL import Image
+
+import layout
+
+OUT_WORLDS = os.path.join(os.path.dirname(__file__), "..", "hospitalnav_deploy", "worlds")
+ZONE_RES = 0.05
+
+
+def gen_world():
+    walls_sdf = []
+    for i, (x0, y0, x1, y1) in enumerate(layout.WALLS):
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        sx, sy = x1 - x0, y1 - y0
+        walls_sdf.append(f"""
+    <model name="wall_{i}">
+      <static>true</static>
+      <pose>{cx} {cy} {layout.WALL_H/2} 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>{sx} {sy} {layout.WALL_H}</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>{sx} {sy} {layout.WALL_H}</size></box></geometry></visual>
+      </link>
+    </model>""")
+
+    people_sdf = []
+    for i, (px, py, pr) in enumerate(layout.PEOPLE):
+        people_sdf.append(f"""
+    <model name="person_{i}">
+      <static>true</static>
+      <pose>{px} {py} 0.9 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><cylinder><radius>{pr}</radius><length>1.8</length></cylinder></geometry></collision>
+        <visual name="v">
+          <geometry><cylinder><radius>{pr}</radius><length>1.8</length></cylinder></geometry>
+          <material><ambient>0.8 0.6 0.2 1</ambient><diffuse>0.8 0.6 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>""")
+
+    # Visual-only floor tints, one per room — purely decorative (no
+    # <collision>, so they never affect physics/lidar/training) so each room
+    # reads clearly as its own space in the Gazebo GUI.
+    floor_sdf = []
+    for (x0, y0, x1, y1, name, _doors) in layout.ROOMS:
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        sx, sy = x1 - x0 - layout.WALL_T, y1 - y0 - layout.WALL_T
+        r, g, b = layout.ROOM_COLOR[name]
+        floor_sdf.append(f"""
+    <model name="floor_{name}">
+      <static>true</static>
+      <pose>{cx} {cy} 0.011 0 0 0</pose>
+      <link name="link">
+        <visual name="v">
+          <cast_shadows>false</cast_shadows>
+          <geometry><box><size>{sx} {sy} 0.02</size></box></geometry>
+          <material><ambient>{r} {g} {b} 1</ambient><diffuse>{r} {g} {b} 1</diffuse></material>
+        </visual>
+      </link>
+    </model>""")
+
+    # Hospital beds — real collision (the robot must route around them, same
+    # as walls/furniture in training), light blue/white to read as bedding.
+    bed_sdf = []
+    for i, (x0, y0, x1, y1) in enumerate(layout.BEDS):
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        sx, sy = x1 - x0, y1 - y0
+        bed_sdf.append(f"""
+    <model name="bed_{i}">
+      <static>true</static>
+      <pose>{cx} {cy} 0.25 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>{sx} {sy} 0.5</size></box></geometry></collision>
+        <visual name="v">
+          <geometry><box><size>{sx} {sy} 0.5</size></box></geometry>
+          <material><ambient>0.85 0.9 0.95 1</ambient><diffuse>0.85 0.9 0.95 1</diffuse></material>
+        </visual>
+      </link>
+    </model>""")
+
+    # Nurse desk — small furniture, real collision, wood-colored, in the
+    # corridor at female_ward's corner (there is no nurse-station room).
+    dx0, dy0, dx1, dy1 = layout.NURSE_DESK
+    dcx, dcy = (dx0 + dx1) / 2, (dy0 + dy1) / 2
+    dsx, dsy = dx1 - dx0, dy1 - dy0
+    desk_sdf = f"""
+    <model name="nurse_desk">
+      <static>true</static>
+      <pose>{dcx} {dcy} 0.6 0 0 0</pose>
+      <link name="link">
+        <collision name="c"><geometry><box><size>{dsx} {dsy} 1.2</size></box></geometry></collision>
+        <visual name="v">
+          <geometry><box><size>{dsx} {dsy} 1.2</size></box></geometry>
+          <material><ambient>0.55 0.35 0.2 1</ambient><diffuse>0.55 0.35 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>"""
+
+    # Start-point marker: a small green flag, visual-only, at layout.START_POINT.
+    sx0, sy0 = layout.START_POINT
+    start_sdf = f"""
+    <model name="start_point_marker">
+      <static>true</static>
+      <pose>{sx0} {sy0} 0 0 0 0</pose>
+      <link name="link">
+        <visual name="pole">
+          <cast_shadows>false</cast_shadows>
+          <pose>0 0 0.4 0 0 0</pose>
+          <geometry><cylinder><radius>0.02</radius><length>0.8</length></cylinder></geometry>
+          <material><ambient>0.15 0.15 0.15 1</ambient><diffuse>0.15 0.15 0.15 1</diffuse></material>
+        </visual>
+        <visual name="flag">
+          <cast_shadows>false</cast_shadows>
+          <pose>0.13 0 0.72 0 0 0</pose>
+          <geometry><box><size>0.26 0.01 0.16</size></box></geometry>
+          <material><ambient>0.1 0.8 0.2 1</ambient><diffuse>0.1 0.8 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>"""
+
+    sdf = f"""<?xml version="1.0"?>
+<!-- Generated by generate_world_assets.py from layout.py — do not hand-edit;
+     edit layout.py and re-run so the world, zone map, and training env stay
+     in sync. {layout.MAP_W:.0f}x{layout.MAP_H:.0f} m hospital floor: corridor +
+     male ward + general ward 1 + female ward + emergency room + prayer room +
+     general ward 2, plus beds and a nurse desk (no nurse-station room). -->
+<sdf version="1.6">
+  <world name="hospital">
+    <include><uri>model://ground_plane</uri></include>
+    <include><uri>model://sun</uri></include>
+    <physics type="ode">
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>5</real_time_factor>
+      <real_time_update_rate>500</real_time_update_rate>
+    </physics>
+{''.join(walls_sdf)}
+{''.join(people_sdf)}
+{''.join(floor_sdf)}
+{''.join(bed_sdf)}
+{desk_sdf}
+{start_sdf}
+  </world>
+</sdf>
+"""
+    path = os.path.join(OUT_WORLDS, "hospital.world")
+    with open(path, "w") as f:
+        f.write(sdf)
+    print("wrote", path)
+
+
+def gen_zone_png():
+    W = int(round(layout.MAP_W / ZONE_RES))
+    H = int(round(layout.MAP_H / ZONE_RES))
+    img = np.zeros((H, W), dtype=np.uint8)
+    for r in range(H):
+        y = (H - 1 - r) * ZONE_RES
+        for c in range(W):
+            x = c * ZONE_RES
+            img[r, c] = layout.zone_index(layout.zone_at(x, y))
+    path = os.path.join(OUT_WORLDS, "hospital_zones.png")
+    Image.fromarray(img, mode="L").save(path)
+    print("wrote", path, img.shape)
+    for name in layout.ZONES:
+        print(f"  {layout.zone_index(name)}: {name} -> {(img == layout.zone_index(name)).sum()} px")
+
+
+if __name__ == "__main__":
+    os.makedirs(OUT_WORLDS, exist_ok=True)
+    gen_world()
+    gen_zone_png()

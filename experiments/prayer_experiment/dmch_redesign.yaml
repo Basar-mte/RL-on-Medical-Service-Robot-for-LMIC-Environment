@@ -1,0 +1,976 @@
+map: {width_m: 40.0, height_m: 30.0, cell_size_m: 0.1}
+rooms:
+- id: main_corridor
+  type: corridor
+  polygon:
+  - [0, 0]
+  - [40, 0]
+  - [40, 30]
+  - [0, 30]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.85
+  label: Main Circulation
+- id: male_ward
+  type: male_ward
+  polygon:
+  - [0, 4]
+  - [9, 4]
+  - [9, 20.3]
+  - [0, 20.3]
+  cultural_zone: true
+  urgency_level: 1
+  default_pedestrian_density: 0.85
+  label: Male General Ward
+- id: female_ward
+  type: female_ward
+  polygon:
+  - [31, 4]
+  - [40, 4]
+  - [40, 20.3]
+  - [31, 20.3]
+  cultural_zone: true
+  urgency_level: 1
+  default_pedestrian_density: 0.85
+  label: Female General Ward
+- id: general_ward
+  type: ward
+  polygon:
+  - [15, 9.3]
+  - [25, 9.3]
+  - [25, 19.8]
+  - [15, 19.8]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.8
+  label: General Ward
+- id: nurse_station
+  type: nurse_station
+  polygon:
+  - [15, 9.3]
+  - [18, 9.3]
+  - [18, 12.4]
+  - [15, 12.4]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.9
+  label: Nurse Station
+  robot_spawn: true
+- id: mosque
+  type: prayer
+  polygon:
+  - [9, 24]
+  - [15, 24]
+  - [15, 30]
+  - [9, 30]
+  cultural_zone: true
+  urgency_level: 1
+  default_pedestrian_density: 0.4
+  label: Mosque (Namaz Ghor)
+- id: wudu
+  type: walkable
+  polygon:
+  - [9, 22.6]
+  - [12, 22.6]
+  - [12, 24]
+  - [9, 24]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.3
+  label: Wudu
+- id: icu
+  type: icu
+  polygon:
+  - [25, 25]
+  - [31, 25]
+  - [31, 30]
+  - [25, 30]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.5
+  label: ICU
+- id: emergency
+  type: emergency
+  polygon:
+  - [0, 0]
+  - [9, 0]
+  - [9, 4]
+  - [0, 4]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.9
+  label: Emergency Dept
+- id: pharmacy
+  type: pharmacy
+  polygon:
+  - [31, 0]
+  - [40, 0]
+  - [40, 3.8]
+  - [31, 3.8]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.7
+  label: Pharmacy
+- id: store_room
+  type: ward
+  polygon:
+  - [26, 0.4]
+  - [31, 0.4]
+  - [31, 3.8]
+  - [26, 3.8]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.3
+  label: Store Room
+- id: male_intern
+  type: ward
+  polygon:
+  - [0, 20.3]
+  - [4.5, 20.3]
+  - [4.5, 30]
+  - [0, 30]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.4
+  label: Intern Doctor Room
+- id: male_staff
+  type: ward
+  polygon:
+  - [4.5, 20.3]
+  - [9, 20.3]
+  - [9, 30]
+  - [4.5, 30]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.4
+  label: Staff Room
+- id: female_intern
+  type: ward
+  polygon:
+  - [31, 20.3]
+  - [35.5, 20.3]
+  - [35.5, 30]
+  - [31, 30]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.4
+  label: Intern Doctor Room
+- id: female_staff
+  type: ward
+  polygon:
+  - [35.5, 20.3]
+  - [40, 20.3]
+  - [40, 30]
+  - [35.5, 30]
+  cultural_zone: false
+  urgency_level: 1
+  default_pedestrian_density: 0.4
+  label: Staff Room
+static_obstacles:
+- polygon:
+  - [0, 3.9]
+  - [9, 3.9]
+  - [9, 4.1]
+  - [0, 4.1]
+  label: male_ward wall
+- polygon:
+  - [0, 20.2]
+  - [9, 20.2]
+  - [9, 20.4]
+  - [0, 20.4]
+  label: male_ward wall
+- polygon:
+  - [-0.1, 4]
+  - [0.1, 4]
+  - [0.1, 20.3]
+  - [-0.1, 20.3]
+  label: male_ward wall
+- polygon:
+  - [8.9, 4]
+  - [9.1, 4]
+  - [9.1, 7]
+  - [8.9, 7]
+  label: male_ward wall
+- polygon:
+  - [8.9, 9]
+  - [9.1, 9]
+  - [9.1, 15]
+  - [8.9, 15]
+  label: male_ward wall
+- polygon:
+  - [8.9, 17]
+  - [9.1, 17]
+  - [9.1, 20.3]
+  - [8.9, 20.3]
+  label: male_ward wall
+- polygon:
+  - [31, 3.9]
+  - [40, 3.9]
+  - [40, 4.1]
+  - [31, 4.1]
+  label: female_ward wall
+- polygon:
+  - [31, 20.2]
+  - [40, 20.2]
+  - [40, 20.4]
+  - [31, 20.4]
+  label: female_ward wall
+- polygon:
+  - [30.9, 4]
+  - [31.1, 4]
+  - [31.1, 7]
+  - [30.9, 7]
+  label: female_ward wall
+- polygon:
+  - [30.9, 9]
+  - [31.1, 9]
+  - [31.1, 15]
+  - [30.9, 15]
+  label: female_ward wall
+- polygon:
+  - [30.9, 17]
+  - [31.1, 17]
+  - [31.1, 20.3]
+  - [30.9, 20.3]
+  label: female_ward wall
+- polygon:
+  - [39.9, 4]
+  - [40.1, 4]
+  - [40.1, 20.3]
+  - [39.9, 20.3]
+  label: female_ward wall
+- polygon:
+  - [15, 9.2]
+  - [18.5, 9.2]
+  - [18.5, 9.4]
+  - [15, 9.4]
+  label: general_ward wall
+- polygon:
+  - [21.5, 9.2]
+  - [25, 9.2]
+  - [25, 9.4]
+  - [21.5, 9.4]
+  label: general_ward wall
+- polygon:
+  - [15, 19.7]
+  - [18.5, 19.7]
+  - [18.5, 19.9]
+  - [15, 19.9]
+  label: general_ward wall
+- polygon:
+  - [21.5, 19.7]
+  - [25, 19.7]
+  - [25, 19.9]
+  - [21.5, 19.9]
+  label: general_ward wall
+- polygon:
+  - [14.9, 9.3]
+  - [15.1, 9.3]
+  - [15.1, 13.5]
+  - [14.9, 13.5]
+  label: general_ward wall
+- polygon:
+  - [14.9, 15.5]
+  - [15.1, 15.5]
+  - [15.1, 19.8]
+  - [14.9, 19.8]
+  label: general_ward wall
+- polygon:
+  - [24.9, 9.3]
+  - [25.1, 9.3]
+  - [25.1, 13.5]
+  - [24.9, 13.5]
+  label: general_ward wall
+- polygon:
+  - [24.9, 15.5]
+  - [25.1, 15.5]
+  - [25.1, 19.8]
+  - [24.9, 19.8]
+  label: general_ward wall
+- polygon:
+  - [9, 23.9]
+  - [11, 23.9]
+  - [11, 24.1]
+  - [9, 24.1]
+  label: mosque wall
+- polygon:
+  - [13, 23.9]
+  - [15, 23.9]
+  - [15, 24.1]
+  - [13, 24.1]
+  label: mosque wall
+- polygon:
+  - [9, 29.9]
+  - [15, 29.9]
+  - [15, 30.1]
+  - [9, 30.1]
+  label: mosque wall
+- polygon:
+  - [8.9, 24]
+  - [9.1, 24]
+  - [9.1, 30]
+  - [8.9, 30]
+  label: mosque wall
+- polygon:
+  - [14.9, 24]
+  - [15.1, 24]
+  - [15.1, 30]
+  - [14.9, 30]
+  label: mosque wall
+- polygon:
+  - [9, 22.5]
+  - [12, 22.5]
+  - [12, 22.7]
+  - [9, 22.7]
+  label: wudu wall
+- polygon:
+  - [9, 23.9]
+  - [10, 23.9]
+  - [10, 24.1]
+  - [9, 24.1]
+  label: wudu wall
+- polygon:
+  - [11.5, 23.9]
+  - [12, 23.9]
+  - [12, 24.1]
+  - [11.5, 24.1]
+  label: wudu wall
+- polygon:
+  - [8.9, 22.6]
+  - [9.1, 22.6]
+  - [9.1, 24]
+  - [8.9, 24]
+  label: wudu wall
+- polygon:
+  - [11.9, 22.6]
+  - [12.1, 22.6]
+  - [12.1, 24]
+  - [11.9, 24]
+  label: wudu wall
+- polygon:
+  - [25, 24.9]
+  - [27, 24.9]
+  - [27, 25.1]
+  - [25, 25.1]
+  label: icu wall
+- polygon:
+  - [29, 24.9]
+  - [31, 24.9]
+  - [31, 25.1]
+  - [29, 25.1]
+  label: icu wall
+- polygon:
+  - [25, 29.9]
+  - [31, 29.9]
+  - [31, 30.1]
+  - [25, 30.1]
+  label: icu wall
+- polygon:
+  - [24.9, 25]
+  - [25.1, 25]
+  - [25.1, 30]
+  - [24.9, 30]
+  label: icu wall
+- polygon:
+  - [30.9, 25]
+  - [31.1, 25]
+  - [31.1, 30]
+  - [30.9, 30]
+  label: icu wall
+- polygon:
+  - [0, -0.1]
+  - [9, -0.1]
+  - [9, 0.1]
+  - [0, 0.1]
+  label: emergency wall
+- polygon:
+  - [0, 3.9]
+  - [9, 3.9]
+  - [9, 4.1]
+  - [0, 4.1]
+  label: emergency wall
+- polygon:
+  - [-0.1, 0]
+  - [0.1, 0]
+  - [0.1, 4]
+  - [-0.1, 4]
+  label: emergency wall
+- polygon:
+  - [8.9, 0]
+  - [9.1, 0]
+  - [9.1, 1]
+  - [8.9, 1]
+  label: emergency wall
+- polygon:
+  - [8.9, 3]
+  - [9.1, 3]
+  - [9.1, 4]
+  - [8.9, 4]
+  label: emergency wall
+- polygon:
+  - [31, -0.1]
+  - [40, -0.1]
+  - [40, 0.1]
+  - [31, 0.1]
+  label: pharmacy wall
+- polygon:
+  - [31, 3.7]
+  - [40, 3.7]
+  - [40, 3.9]
+  - [31, 3.9]
+  label: pharmacy wall
+- polygon:
+  - [30.9, 0]
+  - [31.1, 0]
+  - [31.1, 1]
+  - [30.9, 1]
+  label: pharmacy wall
+- polygon:
+  - [30.9, 3]
+  - [31.1, 3]
+  - [31.1, 3.8]
+  - [30.9, 3.8]
+  label: pharmacy wall
+- polygon:
+  - [39.9, 0]
+  - [40.1, 0]
+  - [40.1, 3.8]
+  - [39.9, 3.8]
+  label: pharmacy wall
+- polygon:
+  - [26, 0.3]
+  - [31, 0.3]
+  - [31, 0.5]
+  - [26, 0.5]
+  label: store_room wall
+- polygon:
+  - [26, 3.7]
+  - [27.5, 3.7]
+  - [27.5, 3.9]
+  - [26, 3.9]
+  label: store_room wall
+- polygon:
+  - [29.5, 3.7]
+  - [31, 3.7]
+  - [31, 3.9]
+  - [29.5, 3.9]
+  label: store_room wall
+- polygon:
+  - [25.9, 0.4]
+  - [26.1, 0.4]
+  - [26.1, 3.8]
+  - [25.9, 3.8]
+  label: store_room wall
+- polygon:
+  - [30.9, 0.4]
+  - [31.1, 0.4]
+  - [31.1, 1]
+  - [30.9, 1]
+  label: store_room wall
+- polygon:
+  - [30.9, 3]
+  - [31.1, 3]
+  - [31.1, 3.8]
+  - [30.9, 3.8]
+  label: store_room wall
+- polygon:
+  - [0, 20.2]
+  - [1.5, 20.2]
+  - [1.5, 20.4]
+  - [0, 20.4]
+  label: male_intern wall
+- polygon:
+  - [3, 20.2]
+  - [4.5, 20.2]
+  - [4.5, 20.4]
+  - [3, 20.4]
+  label: male_intern wall
+- polygon:
+  - [0, 29.9]
+  - [4.5, 29.9]
+  - [4.5, 30.1]
+  - [0, 30.1]
+  label: male_intern wall
+- polygon:
+  - [-0.1, 20.3]
+  - [0.1, 20.3]
+  - [0.1, 30]
+  - [-0.1, 30]
+  label: male_intern wall
+- polygon:
+  - [4.4, 20.3]
+  - [4.6, 20.3]
+  - [4.6, 30]
+  - [4.4, 30]
+  label: male_intern wall
+- polygon:
+  - [4.5, 20.2]
+  - [6, 20.2]
+  - [6, 20.4]
+  - [4.5, 20.4]
+  label: male_staff wall
+- polygon:
+  - [7.5, 20.2]
+  - [9, 20.2]
+  - [9, 20.4]
+  - [7.5, 20.4]
+  label: male_staff wall
+- polygon:
+  - [4.5, 29.9]
+  - [9, 29.9]
+  - [9, 30.1]
+  - [4.5, 30.1]
+  label: male_staff wall
+- polygon:
+  - [4.4, 20.3]
+  - [4.6, 20.3]
+  - [4.6, 30]
+  - [4.4, 30]
+  label: male_staff wall
+- polygon:
+  - [8.9, 20.3]
+  - [9.1, 20.3]
+  - [9.1, 30]
+  - [8.9, 30]
+  label: male_staff wall
+- polygon:
+  - [31, 20.2]
+  - [32.5, 20.2]
+  - [32.5, 20.4]
+  - [31, 20.4]
+  label: female_intern wall
+- polygon:
+  - [34, 20.2]
+  - [35.5, 20.2]
+  - [35.5, 20.4]
+  - [34, 20.4]
+  label: female_intern wall
+- polygon:
+  - [31, 29.9]
+  - [35.5, 29.9]
+  - [35.5, 30.1]
+  - [31, 30.1]
+  label: female_intern wall
+- polygon:
+  - [30.9, 20.3]
+  - [31.1, 20.3]
+  - [31.1, 30]
+  - [30.9, 30]
+  label: female_intern wall
+- polygon:
+  - [35.4, 20.3]
+  - [35.6, 20.3]
+  - [35.6, 30]
+  - [35.4, 30]
+  label: female_intern wall
+- polygon:
+  - [35.5, 20.2]
+  - [37, 20.2]
+  - [37, 20.4]
+  - [35.5, 20.4]
+  label: female_staff wall
+- polygon:
+  - [38.5, 20.2]
+  - [40, 20.2]
+  - [40, 20.4]
+  - [38.5, 20.4]
+  label: female_staff wall
+- polygon:
+  - [35.5, 29.9]
+  - [40, 29.9]
+  - [40, 30.1]
+  - [35.5, 30.1]
+  label: female_staff wall
+- polygon:
+  - [35.4, 20.3]
+  - [35.6, 20.3]
+  - [35.6, 30]
+  - [35.4, 30]
+  label: female_staff wall
+- polygon:
+  - [39.9, 20.3]
+  - [40.1, 20.3]
+  - [40.1, 30]
+  - [39.9, 30]
+  label: female_staff wall
+- polygon:
+  - [0, -0.1]
+  - [3.5, -0.1]
+  - [3.5, 0.1]
+  - [0, 0.1]
+  label: Outer wall
+- polygon:
+  - [6, -0.1]
+  - [17.5, -0.1]
+  - [17.5, 0.1]
+  - [6, 0.1]
+  label: Outer wall
+- polygon:
+  - [22.5, -0.1]
+  - [40, -0.1]
+  - [40, 0.1]
+  - [22.5, 0.1]
+  label: Outer wall
+- polygon:
+  - [0, 29.9]
+  - [17.5, 29.9]
+  - [17.5, 30.1]
+  - [0, 30.1]
+  label: Outer wall
+- polygon:
+  - [22.5, 29.9]
+  - [40, 29.9]
+  - [40, 30.1]
+  - [22.5, 30.1]
+  label: Outer wall
+- polygon:
+  - [-0.1, 0]
+  - [0.1, 0]
+  - [0.1, 30]
+  - [-0.1, 30]
+  label: Outer wall
+- polygon:
+  - [39.9, 0]
+  - [40.1, 0]
+  - [40.1, 30]
+  - [39.9, 30]
+  label: Outer wall
+- polygon:
+  - [0.4, 4.4]
+  - [2.5, 4.4]
+  - [2.5, 6.1]
+  - [0.4, 6.1]
+  label: Male ward bed
+- polygon:
+  - [0.4, 7.0]
+  - [2.5, 7.0]
+  - [2.5, 8.7]
+  - [0.4, 8.7]
+  label: Male ward bed
+- polygon:
+  - [0.4, 9.6]
+  - [2.5, 9.6]
+  - [2.5, 11.3]
+  - [0.4, 11.3]
+  label: Male ward bed
+- polygon:
+  - [0.4, 12.2]
+  - [2.5, 12.2]
+  - [2.5, 13.9]
+  - [0.4, 13.9]
+  label: Male ward bed
+- polygon:
+  - [0.4, 14.8]
+  - [2.5, 14.8]
+  - [2.5, 16.5]
+  - [0.4, 16.5]
+  label: Male ward bed
+- polygon:
+  - [0.4, 17.4]
+  - [2.5, 17.4]
+  - [2.5, 19.1]
+  - [0.4, 19.1]
+  label: Male ward bed
+- polygon:
+  - [6.5, 4.4]
+  - [8.6, 4.4]
+  - [8.6, 6.1]
+  - [6.5, 6.1]
+  label: Male ward bed
+- polygon:
+  - [6.5, 9.6]
+  - [8.6, 9.6]
+  - [8.6, 11.3]
+  - [6.5, 11.3]
+  label: Male ward bed
+- polygon:
+  - [6.5, 12.2]
+  - [8.6, 12.2]
+  - [8.6, 13.9]
+  - [6.5, 13.9]
+  label: Male ward bed
+- polygon:
+  - [6.5, 17.4]
+  - [8.6, 17.4]
+  - [8.6, 19.1]
+  - [6.5, 19.1]
+  label: Male ward bed
+- polygon:
+  - [9.2, 4.5]
+  - [10.6, 4.5]
+  - [10.6, 6.5]
+  - [9.2, 6.5]
+  label: Male overflow bed
+- polygon:
+  - [9.2, 9.7]
+  - [10.6, 9.7]
+  - [10.6, 11.7]
+  - [9.2, 11.7]
+  label: Male overflow bed
+- polygon:
+  - [9.2, 12.3]
+  - [10.6, 12.3]
+  - [10.6, 14.3]
+  - [9.2, 14.3]
+  label: Male overflow bed
+- polygon:
+  - [9.2, 17.5]
+  - [10.6, 17.5]
+  - [10.6, 19.5]
+  - [9.2, 19.5]
+  label: Male overflow bed
+- polygon:
+  - [37.5, 4.4]
+  - [39.6, 4.4]
+  - [39.6, 6.1]
+  - [37.5, 6.1]
+  label: Female ward bed
+- polygon:
+  - [37.5, 7.0]
+  - [39.6, 7.0]
+  - [39.6, 8.7]
+  - [37.5, 8.7]
+  label: Female ward bed
+- polygon:
+  - [37.5, 9.6]
+  - [39.6, 9.6]
+  - [39.6, 11.3]
+  - [37.5, 11.3]
+  label: Female ward bed
+- polygon:
+  - [37.5, 12.2]
+  - [39.6, 12.2]
+  - [39.6, 13.9]
+  - [37.5, 13.9]
+  label: Female ward bed
+- polygon:
+  - [37.5, 14.8]
+  - [39.6, 14.8]
+  - [39.6, 16.5]
+  - [37.5, 16.5]
+  label: Female ward bed
+- polygon:
+  - [37.5, 17.4]
+  - [39.6, 17.4]
+  - [39.6, 19.1]
+  - [37.5, 19.1]
+  label: Female ward bed
+- polygon:
+  - [31.4, 4.4]
+  - [33.5, 4.4]
+  - [33.5, 6.1]
+  - [31.4, 6.1]
+  label: Female ward bed
+- polygon:
+  - [31.4, 9.6]
+  - [33.5, 9.6]
+  - [33.5, 11.3]
+  - [31.4, 11.3]
+  label: Female ward bed
+- polygon:
+  - [31.4, 12.2]
+  - [33.5, 12.2]
+  - [33.5, 13.9]
+  - [31.4, 13.9]
+  label: Female ward bed
+- polygon:
+  - [31.4, 17.4]
+  - [33.5, 17.4]
+  - [33.5, 19.1]
+  - [31.4, 19.1]
+  label: Female ward bed
+- polygon:
+  - [29.4, 4.5]
+  - [30.8, 4.5]
+  - [30.8, 6.5]
+  - [29.4, 6.5]
+  label: Female overflow bed
+- polygon:
+  - [29.4, 9.7]
+  - [30.8, 9.7]
+  - [30.8, 11.7]
+  - [29.4, 11.7]
+  label: Female overflow bed
+- polygon:
+  - [29.4, 12.3]
+  - [30.8, 12.3]
+  - [30.8, 14.3]
+  - [29.4, 14.3]
+  label: Female overflow bed
+- polygon:
+  - [29.4, 17.5]
+  - [30.8, 17.5]
+  - [30.8, 19.5]
+  - [29.4, 19.5]
+  label: Female overflow bed
+- polygon:
+  - [15.3, 17.9]
+  - [17.4, 17.9]
+  - [17.4, 19.5]
+  - [15.3, 19.5]
+  label: General ward bed
+- polygon:
+  - [21.8, 17.9]
+  - [23.9, 17.9]
+  - [23.9, 19.5]
+  - [21.8, 19.5]
+  label: General ward bed
+- polygon:
+  - [21.8, 9.6]
+  - [23.9, 9.6]
+  - [23.9, 11.2]
+  - [21.8, 11.2]
+  label: General ward bed
+- polygon:
+  - [22.7, 12.6]
+  - [24.7, 12.6]
+  - [24.7, 14.0]
+  - [22.7, 14.0]
+  label: General ward bed
+- polygon:
+  - [22.7, 16.4]
+  - [24.7, 16.4]
+  - [24.7, 17.8]
+  - [22.7, 17.8]
+  label: General ward bed
+- polygon:
+  - [15.2, 16.4]
+  - [17.2, 16.4]
+  - [17.2, 17.8]
+  - [15.2, 17.8]
+  label: General ward bed
+- polygon:
+  - [25.4, 25.4]
+  - [27.0, 25.4]
+  - [27.0, 27.3]
+  - [25.4, 27.3]
+  label: ICU bed
+- polygon:
+  - [29.1, 25.4]
+  - [30.7, 25.4]
+  - [30.7, 27.3]
+  - [29.1, 27.3]
+  label: ICU bed
+- polygon:
+  - [0.7, 0.7]
+  - [3.4, 0.7]
+  - [3.4, 2.4]
+  - [0.7, 2.4]
+  label: Emergency bed
+- polygon:
+  - [4.3, 0.7]
+  - [7.0, 0.7]
+  - [7.0, 2.4]
+  - [4.3, 2.4]
+  label: Emergency bed
+- polygon:
+  - [3.7, 5.0]
+  - [4.9, 5.0]
+  - [4.9, 5.6]
+  - [3.7, 5.6]
+  label: Mejhe MW
+- polygon:
+  - [35.0, 5.0]
+  - [36.2, 5.0]
+  - [36.2, 5.6]
+  - [35.0, 5.6]
+  label: Mejhe FW
+- polygon:
+  - [3.7, 10.2]
+  - [4.9, 10.2]
+  - [4.9, 10.8]
+  - [3.7, 10.8]
+  label: Mejhe MW
+- polygon:
+  - [35.0, 10.2]
+  - [36.2, 10.2]
+  - [36.2, 10.8]
+  - [35.0, 10.8]
+  label: Mejhe FW
+- polygon:
+  - [3.7, 12.8]
+  - [4.9, 12.8]
+  - [4.9, 13.4]
+  - [3.7, 13.4]
+  label: Mejhe MW
+- polygon:
+  - [35.0, 12.8]
+  - [36.2, 12.8]
+  - [36.2, 13.4]
+  - [35.0, 13.4]
+  label: Mejhe FW
+- polygon:
+  - [3.7, 18.0]
+  - [4.9, 18.0]
+  - [4.9, 18.6]
+  - [3.7, 18.6]
+  label: Mejhe MW
+- polygon:
+  - [35.0, 18.0]
+  - [36.2, 18.0]
+  - [36.2, 18.6]
+  - [35.0, 18.6]
+  label: Mejhe FW
+- polygon:
+  - [15.3, 11.4]
+  - [17.6, 11.4]
+  - [17.6, 12.0]
+  - [15.3, 12.0]
+  label: Nurse desk
+robot_spawn_points:
+- [16.5, 10.4]
+- [20.0, 7.5]
+- [12.0, 14.5]
+- [28.0, 14.5]
+pedestrian_spawn_zones:
+  medical_staff:
+  - - [15, 9.3]
+    - [25, 19.8]
+  - - [9, 4]
+    - [15, 24]
+  - - [25, 4]
+    - [31, 25]
+  patient:
+  - - [0, 4]
+    - [9, 20.3]
+  - - [31, 4]
+    - [40, 20.3]
+  - - [15, 9.3]
+    - [25, 19.8]
+  family_attendant:
+  - - [0, 4]
+    - [9, 20.3]
+  - - [31, 4]
+    - [40, 20.3]
+  - - [9, 4]
+    - [15, 24]
+  - - [25, 4]
+    - [31, 25]
+  wheelchair:
+  - - [9, 4]
+    - [31, 9]
+  - - [9, 20]
+    - [31, 24]
+tasks:
+  stat_med: {start_room_id: nurse_station, target_room_id: emergency, urgency_level: 1.0,
+    deadline_s: 45, label: STAT Medicine}
+  ward_call_f: {start_room_id: nurse_station, target_room_id: female_ward, urgency_level: 0.9,
+    deadline_s: 60, label: Female Ward Call}
+  ward_call_m: {start_room_id: nurse_station, target_room_id: male_ward, urgency_level: 0.9,
+    deadline_s: 60, label: Male Ward Call}
+  icu_run: {start_room_id: nurse_station, target_room_id: icu, urgency_level: 0.8,
+    deadline_s: 70, label: ICU Transfer}
+  pharmacy_run: {start_room_id: nurse_station, target_room_id: pharmacy, urgency_level: 0.6,
+    deadline_s: 90, label: Pharmacy Run}
+  prayer_service: {start_room_id: nurse_station, target_room_id: mosque, urgency_level: 0.3,
+    deadline_s: 200, label: Prayer-room Service}
+prayer_windows:
+- {start_hour: 5.0, end_hour: 6.5, name: Fajr}
+- {start_hour: 12.0, end_hour: 13.0, name: Dhuhr}
+- {start_hour: 15.0, end_hour: 16.0, name: Asr}
+- {start_hour: 17.5, end_hour: 18.5, name: Maghrib}
+- {start_hour: 19.0, end_hour: 20.0, name: Isha}
+shift_change_windows:
+- {start_hour: 7.5, end_hour: 8.5}
+- {start_hour: 13.5, end_hour: 14.5}
+- {start_hour: 21.5, end_hour: 22.5}

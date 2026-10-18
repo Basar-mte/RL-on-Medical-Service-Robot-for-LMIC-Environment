@@ -1,0 +1,11 @@
+  planner_orca+shield ep 50/500 SR 0.720 (42 s)
+  planner_orca+shield ep 100/500 SR 0.700 (91 s)
+  planner_orca+shield ep 150/500 SR 0.687 (142 s)
+  planner_orca+shield ep 200/500 SR 0.705 (191 s)
+  planner_orca+shield ep 250/500 SR 0.704 (237 s)
+  planner_orca+shield ep 300/500 SR 0.707 (279 s)
+  planner_orca+shield ep 350/500 SR 0.717 (326 s)
+  planner_orca+shield ep 400/500 SR 0.725 (372 s)
+  planner_orca+shield ep 450/500 SR 0.718 (416 s)
+  planner_orca+shield ep 500/500 SR 0.706 (460 s)
+[classical] tier2 planner_orca+shield: {'sr': 0.706, 'collision': 0.162, 'timeout': 0.132, 'n': 500} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\classical\planner_orca_shield.json

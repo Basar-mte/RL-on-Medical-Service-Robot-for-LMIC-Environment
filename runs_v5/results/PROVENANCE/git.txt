@@ -1,0 +1,51 @@
+recorded 2026-10-11 18:29:14
+HEAD e41c9b4924ab7b5032a6e9086754be6488e1a996
+branch two-tier-benchmark
+
+--- git status --short ---
+ M .gitignore
+ M deploy/MENTORPI_DEPLOYMENT.md
+ M deploy/ros2_stack/hospitalnav_deploy/config/robot.yaml
+ M deploy/ros2_stack/hospitalnav_deploy/hospitalnav_deploy/controller_node.py
+ M deploy/ros2_stack/hospitalnav_deploy/hospitalnav_deploy/goal_publisher.py
+ M deploy/ros2_stack/hospitalnav_deploy/hospitalnav_deploy/path_to_waypoint.py
+ M deploy/ros2_stack/hospitalnav_deploy/hospitalnav_deploy/scan_utils.py
+ M deploy/ros2_stack/hospitalnav_deploy/launch/gazebo_full_bringup.launch.py
+ M deploy/ros2_stack/hospitalnav_deploy/launch/hospitalnav_bringup.launch.py
+ M deploy/ros2_stack/hospitalnav_deploy/setup.py
+ M figures/output/fig3_training_curves.pdf
+ M figures/output/fig3_training_curves.png
+?? deploy/ros2_stack/hospitalnav_deploy/hospitalnav_deploy/route_planner.py
+?? deploy/ros2_stack/hospitalnav_deploy/hospitalnav_deploy/route_planner_node.py
+?? deploy/stable_models_v2_README.md
+?? experiments/planner/
+?? experiments/ppo/
+?? experiments/shield_weaning/
+?? experiments/simple_experiment/
+?? experiments/stability_pilot/
+?? runs_v5/
+?? runs_v5_smoke/
+?? scripts/build_stable_models_v2.py
+?? scripts/campaign_v5_stable.py
+?? scripts/dashboard_v5.py
+?? scripts/eval_classical_v5.py
+?? scripts/eval_v5.py
+?? scripts/launch_v5.ps1
+?? scripts/provenance_v5.py
+?? scripts/thermal_guard.py
+?? scripts/watchdog_v5.ps1
+
+--- git diff --stat ---
+ .gitignore                                         |   3 +
+ deploy/MENTORPI_DEPLOYMENT.md                      | 137 ++++++++++++---------
+ .../hospitalnav_deploy/config/robot.yaml           |  13 ++
+ .../hospitalnav_deploy/controller_node.py          |  27 +++-
+ .../hospitalnav_deploy/goal_publisher.py           |  10 +-
+ .../hospitalnav_deploy/path_to_waypoint.py         |  24 ++--
+ .../hospitalnav_deploy/scan_utils.py               |  99 ++++++++++++++-
+ .../launch/gazebo_full_bringup.launch.py           |  15 ++-
+ .../launch/hospitalnav_bringup.launch.py           |  32 +++--
+ deploy/ros2_stack/hospitalnav_deploy/setup.py      |   1 +
+ figures/output/fig3_training_curves.pdf            | Bin 65802 -> 60785 bytes
+ figures/output/fig3_training_curves.png            | Bin 244513 -> 232555 bytes
+ 12 files changed, 270 insertions(+), 91 deletions(-)

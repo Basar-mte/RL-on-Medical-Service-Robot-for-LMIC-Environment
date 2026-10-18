@@ -1,3 +1,48 @@
-paper/
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Virtual environments and editors
+.venv/
+venv/
+env/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Training outputs: keep only the aggregated results of the final campaign
+runs/
+runs_v4/
+runs_v5/**
+!runs_v5/**/
+!runs_v5/results/**
+!runs_v5/*/*/eval_*.json
+runs_v5_*/
+experiments/*/runs*/
+experiments/planner/results/logs/
+*_train.log
+*.log.err
+
+# Gazebo run folders, renders and videos produced by ros_sim/sim/
+ros_sim/results_runs*/
+ros_sim/results_superseded/
+ros_sim/results_figures/
+ros_sim/paper_figures/
+ros_sim/paper_data/pedestrians/
+*.mp4
+
+# Generated paper tables (python scripts/build_paper_tables.py)
+paper_tables/
+manuscript/
+
+# Vendor CAD meshes (not redistributable, see meshes/acker/README.md)
+**/meshes/acker/*.STL
+**/meshes/acker/*.stl

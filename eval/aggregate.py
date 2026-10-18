@@ -5,7 +5,7 @@ Reads eval_results.json from all seed runs, computes mean ± std,
 and produces a LaTeX-ready results table.
 
 Usage:
-  python eval/aggregate.py --runs_dir runs/ --output results/table.json
+  python eval/aggregate.py --runs_dir runs/ --output runs/results/table.json
 """
 
 from __future__ import annotations
@@ -85,17 +85,35 @@ def aggregate(data: Dict[str, List[Dict]]) -> pd.DataFrame:
 
 
 def to_latex(df: pd.DataFrame) -> str:
+    # Hand-built rather than df.to_latex(): pandas >=2.1 routes to_latex()
+    # through its Styler, which requires jinja2>=3.1.2 — an unrelated
+    # environment dependency this simple table doesn't need to incur.
     col_map = {m: METRIC_LABELS[m] for m in METRICS}
     df_latex = df.rename(columns={"agent": "Method", **col_map})
-    return df_latex.to_latex(index=False, escape=False,
-                              caption="Main results on LMICHospitalNav-v1 (mean ± std, 3 seeds).",
-                              label="tab:main_results")
+    headers = list(df_latex.columns)
+    col_spec = "l" + "c" * (len(headers) - 1)
+
+    lines = [
+        r"\begin{table}", r"\centering",
+        r"\caption{Main results on LMICHospitalNav-v1 (mean \(\pm\) std, 3 seeds).}",
+        r"\label{tab:main_results}",
+        rf"\begin{{tabular}}{{{col_spec}}}", r"\toprule",
+        " & ".join(headers) + r" \\", r"\midrule",
+    ]
+    for _, row in df_latex.iterrows():
+        lines.append(" & ".join(str(v) for v in row) + r" \\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    return "\n".join(lines) + "\n"
 
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--runs_dir", default="runs")
-    p.add_argument("--output", default="results/table.json")
+    # Previously "results/table.json" (repo root) — a separate location from
+    # what eval/post_training.py writes and figures/make_figures.py reads
+    # ("runs/results/table.json"). Defaulting to the same path here avoids
+    # the two aggregation tools silently diverging.
+    p.add_argument("--output", default="runs/results/table.json")
     args = p.parse_args()
 
     runs_dir = Path(__file__).parent.parent / args.runs_dir

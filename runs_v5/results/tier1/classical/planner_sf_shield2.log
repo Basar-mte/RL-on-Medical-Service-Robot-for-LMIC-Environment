@@ -1,0 +1,12 @@
+[stability_pilot] VecNormalize reward normalization OFF
+  planner_sf+shield ep 50/500 SR 0.100 (102 s)
+  planner_sf+shield ep 100/500 SR 0.140 (195 s)
+  planner_sf+shield ep 150/500 SR 0.147 (283 s)
+  planner_sf+shield ep 200/500 SR 0.170 (368 s)
+  planner_sf+shield ep 250/500 SR 0.180 (462 s)
+  planner_sf+shield ep 300/500 SR 0.180 (555 s)
+  planner_sf+shield ep 350/500 SR 0.183 (643 s)
+  planner_sf+shield ep 400/500 SR 0.180 (737 s)
+  planner_sf+shield ep 450/500 SR 0.173 (838 s)
+  planner_sf+shield ep 500/500 SR 0.170 (939 s)
+[classical] tier1 planner_sf+shield: {'sr': 0.17, 'collision': 0.0, 'timeout': 0.83, 'n': 500} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier1\classical\planner_sf_shield2.json

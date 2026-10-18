@@ -1,0 +1,12 @@
+[stability_pilot] VecNormalize reward normalization OFF
+  sf2 ep 50/500 SR 0.840 (37 s)
+  sf2 ep 100/500 SR 0.790 (69 s)
+  sf2 ep 150/500 SR 0.807 (97 s)
+  sf2 ep 200/500 SR 0.805 (125 s)
+  sf2 ep 250/500 SR 0.784 (157 s)
+  sf2 ep 300/500 SR 0.793 (182 s)
+  sf2 ep 350/500 SR 0.797 (206 s)
+  sf2 ep 400/500 SR 0.807 (237 s)
+  sf2 ep 450/500 SR 0.807 (262 s)
+  sf2 ep 500/500 SR 0.816 (293 s)
+[classical] tier1 sf2: {'sr': 0.816, 'collision': 0.106, 'timeout': 0.078, 'n': 500} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier1\classical\sf2.json

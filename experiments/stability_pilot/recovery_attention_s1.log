@@ -1,0 +1,3 @@
+  [eval] Using VecNormalize from: vec_normalize.pkl
+  [eval] Loaded trained attention weights from attention_final.pt
+=== attention_s1 shield+recovery, 150 eps: collision 59%, success 41% | CVR 0.117 | STAT 57%/0.302 | recoveries 202 (1.3/ep)

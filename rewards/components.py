@@ -15,9 +15,14 @@ from __future__ import annotations
 import math
 import numpy as np
 
+# Multiplier on per-step goal progress (see navigation_reward docstring).
+# Shared by every reward implementation (CARS here, He2025RewardFn,
+# VanillaSACReward) so agents stay comparable.
+PROGRESS_SCALE = 10.0
+
 
 # ---------------------------------------------------------------------------
-# Navigation reward  (potential-based, Ng 1999)
+# Navigation reward  (progress shaping)
 # ---------------------------------------------------------------------------
 
 def navigation_reward(
@@ -32,22 +37,46 @@ def navigation_reward(
     backward_penalty: float = -0.02,
 ) -> float:
     """
-    Potential-based navigation shaping Φ(s) = –d(s, goal).
+    Progress-based navigation shaping Φ(s) = –d(s, goal).
 
-    r_nav = γ·Φ(s') – Φ(s) + goal_bonus·[task_complete]
+    r_nav = Φ(s') – Φ(s) + goal_bonus·[task_complete]
+
+    Deliberately NOT the discounted form γ·Φ(s')–Φ(s): with Φ = –d and
+    γ = 0.99 that form leaks a per-step bonus of (1–γ)·d ≈ +0.01·d for
+    merely EXISTING far from the goal — at d = 15 m that is +0.15/step,
+    which over a long survived episode dwarfs the one-off goal bonus.
+    Measured consequence before this fix: SAC converged to "survive and
+    loiter far from the goal" (episode length 700+, return ~16, success
+    rate exactly 0 at 80k steps). The undiscounted difference telescopes
+    to d_start – d_end over the episode, so wandering is reward-neutral
+    and only genuine approach pays. (gamma is kept in the signature for
+    API compatibility but intentionally unused.)
+
+    PROGRESS_SCALE: raw per-step progress is at most v_max·Δt = 0.08 m —
+    an order of magnitude below the ambient safety/cultural proximity
+    penalties accrued while crossing an LMIC-density ward (measured: with
+    unscaled progress the return of a completed 20 m task was NET NEGATIVE
+    versus idling in an empty corner, and success rate stayed exactly 0).
+    Scaling progress so a full-speed approach step ≈ +0.8 makes purposeful
+    navigation dominate ambient penalties while zone penalties (−2/step
+    inside an active prayer window) remain decisively binding.
     """
     phi_prev = -prev_dist
     phi_curr = -curr_dist
-    r = gamma * phi_curr - phi_prev
+    r = PROGRESS_SCALE * (phi_curr - phi_prev)
 
     if task_complete:
         r += goal_bonus
 
     v = float(action[0])
-    if v < 0.01:
+    # Idle penalty on |v|: reverse is now a legal action (the physical
+    # chassis can back up), so "idle" means near-zero speed in either
+    # direction — a bare v < 0.01 would penalize every reverse maneuver as
+    # idling on top of the explicit backward penalty below.
+    if abs(v) < 0.01:
         r += timeout_penalty
 
-    # Small backward penalty
+    # Small backward penalty (reverse is allowed but shouldn't be preferred)
     if v < 0:
         r += backward_penalty
 

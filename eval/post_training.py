@@ -35,7 +35,12 @@ METRICS = ["sr", "cvr", "spl", "mpd", "svr"]
 def find_latest_run(runs_dir: Path, agent: str, seed: int) -> Optional[Path]:
     """Find the most recent training run for a given agent+seed."""
     pattern = f"{agent}_seed{seed}_*"
-    matches = sorted(runs_dir.glob(pattern), key=lambda p: p.stat().st_mtime)
+    # is_dir(): the same pattern also matches the per-run launcher logs
+    # ({agent}_seed{seed}_train.log) that run_all.py --parallel and the
+    # legacy campaigns write at the runs root — those must never shadow
+    # the actual run directory (the log's mtime is always newer).
+    matches = sorted((p for p in runs_dir.glob(pattern) if p.is_dir()),
+                     key=lambda p: p.stat().st_mtime)
     return matches[-1] if matches else None
 
 

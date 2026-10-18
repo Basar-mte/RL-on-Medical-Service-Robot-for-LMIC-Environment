@@ -1,0 +1,3 @@
+[stability_pilot] VecNormalize reward normalization OFF
+  planner_sf2+shield ep 50/50 SR 0.980 (36 s)
+[classical] tier2 planner_sf2+shield: {'sr': 0.98, 'collision': 0.0, 'timeout': 0.02, 'n': 50} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\classical\planner_sf2__unmapped_L5__sf2_shield2.json

@@ -1,0 +1,12 @@
+[stability_pilot] VecNormalize reward normalization OFF
+  astar_pp ep 50/500 SR 0.320 (12 s)
+  astar_pp ep 100/500 SR 0.290 (24 s)
+  astar_pp ep 150/500 SR 0.287 (35 s)
+  astar_pp ep 200/500 SR 0.280 (48 s)
+  astar_pp ep 250/500 SR 0.264 (63 s)
+  astar_pp ep 300/500 SR 0.260 (75 s)
+  astar_pp ep 350/500 SR 0.257 (90 s)
+  astar_pp ep 400/500 SR 0.247 (101 s)
+  astar_pp ep 450/500 SR 0.238 (111 s)
+  astar_pp ep 500/500 SR 0.236 (126 s)
+[classical] tier1 astar_pp: {'sr': 0.236, 'collision': 0.738, 'timeout': 0.026, 'n': 500} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier1\classical\astar_pp.json

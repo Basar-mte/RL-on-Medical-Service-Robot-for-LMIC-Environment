@@ -1,0 +1,48 @@
+[uncertainty] patch applied: {'noyield': False, 'lidar': 0.0, 'drop': 0.0, 'act': 0.1}
+[planner] patch applied: {'mode': 'cult', 'ratio': 3.0, 'L': 2.5, 'dist': 'geo', 'progress': False, 'los': True}
+  [eval] Using VecNormalize from: vec_normalize.pkl
+  ep 20/500  SR 1.000  (18 s)
+  ep 40/500  SR 1.000  (36 s)
+  ep 60/500  SR 1.000  (57 s)
+  ep 80/500  SR 0.988  (76 s)
+  ep 100/500  SR 0.990  (91 s)
+  ep 120/500  SR 0.983  (110 s)
+  ep 140/500  SR 0.986  (126 s)
+  ep 160/500  SR 0.981  (144 s)
+  ep 180/500  SR 0.983  (164 s)
+  ep 200/500  SR 0.980  (180 s)
+  ep 220/500  SR 0.982  (195 s)
+  ep 240/500  SR 0.979  (214 s)
+  ep 260/500  SR 0.977  (230 s)
+  ep 280/500  SR 0.979  (245 s)
+  ep 300/500  SR 0.980  (261 s)
+  ep 320/500  SR 0.981  (280 s)
+  ep 340/500  SR 0.982  (295 s)
+  ep 360/500  SR 0.981  (311 s)
+  ep 380/500  SR 0.982  (331 s)
+  ep 400/500  SR 0.978  (349 s)
+  ep 420/500  SR 0.976  (365 s)
+  ep 440/500  SR 0.973  (382 s)
+  ep 460/500  SR 0.972  (400 s)
+  ep 480/500  SR 0.973  (415 s)
+  ep 500/500  SR 0.974  (434 s)
+{
+ "sr": 0.974,
+ "collision": 0.018,
+ "timeout": 0.008,
+ "cvr": 0.11576368978056482,
+ "svr": 0.04559743865231344,
+ "spl": 0.9530504907990656,
+ "mpd": 3.716688664310894,
+ "prayer_cvr": 0.0,
+ "frozen": 0.004,
+ "n": 500,
+ "per_task": {
+  "STAT_medicine": 0.99,
+  "nurse_call": 0.96,
+  "specimen": 0.97,
+  "restock": 0.96,
+  "idle_return": 0.99
+ }
+}
+[eval_planner] saved D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\robustness\act__fe_shield2.json  (434 s)

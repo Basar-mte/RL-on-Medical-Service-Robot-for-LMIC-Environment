@@ -1,0 +1,6 @@
+  [eval] Using VecNormalize from: vec_normalize.pkl
+
+=== fixed_equal_s1 + shield, 150 eps: success 49%, timeout 34%, collision 17%
+TIMEOUTS (51): pedestrian within 1 m 14% | >=2 peds within 2 m 22% | within 1.5 m of a doorway 0% | moved <1 m in last 10 s (frozen) 100% | median distance left to goal 7.4 m
+  zones: {'ward': '41%', 'corridor': '27%', 'prayer': '18%', 'nurse_station': '8%', 'walkable': '6%'}
+  tasks: {'specimen': 19, 'restock': 12, 'STAT_medicine': 11, 'idle_return': 7, 'nurse_call': 2}

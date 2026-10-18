@@ -1,0 +1,42 @@
+# Tunable robot parameters for the LMIC-HospitalNav deployment.
+# Passed to the nodes via the launch file. Match the sim where noted.
+
+controller:
+  # policy + normalization (copy these files onto the Pi under ~/models)
+  model_zip:   "/home/pi/models/best_model.zip"
+  vecnorm_pkl: "/home/pi/models/vec_normalize.pkl"
+  weight_pt:   "/home/pi/models/cwn_best.pt"   # optional, for the weight overlay
+  agent:       "cwn"                           # cwn | attention | fixed_equal | ...
+  # map size used ONLY to normalize robot_state (keep fixed; match your semantic map)
+  map_w: 40.0
+  map_h: 30.0
+  # task
+  urgency:  0.9        # 0..1 task urgency fed into the context vector
+  tod_hour: 12.0       # simulated hour for the prayer-window context
+  # LiDAR alignment: add if the sensor's 0 deg is not the robot's +x (calibrate!)
+  bearing_offset: 0.0  # radians
+  semantic_png: "/home/pi/hn_ws/maps/hospital_zones.png"
+  semantic_res: 0.05
+  semantic_origin: [0.0, 0.0]
+
+route_planner:         # global level of the trained hierarchy (publishes /rl_goal = waypoint, z = route length)
+  lookahead: 2.5       # m along the route (trained value — do not change without retraining)
+  los: true            # pull the waypoint back to line of sight
+  cultural_ratio: 3.0  # 3.0 for the CARS agents (cwn/fixed_equal/nav_heavy/attention); 0.0 for vanilla/he2025
+  robot_radius: 0.25
+  safety_margin: 0.05
+  plan_resolution: 0.1 # the map is coarsened (conservatively) to this before planning
+  unknown_is_free: false
+  tod_hour: 12.0       # same simulated hour as the controller (prayer-window cost)
+  semantic_png: "/home/pi/hn_ws/maps/hospital_zones.png"   # same zone image as the controller
+  semantic_res: 0.05
+  semantic_origin: [0.0, 0.0]
+
+lidar:                 # only if using the self-contained lidar_node (not ldlidar)
+  port: "/dev/ttyUSB0"
+  baud: 230400
+  frame_id: "laser"
+
+rrc_bridge:            # Ackermann drive (match the sim wheelbase)
+  wheel_radius_m: 0.05
+  wheelbase_m: 0.20

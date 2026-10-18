@@ -1,0 +1,53 @@
+source,name,value,comment
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,TAU,0.15,"s, position-error time constant"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,V_MAX,2.5,"m/s, fastest catch-up"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,A_MAX,12.0,m/s^2 -> push bounded at ~840 N for 70 kg
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,TELEPORT_M,1.5,m behind its walker before a body is put back
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,BODY_R,0.22,"m, matches ped_routes.BODY_RADIUS"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,LEAD_S,1.0,s of route ahead the walker heads for
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,LAG_OK,0.4,m behind its route clock: the clock runs at full rate...
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,LAG_MAX,1.2,"...and stops at this lag, until the walker catches up"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,TAU_R,0.5,"s, relaxation toward the desired velocity"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,A_PED,2.1,"m/s^2, person-person repulsion strength"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,B_PED,0.30,"m, its range"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,A_ROBOT,4.0,people keep a wider berth from a robot
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,B_ROBOT,0.35,
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,A_WALL,6.0,
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,B_WALL,0.12,
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,LAMBDA,0.35,anisotropy: weight of what is behind
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,TANGENT,0.35,sideways share of a head-on repulsion
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,F_MAX,12.0,m/s^2 cap on the summed force
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,V_WALK_MAX,1.8,m/s
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,YAW_RATE,8.0,"rad/s, fastest heading change"
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,PUBLISH_HZ,25.0,
+hospitalnav_gz_plugins/src/PedestrianBodies.cc,LOG_HZ,20.0,
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,WHEELBASE,0.20,TRAINING wheelbase - see module docstring
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,MAX_STEER,math.radians(30.0),
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,STALL_S,8.0,"commanded ~zero this long, mid-mission = stuck"
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,WEDGE_S,6.0,commanding motion this long...
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,WEDGE_M,0.10,...having moved less than this = wedged
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,ESCAPE_V,-0.3,reverse speed (m/s)
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,ESCAPE_S,1.6,straight-reverse duration (~0.5 m)
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,WEDGE_ESCAPE_S,2.2,"counter-steer reverse: longer, it must gain heading"
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,ESCAPE_COOLDOWN,12.0,
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,REAR_MIN_M,0.35,refuse to reverse with less rear clearance
+hospitalnav_deploy/hospitalnav_deploy/gz_cmd_adapter.py,REAR_HALF_DEG,25,+/- degrees around dead astern
+hospitalnav_deploy/hospitalnav_deploy/patrol_sequencer.py,PED_CONTACT_M,0.25 + 0.25,robot radius + pedestrian body radius (benchmark definition)
+hospitalnav_deploy/hospitalnav_deploy/patrol_sequencer.py,PED_TOUCH_M,0.35,MentorPi chassis (~0.12 m) actually touching a body (~0.2 m)
+hospitalnav_deploy/hospitalnav_deploy/patrol_sequencer.py,PED_PERSONAL_M,1.2,proxemic personal zone
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,TURN_S,0.35,pause at a corner while the heading swings to the next leg
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,SUB_DT,0.25,longest sub-segment along a leg (s); see TIMING above
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,TENSION,0.0,Catmull-Rom; see TIMING above
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,PED_RADIUS,0.25,body radius used for proximity events (matches the shield)
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,BODY_RADIUS,0.22,physical collision cylinder that follows each actor
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,BODY_MASS,70.0,"kg: a person - the robot (2 kg) cannot push it, it pushes the robot"
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,SPAWN,"(37.0, 15.0)",the robot's start pose: no walker may START near it
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,SEED_CLEAR_SPAWN,1.2,m
+hospitalnav_deploy/hospitalnav_deploy/ped_routes.py,SEED_CLEAR_PED,0.6,m between two walkers' start points
+sim/run_campaign.py,goal_timeout,300.0,s of simulation time per goal (campaign runs)
+hospitalnav_deploy/patrol_sequencer.py,goal_tol,0.4,m: goal reached (training GOAL_TOL)
+sim/run_campaign.py,patrol_start_delay,30.0,s after launch before the goal clock starts (figure runs: 20)
+hospitalnav_deploy/patrol_sequencer.py,contact/touch re-arm,+0.2,m: a new contact (touch) event counts only after the distance exceeded the threshold + 0.2
+worlds/hospital_walled.world,max_step_size,0.01,physics (replays use 1/300 s)
+worlds/hospital_walled.world,real_time_factor,0,physics (replays use 1/300 s)
+worlds/hospital_walled.world,real_time_update_rate,0,physics (replays use 1/300 s)

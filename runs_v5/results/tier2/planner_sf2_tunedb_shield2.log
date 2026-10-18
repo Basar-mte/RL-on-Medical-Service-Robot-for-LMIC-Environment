@@ -1,0 +1,11 @@
+  planner_sf2+shield ep 50/500 SR 0.960 (42 s)
+  planner_sf2+shield ep 100/500 SR 0.950 (84 s)
+  planner_sf2+shield ep 150/500 SR 0.953 (124 s)
+  planner_sf2+shield ep 200/500 SR 0.965 (166 s)
+  planner_sf2+shield ep 250/500 SR 0.972 (203 s)
+  planner_sf2+shield ep 300/500 SR 0.973 (237 s)
+  planner_sf2+shield ep 350/500 SR 0.971 (272 s)
+  planner_sf2+shield ep 400/500 SR 0.975 (307 s)
+  planner_sf2+shield ep 450/500 SR 0.978 (342 s)
+  planner_sf2+shield ep 500/500 SR 0.978 (379 s)
+[classical] tier2 planner_sf2+shield: {'sr': 0.978, 'collision': 0.0, 'timeout': 0.022, 'n': 500} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\classical\planner_sf2_tunedb_shield2.json

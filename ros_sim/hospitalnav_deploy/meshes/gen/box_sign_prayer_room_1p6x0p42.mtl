@@ -1,0 +1,7 @@
+newmtl tex
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.1925 0.1925 0.1925
+Ns 37.0
+illum 2
+map_Kd sign_prayer_room_1p6x0p42.png

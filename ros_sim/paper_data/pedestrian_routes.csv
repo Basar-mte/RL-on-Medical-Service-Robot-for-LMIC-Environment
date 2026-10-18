@@ -1,0 +1,46 @@
+walker,character,speed_mps,loop_period_s,n_waypoints,in_light,in_busy,in_crowd45,origin
+ped_nurse_corridor,nurse,1.2,63.6435,6,1,1,1,designed
+ped_doctor_rounds,doctor,1.1,48.4551,12,1,1,1,designed
+ped_visitor_prayer,visitor,1.0,61.8267,12,1,1,1,designed
+ped_patient_ward2,patient,0.45,19.5598,5,1,1,1,designed
+ped_nurse_cross,nurse,1.0,16.9149,8,0,1,1,designed
+ped_visitor_male,visitor,0.9,16.9889,6,0,1,1,designed
+ped_doctor_east,doctor,1.3,20.7558,5,0,1,1,designed
+ped_patient_er,patient,0.5,12.2,4,0,1,1,designed
+crowd_corr_00,nurse,1.06,36.4594,6,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_01,doctor,0.83,30.0757,5,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_02,visitor,1.22,37.7467,6,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_03,patient,0.6,81.2853,10,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_04,nurse,1.21,10.6254,4,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_05,doctor,1.21,50.6532,10,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_06,visitor,1.34,28.7972,6,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_07,patient,0.46,84.2211,4,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_08,nurse,1.12,48.497,4,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_09,doctor,1.31,51.5028,4,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_10,visitor,1.03,28.3788,10,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_11,patient,0.59,76.5679,12,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_12,nurse,0.92,41.4391,2,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_13,doctor,1.18,56.4161,9,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_14,visitor,1.08,37.699,6,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_15,patient,0.52,53.5162,5,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_16,nurse,1.03,51.5037,13,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_17,doctor,1.06,53.1007,12,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_18,visitor,1.06,44.1826,12,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_corr_19,patient,0.55,47.2207,9,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_00,visitor,0.85,22.4875,12,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_01,patient,0.52,39.6909,11,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_02,nurse,0.91,60.9588,17,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_03,doctor,1.12,42.6086,14,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_04,visitor,0.82,36.0547,9,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_05,patient,0.5,32.4396,8,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_06,nurse,0.91,21.621,11,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_07,doctor,0.74,59.114,12,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_08,visitor,1.11,51.9228,15,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_09,patient,0.55,115.0539,17,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_10,nurse,0.82,63.2451,10,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_11,doctor,1.02,19.1764,11,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_12,visitor,0.94,27.201,13,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_13,patient,0.54,25.7561,9,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_14,nurse,1.08,62.4638,14,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_15,doctor,0.75,33.4568,13,0,0,1,generated (sim/gen_crowd_routes.py)
+crowd_room_16,visitor,0.85,47.176,14,0,0,1,generated (sim/gen_crowd_routes.py)

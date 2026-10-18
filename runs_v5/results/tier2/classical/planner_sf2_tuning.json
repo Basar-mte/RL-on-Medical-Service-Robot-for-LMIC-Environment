@@ -1,0 +1,8 @@
+{
+ "best": {
+  "goal_weight": 1.5,
+  "wall_weight": 1.0,
+  "vmin": 0.25
+ },
+ "sweep_sr_shield_100eps": 0.97
+}

@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<robot name="mentorpi_ackermann">
+  <material name="black">
+    <color rgba="0 0 0 1" />
+  </material>
+  <link name="base_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00186669751054189 3.0253386351986E-05 -0.00605296088229322" />
+      <mass value="0.644314" />
+      <inertia ixx="0.0005737984" ixy="0.0000002288" ixz="0.0001104567" iyy="0.0018587522" iyz="-0.0000001980" izz="0.0023079280" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="base_footprint" />
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <parent link="base_footprint" />
+    <child link="base_link" />
+    <origin xyz="0 0 0.07" rpy="0 0 0" />
+  </joint>
+  <link name="wheel_lf_Link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.65897579444685E-06 -0.00270913022688685 -1.5546673051009E-06" />
+      <mass value="0.169533" />
+      <inertia ixx="0.0000672922" ixy="0.0000000003" ixz="0.0000000050" iyy="0.0001123774" iyz="-0.0000000004" izz="0.0000672912" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_lf_Link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_lf_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="wheel_lf_Joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="steer_lf_Link" />
+    <child link="wheel_lf_Link" />
+    <axis xyz="0 1 0" />
+    <limit effort="2.0" velocity="40.0" />
+  </joint>
+  <link name="wheel_rf_Link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.48986965733955E-06 0.0027090575018239 1.16299057125596E-06" />
+      <mass value="0.169534" />
+      <inertia ixx="0.0000672844" ixy="-0.0000000004" ixz="-0.0000000006" iyy="0.0001123793" iyz="0.0000000004" izz="0.0000673010" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_rf_Link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_rf_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="wheel_rf_Joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="steer_rf_Link" />
+    <child link="wheel_rf_Link" />
+    <axis xyz="0 1 0" />
+    <limit effort="2.0" velocity="40.0" />
+  </joint>
+  <link name="wheel_lb_Link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="1.62806317080544E-06 -0.00317716794378092 -1.54238045318306E-06" />
+      <mass value="0.181739" />
+      <inertia ixx="0.0000677509" ixy="0.0000000003" ixz="0.0000000050" iyy="0.0001126258" iyz="-0.0000000004" izz="0.0000677620" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_lb_Link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_lb_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="wheel_lb_Joint" type="continuous">
+    <origin rpy="0 0 0" xyz="-0.070313 0.07014 -0.027793" />
+    <parent link="base_link" />
+    <child link="wheel_lb_Link" />
+    <axis xyz="0 1 0" />
+    <limit effort="2.0" velocity="40.0" />
+  </joint>
+  <link name="wheel_rb_Link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.50804700475154E-06 0.00317707027691583 1.18963606317302E-06" />
+      <mass value="0.181739" />
+      <inertia ixx="0.0000677431" ixy="-0.0000000004" ixz="-0.0000000005" iyy="0.0001126276" iyz="0.0000000004" izz="0.0000677718" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_rb_Link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/wheel_rb_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="wheel_rb_Joint" type="continuous">
+    <origin rpy="0 0 0" xyz="-0.07031 -0.07014 -0.027796" />
+    <parent link="base_link" />
+    <child link="wheel_rb_Link" />
+    <axis xyz="0 1 0" />
+    <limit effort="2.0" velocity="40.0" />
+  </joint>
+  <link name="depth_cam">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0023402290651429 0.00113784597946548 -0.0102127064032341" />
+      <mass value="0.181334" />
+      <inertia ixx="0.0000963531" ixy="0.0000008366" ixz="0.0000000870" iyy="0.0000111233" iyz="0.0000001531" izz="0.0000976251" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/cam_Link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/cam_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="cam_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.064015 -0.00013463 0.051155" />
+    <parent link="base_link" />
+    <child link="depth_cam" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="lidar_frame">
+    <inertial>
+      <origin rpy="0 0 0" xyz="8.65086433231368E-05 9.02624784523964E-05 -0.0183546134614858" />
+      <mass value="0.271807" />
+      <inertia ixx="0.0000334189" ixy="-0.0000010330" ixz="0.0000000138" iyy="0.0000337847" iyz="0.0000000738" izz="0.0000553537" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/lidar_Link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/acker/lidar_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="lidar_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.0096019 -8.533E-05 0.092501" />
+    <parent link="base_link" />
+    <child link="lidar_frame" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="steer_lf_Link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="0.010000" />
+      <inertia ixx="0.00001000" ixy="0" ixz="0" iyy="0.00001000" iyz="0" izz="0.00001000" />
+    </inertial>
+  </link>
+  <joint name="steer_lf_Joint" type="revolute">
+    <origin xyz="0.06679 0.069739 -0.0288" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="steer_lf_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.7853982" upper="0.7853982" effort="5.0" velocity="6.0" />
+  </joint>
+  <link name="steer_rf_Link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="0.010000" />
+      <inertia ixx="0.00001000" ixy="0" ixz="0" iyy="0.00001000" iyz="0" izz="0.00001000" />
+    </inertial>
+  </link>
+  <joint name="steer_rf_Joint" type="revolute">
+    <origin xyz="0.066794 -0.069739 -0.028803" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="steer_rf_Link" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.7853982" upper="0.7853982" effort="5.0" velocity="6.0" />
+  </joint>
+</robot>

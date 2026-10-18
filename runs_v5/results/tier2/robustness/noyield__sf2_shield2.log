@@ -1,0 +1,13 @@
+[stability_pilot] VecNormalize reward normalization OFF
+[uncertainty] patch applied: {'noyield': True, 'lidar': 0.0, 'drop': 0.0, 'act': 0.0}
+  planner_sf2+shield ep 50/500 SR 0.640 (25 s)
+  planner_sf2+shield ep 100/500 SR 0.670 (51 s)
+  planner_sf2+shield ep 150/500 SR 0.667 (76 s)
+  planner_sf2+shield ep 200/500 SR 0.630 (96 s)
+  planner_sf2+shield ep 250/500 SR 0.632 (120 s)
+  planner_sf2+shield ep 300/500 SR 0.620 (141 s)
+  planner_sf2+shield ep 350/500 SR 0.609 (163 s)
+  planner_sf2+shield ep 400/500 SR 0.600 (184 s)
+  planner_sf2+shield ep 450/500 SR 0.604 (207 s)
+  planner_sf2+shield ep 500/500 SR 0.600 (230 s)
+[classical] tier2 planner_sf2+shield: {'sr': 0.6, 'collision': 0.394, 'timeout': 0.006, 'n': 500} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\classical\planner_sf2__noyield__sf2_shield2.json

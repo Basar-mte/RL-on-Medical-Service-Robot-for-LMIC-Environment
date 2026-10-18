@@ -1,0 +1,24 @@
+[planner] patch applied: {'mode': 'geo', 'ratio': 0.0, 'L': 2.5, 'dist': 'geo', 'progress': False, 'los': True}
+  [eval] Using VecNormalize from: vec_normalize.pkl
+  ep 20/50  SR 0.800  (14 s)
+  ep 40/50  SR 0.725  (25 s)
+{
+ "sr": 0.76,
+ "collision": 0.24,
+ "timeout": 0.0,
+ "cvr": 0.1680245007453872,
+ "svr": 0.03345552034828802,
+ "spl": 0.7560268775873505,
+ "mpd": 2.9844233824405535,
+ "prayer_cvr": 0.036090357049477294,
+ "frozen": 0.0,
+ "n": 50,
+ "per_task": {
+  "STAT_medicine": 1.0,
+  "nurse_call": 0.9,
+  "specimen": 1.0,
+  "restock": 0.1,
+  "idle_return": 0.8
+ }
+}
+[eval_planner] saved D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\robustness\unmapped_L3__van.json  (33 s)

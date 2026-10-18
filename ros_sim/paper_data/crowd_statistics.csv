@@ -1,0 +1,5 @@
+tier,pedestrians,walkers,duration_s,touching_pairs_schedule,touching_pairs_simulated,interpenetrating_pairs_schedule,interpenetrating_pairs_simulated,mean_walking_speed_mps,walkers_standing_still
+open,busy,8,199.95,0.0932,0.0085,0.048,0.0,0.7996,0.0648
+open,crowd45,45,199.95,6.056,0.5385,3.1135,0.0455,0.7001,0.4821
+walled,busy,8,199.95,0.0932,0.0107,0.048,0.0,0.8004,0.063
+walled,crowd45,45,199.95,6.056,0.7782,3.1135,0.0653,0.6962,0.4569

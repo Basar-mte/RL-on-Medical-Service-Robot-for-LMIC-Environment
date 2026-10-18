@@ -1,11 +1,12 @@
 """
 Interactive keyboard control script for LMICHospitalNav-v1.
 
-Arrow keys: control robot
+Arrow keys: control robot (Ackermann steering — heading only changes while
+moving, matching the real chassis; no in-place pivot)
   ↑  —  move forward (v = 0.6)
-  ←  —  turn left   (ω = +π/4)
-  →  —  turn right  (ω = -π/4)
-  ↓  —  stop (v = 0, ω = 0)
+  ←  —  steer left   (δ = +MAX_STEER)
+  →  —  steer right  (δ = -MAX_STEER)
+  ↓  —  stop (v = 0, δ = 0)
   q / ESC — quit
 
 Usage:
@@ -22,7 +23,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from envs.lmic_hospital_env import LMICHospitalNavEnv
+from envs.lmic_hospital_env import LMICHospitalNavEnv, MAX_STEER
 
 
 def parse_args():
@@ -52,7 +53,7 @@ def main():
 
     while running:
         # Handle events
-        v, omega = 0.0, 0.0
+        v, steering_angle = 0.0, 0.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -66,11 +67,11 @@ def main():
         if keys[pygame.K_DOWN]:
             v = 0.0
         if keys[pygame.K_LEFT]:
-            omega = +1.0
+            steering_angle = +MAX_STEER
         if keys[pygame.K_RIGHT]:
-            omega = -1.0
+            steering_angle = -MAX_STEER
 
-        action = np.array([v, omega], dtype=np.float32)
+        action = np.array([v, steering_angle], dtype=np.float32)
         obs, reward, terminated, truncated, info = env.step(action)
         total_reward += reward
         steps += 1

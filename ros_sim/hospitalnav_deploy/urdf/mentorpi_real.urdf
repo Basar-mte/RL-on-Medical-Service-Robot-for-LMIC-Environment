@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<!-- REAL MentorPi Ackermann robot for gz-sim, built 2026-08-22 from the vendor
+     description (Source Code .../simulations/mentorpi_description, ack.xacro):
+     vendor meshes + CAD link origins, with the simulation layer added on top.
+
+     Real geometry (from CAD joint origins + wheel STL bounding box):
+       wheelbase 0.137 m   track 0.140 m   wheel radius 0.0323 m (65 mm wheel)
+       lidar at (-0.0096, 0, +0.0925) above base_link, base_link 0.061 above
+       ground (= wheel radius + CAD wheel-drop 0.0288).
+     Matches the physical robot's driver limits: |v| <= 0.6 m/s, steer +/-30 deg,
+     REAR wheel drive + front steering (knuckle joints added here; the vendor
+     file models front wheels as plain spinners, which cannot steer in physics).
+
+     Vendor CAD masses are export artifacts (base 0.096 kg!) - replaced with
+     realistic values (chassis ~2 kg) + analytic inertias. Wheel collisions are
+     cylinders (mesh collision on rolling contact = physics jitter).
+
+     LiDAR matches the LD19 + our stack: 360 x 1 deg, 0.10-12 m, 10 Hz, frame
+     "laser", gz topic "scan" (bridge to ROS in the launch file).
+     Plugin names use the gz-sim (Harmonic / ROS 2 Jazzy pairing) scheme. -->
+<robot name="mentorpi">
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <parent link="base_footprint"/><child link="base_link"/>
+    <origin xyz="0 0 0.061" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.002 0 -0.006" rpy="0 0 0"/>
+      <mass value="2.0"/>
+      <inertia ixx="0.00337" iyy="0.00923" izz="0.00927" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/base_link.STL"/></geometry>
+      <material name="shell"><color rgba="0.05 0.05 0.06 1"/></material>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/base_link.STL"/></geometry>
+    </collision>
+  </link>
+
+  <!-- ================= front steering knuckles (added for physics) ====== -->
+  <link name="steer_lf_Link">
+    <inertial><mass value="0.02"/>
+      <inertia ixx="2e-6" iyy="2e-6" izz="2e-6" ixy="0" ixz="0" iyz="0"/></inertial>
+  </link>
+  <joint name="steer_lf_Joint" type="revolute">
+    <parent link="base_link"/><child link="steer_lf_Link"/>
+    <origin xyz="0.06679 0.069739 -0.0288" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.5236" upper="0.5236" effort="5.0" velocity="6.0"/>
+  </joint>
+  <link name="steer_rf_Link">
+    <inertial><mass value="0.02"/>
+      <inertia ixx="2e-6" iyy="2e-6" izz="2e-6" ixy="0" ixz="0" iyz="0"/></inertial>
+  </link>
+  <joint name="steer_rf_Joint" type="revolute">
+    <parent link="base_link"/><child link="steer_rf_Link"/>
+    <origin xyz="0.066794 -0.069739 -0.028803" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.5236" upper="0.5236" effort="5.0" velocity="6.0"/>
+  </joint>
+
+  <!-- ======================= wheels (vendor meshes) ====================== -->
+  <link name="wheel_lf_Link">
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="1.6e-5" iyy="2.6e-5" izz="1.6e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/wheel_lf_Link.STL"/></geometry>
+      <material name="tire"><color rgba="0.08 0.08 0.08 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.0034 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder radius="0.0323" length="0.0254"/></geometry>
+    </collision>
+  </link>
+  <joint name="wheel_lf_Joint" type="continuous">
+    <parent link="steer_lf_Link"/><child link="wheel_lf_Link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="wheel_rf_Link">
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="1.6e-5" iyy="2.6e-5" izz="1.6e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/wheel_rf_Link.STL"/></geometry>
+      <material name="tire"><color rgba="0.08 0.08 0.08 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.0034 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder radius="0.0323" length="0.0254"/></geometry>
+    </collision>
+  </link>
+  <joint name="wheel_rf_Joint" type="continuous">
+    <parent link="steer_rf_Link"/><child link="wheel_rf_Link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="wheel_lb_Link">
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="1.6e-5" iyy="2.6e-5" izz="1.6e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/wheel_lb_Link.STL"/></geometry>
+      <material name="tire"><color rgba="0.08 0.08 0.08 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.004 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder radius="0.0323" length="0.0254"/></geometry>
+    </collision>
+  </link>
+  <joint name="wheel_lb_Joint" type="continuous">
+    <parent link="base_link"/><child link="wheel_lb_Link"/>
+    <origin xyz="-0.070313 0.07014 -0.027793" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="wheel_rb_Link">
+    <inertial>
+      <mass value="0.05"/>
+      <inertia ixx="1.6e-5" iyy="2.6e-5" izz="1.6e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/wheel_rb_Link.STL"/></geometry>
+      <material name="tire"><color rgba="0.08 0.08 0.08 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.004 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder radius="0.0323" length="0.0254"/></geometry>
+    </collision>
+  </link>
+  <joint name="wheel_rb_Joint" type="continuous">
+    <parent link="base_link"/><child link="wheel_rb_Link"/>
+    <origin xyz="-0.07031 -0.07014 -0.027796" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- ==================== sensors / fixed fittings ====================== -->
+  <link name="depth_cam">
+    <inertial><mass value="0.03"/>
+      <inertia ixx="1.5e-5" iyy="2e-6" izz="1.5e-5" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/cam_Link.STL"/></geometry>
+      <material name="cam"><color rgba="0.10 0.10 0.11 1"/></material>
+    </visual>
+  </link>
+  <joint name="cam_Joint" type="fixed">
+    <parent link="base_link"/><child link="depth_cam"/>
+    <origin xyz="0.064015 -0.00013463 0.051155" rpy="0 0 0"/>
+  </joint>
+
+  <link name="laser">
+    <inertial><mass value="0.04"/>
+      <inertia ixx="5e-6" iyy="5e-6" izz="8e-6" ixy="0" ixz="0" iyz="0"/></inertial>
+    <visual>
+      <geometry><mesh filename="package://hospitalnav_deploy/meshes/acker/lidar_Link.STL"/></geometry>
+      <material name="lidar"><color rgba="0.13 0.13 0.14 1"/></material>
+    </visual>
+  </link>
+  <joint name="lidar_Joint" type="fixed">
+    <parent link="base_link"/><child link="laser"/>
+    <origin xyz="-0.0096019 -0.00008533 0.092501" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/><child link="imu_link"/>
+    <origin xyz="0 0 0.11159" rpy="0 0 -1.5708"/>
+  </joint>
+
+  <gazebo reference="laser">
+    <sensor name="lidar" type="gpu_lidar">
+      <update_rate>10</update_rate>
+      <topic>scan</topic>
+      <gz_frame_id>laser</gz_frame_id>
+      <lidar>
+        <scan><horizontal>
+          <samples>360</samples><resolution>1</resolution>
+          <min_angle>-3.14159</min_angle><max_angle>3.14159</max_angle>
+        </horizontal></scan>
+        <range><min>0.10</min><max>12.0</max><resolution>0.01</resolution></range>
+        <!-- ignore CAMERA_ONLY realism (door frames, bed/staff meshes): the scan
+             sees exactly the trained geometry; see sim/gen_worlds.py -->
+        <visibility_mask>1073741819</visibility_mask>
+      </lidar>
+      <always_on>1</always_on><visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+  <gazebo>
+    <!-- POSE SOURCE (measured 2026-10-16): the AckermannSteering plugin's own
+         odometry is wheel dead-reckoning. A scripted 70 s drive that ended
+         pinned against the nurse desk left the true pose 1.2 m from spawn
+         while the wheel odometry believed the robot was 25 m away, outside
+         the building - and earlier policy runs had their 'pose' wander into
+         wards the robot never entered. So the wheel odometry is kept only as
+         a diagnostic (/odom_wheel, its own TF topic, which nothing consumes)
+         and the pose the stack navigates on comes from the OdometryPublisher
+         system below: the model's true pose, i.e. ground-truth localisation,
+         which is what the campaign's launch file documents. -->
+    <plugin filename="gz-sim-ackermann-steering-system"
+            name="gz::sim::systems::AckermannSteering">
+      <topic>cmd_vel</topic>
+      <odom_topic>odom_wheel</odom_topic>
+      <tf_topic>/model/mentorpi/tf_wheel</tf_topic>
+      <frame_id>odom_wheel</frame_id><child_frame_id>base_link_wheel</child_frame_id>
+      <left_joint>wheel_lb_Joint</left_joint>
+      <right_joint>wheel_rb_Joint</right_joint>
+      <left_steering_joint>steer_lf_Joint</left_steering_joint>
+      <right_steering_joint>steer_rf_Joint</right_steering_joint>
+      <wheel_base>0.137</wheel_base>
+      <wheel_separation>0.1403</wheel_separation>
+      <wheel_radius>0.0323</wheel_radius>
+      <min_velocity>-0.6</min_velocity><max_velocity>0.6</max_velocity>
+      <min_angle>-0.5236</min_angle><max_angle>0.5236</max_angle>
+      <odom_publish_frequency>50</odom_publish_frequency>
+    </plugin>
+    <!-- ground-truth pose of the chassis: odom->base_link TF + /odom (body-
+         frame twist from pose differencing, which is what the policy's
+         robot_state velocity channel reads). The launch bridges exactly these
+         two topics. Measured 2026-10-16: this plugin reports the model's
+         WORLD pose (37, 15 at the spawn point), not a pose relative to where
+         it spawned, so the odom frame IS the world frame and the launch adds
+         no spawn offset - map -> odom is the identity. -->
+    <plugin filename="gz-sim-odometry-publisher-system"
+            name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_topic>odom</odom_topic>
+      <tf_topic>/model/mentorpi/tf</tf_topic>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <dimensions>2</dimensions>
+    </plugin>
+    <!-- spin the wheel visuals + report steering angles on /joint_states-ish
+         gz topic; harmless, useful for debugging in the gz GUI -->
+    <plugin filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher"/>
+  </gazebo>
+</robot>

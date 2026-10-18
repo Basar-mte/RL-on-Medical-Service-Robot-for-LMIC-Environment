@@ -1,0 +1,12 @@
+gymnasium>=1.0
+numpy
+pandas
+pyyaml
+torch
+stable-baselines3>=2.3
+tensorboard
+matplotlib
+imageio
+Pillow
+pygame
+pytest

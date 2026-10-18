@@ -1,0 +1,7 @@
+  [eval] Using VecNormalize from: vec_normalize.pkl
+  [eval] Loaded trained attention weights from attention_final.pt
+
+=== attention_s1 + shield, 150 eps: timeout 52%, success 41%, collision 7%
+TIMEOUTS (78): pedestrian within 1 m 14% | >=2 peds within 2 m 27% | within 1.5 m of a doorway 0% | moved <1 m in last 10 s (frozen) 100% | median distance left to goal 7.6 m
+  zones: {'corridor': '41%', 'ward': '35%', 'prayer': '13%', 'walkable': '8%', 'nurse_station': '4%'}
+  tasks: {'nurse_call': 21, 'specimen': 27, 'restock': 14, 'STAT_medicine': 12, 'idle_return': 4}

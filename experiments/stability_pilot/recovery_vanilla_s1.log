@@ -1,0 +1,2 @@
+  [eval] Using VecNormalize from: vec_normalize.pkl
+=== vanilla_s1 shield+recovery, 150 eps: collision 54%, success 46% | CVR 0.198 | STAT 17%/0.464 | recoveries 162 (1.1/ep)

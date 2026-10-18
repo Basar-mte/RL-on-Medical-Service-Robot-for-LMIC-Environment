@@ -149,11 +149,16 @@ static_obstacles:
   - polygon: [[16.0, 12.1], [17.5, 12.1], [17.5, 13.1], [16.0, 13.1]]
     label: "Corridor Bed 5"
 
-  - polygon: [[23.0, 13.9], [24.5, 13.9], [24.5, 14.9], [23.0, 14.9]]
+  # Nudged east 0.4 m: the gap between this bed and the female ward's SW
+  # exterior corner was the single choke both ward tasks had to thread.
+  - polygon: [[23.4, 13.9], [24.9, 13.9], [24.9, 14.9], [23.4, 14.9]]
     label: "Corridor Bed 6"
   - polygon: [[26.5, 13.9], [28.0, 13.9], [28.0, 14.9], [26.5, 14.9]]
     label: "Corridor Bed 7"
-  - polygon: [[30.0, 13.9], [31.5, 13.9], [31.5, 14.9], [30.0, 14.9]]
+  # Shifted left (was x 30.0-31.5): the bed sat directly under the female-
+  # ward south door gap (x 30.5-32.0), leaving a 0.5 m slot no 0.5 m-wide
+  # robot could pass — even overcrowded wards keep doorway egress clear.
+  - polygon: [[28.4, 13.9], [29.9, 13.9], [29.9, 14.9], [28.4, 14.9]]
     label: "Corridor Bed 8"
   - polygon: [[33.5, 13.9], [35.0, 13.9], [35.0, 14.9], [33.5, 14.9]]
     label: "Corridor Bed 9"
@@ -229,10 +234,8 @@ static_obstacles:
     label: "Ward Bed MW-S2"
   - polygon: [[4.2,15.2],[6.0,15.2],[6.0,16.8],[4.2,16.8]]
     label: "Ward Bed MW-S3"
-  - polygon: [[6.2,15.2],[8.0,15.2],[8.0,16.8],[6.2,16.8]]
-    label: "Ward Bed MW-S4"
-  - polygon: [[8.2,15.2],[10.0,15.2],[10.0,16.8],[8.2,16.8]]
-    label: "Ward Bed MW-S5"
+  # MW-S4/MW-S5 removed: they flanked the male-ward south door gap
+  # (x 7.5-9.0) leaving a 0.2 m slit — doorway egress must stay clear.
   - polygon: [[10.2,15.2],[12.0,15.2],[12.0,16.8],[10.2,16.8]]
     label: "Ward Bed MW-S6"
   - polygon: [[12.2,15.2],[14.0,15.2],[14.0,16.8],[12.2,16.8]]
@@ -253,7 +256,12 @@ static_obstacles:
     label: "Mejhe MW-S5"
 
   # Ward nurse trolley near east door (y=[18.2,18.8], x=[15.5,17.2])
-  - polygon: [[15.5,18.2],[17.2,18.2],[17.2,18.8],[15.5,18.8]]
+  # Moved from mid-floor (x 15.5-17.2, y 18.2-18.8) — blocked the east-door
+  # interior approach (see Equipment Cart FW-Nurse note).
+  # West edge at 16.5 (not 16.2): 16.2 left a walkable-but-robot-unreachable
+  # pocket between the cart, bed MW-S8 and the walls where pedestrians could
+  # spawn in space the robot can never enter.
+  - polygon: [[16.5,16.0],[17.6,16.0],[17.6,16.6],[16.5,16.6]]
     label: "Equipment Cart MW-Nurse"
 
   # North Mejhe aisle: floor patients on mattresses (y=[19.6,20.1])
@@ -281,8 +289,8 @@ static_obstacles:
     label: "Ward Bed MW-N5"
   - polygon: [[10.2,20.3],[12.0,20.3],[12.0,21.9],[10.2,21.9]]
     label: "Ward Bed MW-N6"
-  - polygon: [[12.2,20.3],[14.0,20.3],[14.0,21.9],[12.2,21.9]]
-    label: "Ward Bed MW-N7"
+  # MW-N7 removed: it sat directly under the male-ward north door gap
+  # (x 12.5-14.0) — doorway egress must stay clear.
   - polygon: [[14.2,20.3],[16.0,20.3],[16.0,21.9],[14.2,21.9]]
     label: "Ward Bed MW-N8"
 
@@ -296,8 +304,8 @@ static_obstacles:
     label: "Ward Bed FW-S3"
   - polygon: [[28.2,15.2],[30.0,15.2],[30.0,16.8],[28.2,16.8]]
     label: "Ward Bed FW-S4"
-  - polygon: [[30.2,15.2],[32.0,15.2],[32.0,16.8],[30.2,16.8]]
-    label: "Ward Bed FW-S5"
+  # FW-S5 removed: it sat directly under the female-ward south door gap
+  # (x 30.5-32.0) — doorway egress must stay clear (prayer-door precedent).
   - polygon: [[32.2,15.2],[34.0,15.2],[34.0,16.8],[32.2,16.8]]
     label: "Ward Bed FW-S6"
   - polygon: [[34.2,15.2],[36.0,15.2],[36.0,16.8],[34.2,16.8]]
@@ -318,7 +326,11 @@ static_obstacles:
     label: "Mejhe FW-S5"
 
   # Ward nurse trolley near west door (y=[18.2,18.8], x=[22.8,24.5])
-  - polygon: [[22.8,18.2],[24.5,18.2],[24.5,18.8],[22.8,18.8]]
+  # Moved from mid-floor (x 22.8-24.5, y 18.2-18.8) where it sat directly
+  # inside the west-door lane and split the ward interior into two 0.8 m
+  # micro-aisles no robot+pedestrian pair could share (all 720 ward-task
+  # episodes ended in collision). Carts hug walls in real wards.
+  - polygon: [[38.6,18.0],[39.9,18.0],[39.9,18.6],[38.6,18.6]]
     label: "Equipment Cart FW-Nurse"
 
   # North Mejhe aisle (y=[19.6,20.1])
@@ -340,10 +352,12 @@ static_obstacles:
     label: "Ward Bed FW-N2"
   - polygon: [[26.2,20.3],[28.0,20.3],[28.0,21.9],[26.2,21.9]]
     label: "Ward Bed FW-N3"
-  - polygon: [[28.2,20.3],[30.0,20.3],[30.0,21.9],[28.2,21.9]]
-    label: "Ward Bed FW-N4"
-  - polygon: [[30.2,20.3],[32.0,20.3],[32.0,21.9],[30.2,21.9]]
-    label: "Ward Bed FW-N5"
+  # FW-N4/FW-N5 removed: they abutted the female-ward -> prayer-room door
+  # gap (x 29-31 at y=22) flush to the wall, leaving a 0.2 m slit as the
+  # only entrance to the prayer room — physically impassable for the robot
+  # and unrealistic (doorways keep egress clearance even in overcrowded
+  # wards). The prayer room must be enterable for prayer-zone violations
+  # (CVR) to be a real, measurable risk.
   - polygon: [[32.2,20.3],[34.0,20.3],[34.0,21.9],[32.2,21.9]]
     label: "Ward Bed FW-N6"
   - polygon: [[34.2,20.3],[36.0,20.3],[36.0,21.9],[34.2,21.9]]

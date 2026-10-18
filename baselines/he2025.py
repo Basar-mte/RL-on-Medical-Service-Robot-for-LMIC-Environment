@@ -24,7 +24,7 @@ We implement this as a drop-in reward_fn for LMICHospitalNavEnv.
 
 from __future__ import annotations
 import numpy as np
-from typing import Optional
+from typing import Dict, Optional
 
 
 # Risk field constants (matched to He et al. Table II)
@@ -66,19 +66,24 @@ class He2025RewardFn:
 
     def __call__(
         self,
-        obs: np.ndarray,
-        next_obs: np.ndarray,
+        obs: Dict[str, np.ndarray],
+        next_obs: Dict[str, np.ndarray],
         action: np.ndarray,
         info: dict,
     ) -> float:
-        # Potential-based navigation shaping
+        # Progress-based navigation shaping. First step of an episode
+        # (self._prev_dist is None — env.reset() calls self.reset()) yields
+        # zero progress rather than a stale cross-episode difference.
         curr_dist = info["dist_to_goal"]
-        prev_dist = self._prev_dist if self._prev_dist is not None else curr_dist + 0.01
+        prev_dist = self._prev_dist if self._prev_dist is not None else curr_dist
         self._prev_dist = curr_dist
 
-        phi_prev = -prev_dist
-        phi_curr = -curr_dist
-        r_nav = self.gamma * phi_curr - phi_prev
+        # Undiscounted difference — the γ·Φ' – Φ form leaks +(1-γ)·d per
+        # step for staying far from the goal (see rewards/components.py
+        # navigation_reward for the measured failure this caused). Progress
+        # scaled identically to every other agent's reward (PROGRESS_SCALE).
+        from rewards.components import PROGRESS_SCALE
+        r_nav = PROGRESS_SCALE * (prev_dist - curr_dist)
 
         if info["task_complete"]:
             r_nav += self.goal_bonus
@@ -86,18 +91,8 @@ class He2025RewardFn:
         if info["collision"]:
             return self.collision_penalty
 
-        # Exponential risk field
-        robot_pos = np.array(info.get("robot_pos", [20.0, 13.5]))
-        ped_obs = next_obs[53:53 + 20].reshape(5, 4)  # (5, 4) → [dx, dy, vx, vy]
-        # Convert relative positions to absolute
-        risk = 0.0
-        for k in range(5):
-            dx, dy = float(ped_obs[k, 0]), float(ped_obs[k, 1])
-            dist_ped = np.sqrt(dx**2 + dy**2) * 10.0 + 1e-6  # undo unit normalisation
-            # dist_ped in env is normalised by LIDAR_MAX=10, but here we use the
-            # raw info["min_pedestrian_distance"] as a proxy for the nearest ped
-            break  # use min_pedestrian_distance directly
-
+        # Exponential risk field, using the nearest pedestrian's true
+        # (unnormalised) distance from info directly.
         min_dist = max(info["min_pedestrian_distance"], 0.05)
         risk = self.A * np.exp(-min_dist / self.B)
         r_risk = -self.lam * risk

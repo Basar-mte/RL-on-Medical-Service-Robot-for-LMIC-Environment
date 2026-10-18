@@ -1,0 +1,11 @@
+  sf2 ep 50/500 SR 0.500 (52 s)
+  sf2 ep 100/500 SR 0.490 (109 s)
+  sf2 ep 150/500 SR 0.553 (158 s)
+  sf2 ep 200/500 SR 0.550 (210 s)
+  sf2 ep 250/500 SR 0.548 (261 s)
+  sf2 ep 300/500 SR 0.560 (305 s)
+  sf2 ep 350/500 SR 0.566 (351 s)
+  sf2 ep 400/500 SR 0.578 (401 s)
+  sf2 ep 450/500 SR 0.582 (452 s)
+  sf2 ep 500/500 SR 0.582 (501 s)
+[classical] tier2 sf2: {'sr': 0.582, 'collision': 0.058, 'timeout': 0.36, 'n': 500} -> D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\classical\sf2.json

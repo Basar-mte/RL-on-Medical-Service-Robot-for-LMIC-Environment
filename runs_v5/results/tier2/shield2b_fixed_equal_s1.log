@@ -1,0 +1,37 @@
+[planner] patch applied: {'mode': 'cult', 'ratio': 3.0, 'L': 2.5, 'dist': 'geo', 'progress': False, 'los': True}
+  [eval] Using VecNormalize from: vec_normalize.pkl
+  ep 20/300  SR 1.000  (21 s)
+  ep 40/300  SR 1.000  (39 s)
+  ep 60/300  SR 0.967  (63 s)
+  ep 80/300  SR 0.963  (84 s)
+  ep 100/300  SR 0.940  (105 s)
+  ep 120/300  SR 0.950  (127 s)
+  ep 140/300  SR 0.943  (147 s)
+  ep 160/300  SR 0.944  (168 s)
+  ep 180/300  SR 0.944  (190 s)
+  ep 200/300  SR 0.930  (217 s)
+  ep 220/300  SR 0.936  (233 s)
+  ep 240/300  SR 0.942  (252 s)
+  ep 260/300  SR 0.942  (273 s)
+  ep 280/300  SR 0.946  (291 s)
+  ep 300/300  SR 0.943  (311 s)
+{
+ "sr": 0.9433333333333334,
+ "collision": 0.0,
+ "timeout": 0.056666666666666664,
+ "cvr": 0.11651312290262321,
+ "svr": 0.05240278578239087,
+ "spl": 0.9309924644306409,
+ "mpd": 3.6067879757027717,
+ "prayer_cvr": 0.0,
+ "frozen": 0.05333333333333334,
+ "n": 300,
+ "per_task": {
+  "STAT_medicine": 0.9666666666666667,
+  "nurse_call": 0.9333333333333333,
+  "specimen": 0.95,
+  "restock": 0.9166666666666666,
+  "idle_return": 0.95
+ }
+}
+[eval_planner] saved D:\Roky\lmic-hospitalnav\lmic-hospitalnav\runs_v5\results\tier2\shield2b_fixed_equal_s1.json  (311 s)

@@ -1,0 +1,451 @@
+{
+ "built": "2026-10-14 16:02:12",
+ "campaign": "runs_v5 (ALL_DONE 2026-10-14)",
+ "planner": {
+  "lookahead_m": 2.5,
+  "los": true,
+  "geodesic_distance_channel": true
+ },
+ "shield": "v2 swept-path (shield_version: 2)",
+ "residual_scale": 0.5,
+ "models": {
+  "residual_sf_s2": {
+   "source_run": "runs_v5\\tier2_residual\\residual_sf_s2\\residual_sf_seed2_1791866459",
+   "files": {
+    "final_model.zip": "f9f46f5cd09980496c0b91e26dde82956c72abb2ce82248f0a6c591d3e78cf2e",
+    "vec_normalize.pkl": "3c9378aac27d32f6c8d59940ef2ad89320edc3fa6bbc2246cfc2204f38a465da"
+   },
+   "note": "RECOMMENDED: residual RL over the classical prior - 99.8 % shield2 (seed), 99.4 +- 0.4 (3 seeds)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.94,
+    "shield2_sr": 0.994,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1124
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "prior",
+    "robot_state"
+   ]
+  },
+  "fixed_equal_s2": {
+   "source_run": "runs_v5\\tier2\\fixed_equal_s2\\fixed_equal_seed2_1791454947",
+   "files": {
+    "final_model.zip": "1d16ca59bef77033d50532ac37b02bf1d06a77b82f5bdacc73fd07c23dfa1db1",
+    "vec_normalize.pkl": "41a862b692fca9b1b49be9408957adda5ad6c188edb12f63c5879e5da80147b9"
+   },
+   "note": "pure learned CARS policy, equal weights - 97.0 % shield2 (seed), 95.4 +- 1.7 (5 seeds)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.804,
+    "shield2_sr": 0.9544,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1099
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "vanilla_s3": {
+   "source_run": "runs_v5\\tier2\\vanilla_s3\\vanilla_seed3_1791539374",
+   "files": {
+    "final_model.zip": "98378f9aa10de70223914ba8f1a558eb90cb2954a9f8caa851e06828ce2d2b33",
+    "vec_normalize.pkl": "bb1a4fdc546c7d0b0f714e4038ae43fd9b5d8d3147a35fbbf41dc314e654f655"
+   },
+   "note": "culture-blind contrast agent (geo planner) - 97.6 % shield2 (seed); cuts through the prayer room",
+   "algo": "sac",
+   "planner_cultural_ratio": 0.0,
+   "benchmark": {
+    "final_sr": 0.8424,
+    "shield2_sr": 0.9612,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1469
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "cwn_s4": {
+   "source_run": "runs_v5\\tier2\\cwn_s4\\cwn_seed4_1791454931",
+   "files": {
+    "final_model.zip": "4465da592f8a7678bfd9c8fc2800f002f0e2bce5cb978dfdcee146e0e66364ca",
+    "vec_normalize.pkl": "b051c23b2f22c7cfc02f4453eaaf35bf47e3e4de40c13697508cbbcbe807194f"
+   },
+   "note": "context weight network (learned reward weights) - 97.4 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.8044,
+    "shield2_sr": 0.9484,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1088
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "nav_heavy_s4": {
+   "source_run": "runs_v5\\tier2\\nav_heavy_s4\\nav_heavy_seed4_1791454991",
+   "files": {
+    "final_model.zip": "9fb56c6c84b34347d976a11036c0dfebf07d91d84af3fcbefdad19c77cc6f580",
+    "vec_normalize.pkl": "5ea1c275fbe0714064376cb84c22b08182e4ac5174ac9603931dbf40dd13577f"
+   },
+   "note": "nav-weighted CARS policy - 97.0 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.8092,
+    "shield2_sr": 0.952,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1119
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "attention_s4": {
+   "source_run": "runs_v5\\tier2\\attention_s4\\attention_seed4_1791541363",
+   "files": {
+    "final_model.zip": "43ce240e3d898f2eef8de7302042e63af32f17f2b79079c99c6788798c4ecd75",
+    "vec_normalize.pkl": "00e4793076c81f9d5892860ae783a1fcb1b0ad9ec1590911a38a25afaaa4c69b"
+   },
+   "note": "attention reward weighter - 96.2 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.7988,
+    "shield2_sr": 0.946,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1069
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "risk_field_s0": {
+   "source_run": "runs_v5\\tier2\\he2025_s0\\he2025_seed0_1791539691",
+   "files": {
+    "final_model.zip": "bd2115d7269b123a83dc6701ffd153199d3f2017af4c44e25daf9acc797f049e",
+    "vec_normalize.pkl": "130eb1065bbfecdcc276ba8ba59fd81e02b225260cf47f788950a44d1a941a1b"
+   },
+   "note": "risk-field baseline (He 2025 style, geo planner) - 96.2 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 0.0,
+   "benchmark": {
+    "final_sr": 0.8448,
+    "shield2_sr": 0.9572,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1431
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "safe_heavy_s2": {
+   "source_run": "runs_v5\\tier2_safe\\safe_heavy_s2\\safe_heavy_seed2_1791868370",
+   "files": {
+    "final_model.zip": "25db2e2b2d22b4738c1f912da9d4f722a66036725affbafe0a75aae23ccd5e7b",
+    "vec_normalize.pkl": "62eea1f4e405d4b26f960d8f3a2db73ee8034212b17cc757a53b2a21b35a994b"
+   },
+   "note": "safety-weighted CARS policy - 94.8 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.828,
+    "shield2_sr": 0.946,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1104
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "td3_equal_s1": {
+   "source_run": "runs_v5\\tier2_td3\\td3_equal_s1\\td3_equal_seed1_1791894735",
+   "files": {
+    "final_model.zip": "3976a7a9215a182d546b9f44e8b14f5082fbdf3d3e89c8bc7d3126f0449ec936",
+    "vec_normalize.pkl": "e4cb4fb76588178caf35a59544449df02070ac3fd7d024c622ae6f14033d9ea4"
+   },
+   "note": "TD3 external validation (algo:=td3) - 93.2 % shield2 (best seed; 65.0 +- 11.3 across seeds)",
+   "algo": "td3",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.65,
+    "shield2_sr": 0.672,
+    "shield2_collisions": 0.0,
+    "cvr": 0.0922
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "ppo_equal_s0": {
+   "source_run": "runs_v5\\tier2_ppo\\ppo_equal_s0\\ppo_equal_seed0_1791856580",
+   "files": {
+    "final_model.zip": "c2254dfc732f93d0fb235d100ebbfdac5eb7c8161a61ef4c448e3ab038bd53fb",
+    "vec_normalize.pkl": "c5070ccb33c4f9c7058c2f722e224f46ff7ec3ccda4734188c9b56568838c01d"
+   },
+   "note": "PPO library defaults (algo:=ppo) - 0 % in benchmark; shipped for completeness, does not navigate",
+   "algo": "ppo",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.0,
+    "shield2_sr": 0.0,
+    "shield2_collisions": 0.0004,
+    "cvr": 0.0187
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "mapless_fixed_equal_s3": {
+   "source_run": "runs_v5\\tier2_mapless\\fixed_equal_s3\\fixed_equal_seed3_1791446078",
+   "files": {
+    "final_model.zip": "4839c8e861be0494e8585e1eac477a6c18779878e786e603ff582ac2a356b830",
+    "vec_normalize.pkl": "559719bd7884d044522d2c618ca903775bdeae9eaeb9542d261165ef72a8040b"
+   },
+   "note": "MAPLESS (no planner - straight-line goal input) - 63.4 % shield2 (seed); the routing-bottleneck demo",
+   "algo": "sac",
+   "planner_cultural_ratio": null,
+   "benchmark": {
+    "final_sr": 0.4824,
+    "shield2_sr": 0.5648,
+    "shield2_collisions": 0.0004,
+    "cvr": 0.1179
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "mapless_vanilla_s2": {
+   "source_run": "runs_v5\\tier2_mapless\\vanilla_s2\\vanilla_seed2_1791542163",
+   "files": {
+    "final_model.zip": "33cfdcd49aa6cacd73e8b68a0e019d1de4b09bab78615d2bfd7e9bcfd9d58188",
+    "vec_normalize.pkl": "b356209fa4b17e5e9f8e953d842b5ac49d295a7c45b9ebca77a5fc609ce32b22"
+   },
+   "note": "MAPLESS culture-blind - 59.4 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": null,
+   "benchmark": {
+    "final_sr": 0.4772,
+    "shield2_sr": 0.5416,
+    "shield2_collisions": 0.0004,
+    "cvr": 0.1678
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "t1_fixed_equal_s3": {
+   "source_run": "runs_v5\\tier1\\fixed_equal_s3\\fixed_equal_seed3_1791698382",
+   "files": {
+    "final_model.zip": "1cbefc21ed07df7c96878d413a0dafe05345c7cbcab1bfbdb50cbe4063f6cc34",
+    "vec_normalize.pkl": "ee9a479d6d2e1d64207dc1387950c529bd16af81ff1117434db2a926590ddb40"
+   },
+   "note": "Tier-1 CARS policy - 96.4 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.8028,
+    "shield2_sr": 0.954,
+    "shield2_collisions": 0.0,
+    "cvr": 0.0987
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "t1_vanilla_s2": {
+   "source_run": "runs_v5\\tier1\\vanilla_s2\\vanilla_seed2_1791714930",
+   "files": {
+    "final_model.zip": "26f9692910ff87088805ca8da12fdd56af454d397b44ffb9d6cc0d6b9582ef42",
+    "vec_normalize.pkl": "bf1a98c0f209df982f3097950d41f6aa76adc704049f86c4ce4019f6b16153d2"
+   },
+   "note": "Tier-1 culture-blind (geo planner) - 96.8 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 0.0,
+   "benchmark": {
+    "final_sr": 0.832,
+    "shield2_sr": 0.9612,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1233
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "t1_cwn_s2": {
+   "source_run": "runs_v5\\tier1\\cwn_s2\\cwn_seed2_1791696538",
+   "files": {
+    "final_model.zip": "50dfc3b2e8d4566b97d42ab2905f63df5d86a8e40a386b1616ca479c7e8d7119",
+    "vec_normalize.pkl": "573777f5ce102d955c715c993bc717e1d4d976c88839e18394fc431c26bf7e54"
+   },
+   "note": "Tier-1 context weight network - 96.2 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.77,
+    "shield2_sr": 0.9332,
+    "shield2_collisions": 0.0,
+    "cvr": 0.0966
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "t1_nav_heavy_s4": {
+   "source_run": "runs_v5\\tier1\\nav_heavy_s4\\nav_heavy_seed4_1791700365",
+   "files": {
+    "final_model.zip": "ab80b18cc992ea3f3e78f23a2f7fcb74ab54092e887858fb2f2a52794bf6647f",
+    "vec_normalize.pkl": "67bae52acb12bd4994b4d083a01ee745aac9793000d9860f234d87a6b8914417"
+   },
+   "note": "Tier-1 nav-weighted - 96.6 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.8188,
+    "shield2_sr": 0.9508,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1084
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "t1_attention_s2": {
+   "source_run": "runs_v5\\tier1\\attention_s2\\attention_seed2_1791721785",
+   "files": {
+    "final_model.zip": "a0aa8c56b2a07add8d30cdc63cfb505b47fed4607d6e3b89d944c3a9319e0496",
+    "vec_normalize.pkl": "2be97a93f0d5c2cff1ff8c8af076f4bedb32faefa10f33757ede4781db168d44"
+   },
+   "note": "Tier-1 attention weighter - 96.6 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 3.0,
+   "benchmark": {
+    "final_sr": 0.81,
+    "shield2_sr": 0.9468,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1007
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "t1_risk_field_s4": {
+   "source_run": "runs_v5\\tier1\\he2025_s4\\he2025_seed4_1791703803",
+   "files": {
+    "final_model.zip": "171b6bbc749d6f5f736e4b2e8038fc5166baf04a9ccc3076eb044326e41642dd",
+    "vec_normalize.pkl": "4934ea848537e07a01706003c5c24829dadfddb83e6590153fc77dc4ffe7b88b"
+   },
+   "note": "Tier-1 risk-field baseline (geo planner) - 97.0 % shield2 (seed)",
+   "algo": "sac",
+   "planner_cultural_ratio": 0.0,
+   "benchmark": {
+    "final_sr": 0.8448,
+    "shield2_sr": 0.9564,
+    "shield2_collisions": 0.0,
+    "cvr": 0.1226
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  },
+  "t1_mapless_fixed_equal_s0": {
+   "source_run": "runs_v5\\tier1_mapless\\fixed_equal_s0\\fixed_equal_seed0_1791810324",
+   "files": {
+    "final_model.zip": "6b037761ca7422e4111cacda823ee11ccf2ed5166f0b632453cada4d6eeaa4a5",
+    "vec_normalize.pkl": "e415bcc06752151cfcee8fe11898463504fc6bc73406e93507ffebbfc20715e0"
+   },
+   "note": "Tier-1 MAPLESS (no planner) - 93.0 % shield2 (seed; open tier is forgiving without walls)",
+   "algo": "sac",
+   "planner_cultural_ratio": null,
+   "benchmark": {
+    "final_sr": 0.6793,
+    "shield2_sr": 0.818,
+    "shield2_collisions": 0.0007,
+    "cvr": 0.0351
+   },
+   "observation_keys": [
+    "context",
+    "goal",
+    "lidar",
+    "pedestrians",
+    "robot_state"
+   ]
+  }
+ }
+}

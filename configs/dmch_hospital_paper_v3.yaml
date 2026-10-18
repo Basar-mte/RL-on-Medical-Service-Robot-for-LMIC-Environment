@@ -1,0 +1,438 @@
+# LMIC-HospitalNav floor plan configuration
+# Grounded in DMCH (Dhaka Medical College Hospital) context:
+# ~2,600 beds at ~133% occupancy, ~5,000 OPD/day, 92 wards
+# Scale: 40m x 30m representative ward floor
+#
+# Key LMIC realities modelled:
+#  1. Overflow beds IN the corridors (primary navigation challenge)
+#  2. Equipment carts and waiting benches in corridors
+#  3. Extremely high pedestrian density (family attendants, patients, staff)
+#  4. Gender-segregated wards
+#  5. Prayer room (cultural constraint)
+
+map:
+  width_m: 40.0
+  height_m: 30.0
+  cell_size_m: 0.1
+
+rooms:
+  - id: main_corridor_h
+    type: corridor
+    polygon: [[0.0, 12.0], [40.0, 12.0], [40.0, 15.0], [0.0, 15.0]]
+    cultural_zone: false
+    urgency_level: 1
+    default_pedestrian_density: 0.9
+    label: "Main Horizontal Corridor"
+
+  - id: main_corridor_v
+    type: corridor
+    polygon: [[18.0, 0.0], [22.0, 0.0], [22.0, 30.0], [18.0, 30.0]]
+    cultural_zone: false
+    urgency_level: 1
+    default_pedestrian_density: 0.8
+    label: "Main Vertical Corridor"
+
+  - id: nurse_station
+    type: nurse_station
+    polygon: [[18.0, 12.0], [22.0, 12.0], [22.0, 15.0], [18.0, 15.0]]
+    cultural_zone: false
+    urgency_level: 3
+    default_pedestrian_density: 0.95
+    label: "Nurse Station"
+    robot_spawn: true
+
+  - id: emergency_dept
+    type: emergency
+    polygon: [[0.0, 0.0], [8.0, 0.0], [8.0, 8.0], [0.0, 8.0]]
+    cultural_zone: false
+    urgency_level: 3
+    default_pedestrian_density: 0.95
+    label: "Emergency Department"
+
+  - id: pharmacy
+    type: pharmacy
+    polygon: [[32.0, 0.0], [40.0, 0.0], [40.0, 8.0], [32.0, 8.0]]
+    cultural_zone: false
+    urgency_level: 2
+    default_pedestrian_density: 0.7
+    label: "Pharmacy"
+
+  - id: icu_corridor
+    type: icu
+    polygon: [[0.0, 22.0], [12.0, 22.0], [12.0, 30.0], [0.0, 30.0]]
+    cultural_zone: false
+    urgency_level: 3
+    default_pedestrian_density: 0.5
+    label: "ICU Corridor"
+
+  - id: prayer_room
+    type: prayer
+    polygon: [[28.0, 22.0], [38.0, 22.0], [38.0, 30.0], [28.0, 30.0]]
+    cultural_zone: true
+    urgency_level: 0
+    default_pedestrian_density: 0.4
+    label: "Prayer Room"
+
+  - id: male_ward
+    type: male_ward
+    polygon: [[0.0, 15.0], [18.0, 15.0], [18.0, 22.0], [0.0, 22.0]]
+    cultural_zone: true
+    urgency_level: 1
+    default_pedestrian_density: 0.85
+    label: "Male General Ward"
+
+  - id: female_ward
+    type: female_ward
+    polygon: [[22.0, 15.0], [40.0, 15.0], [40.0, 22.0], [22.0, 22.0]]
+    cultural_zone: true
+    urgency_level: 1
+    default_pedestrian_density: 0.85
+    label: "Female General Ward"
+
+  - id: general_ward_a
+    type: ward
+    polygon: [[8.0, 0.0], [18.0, 0.0], [18.0, 12.0], [8.0, 12.0]]
+    cultural_zone: false
+    urgency_level: 1
+    default_pedestrian_density: 0.75
+    label: "General Ward A"
+
+  - id: general_ward_b
+    type: ward
+    polygon: [[22.0, 0.0], [32.0, 0.0], [32.0, 12.0], [22.0, 12.0]]
+    cultural_zone: false
+    urgency_level: 1
+    default_pedestrian_density: 0.75
+    label: "General Ward B"
+
+  - id: lab_specimen
+    type: pharmacy
+    polygon: [[32.0, 8.0], [40.0, 8.0], [40.0, 12.0], [32.0, 12.0]]
+    cultural_zone: false
+    urgency_level: 2
+    default_pedestrian_density: 0.4
+    label: "Laboratory"
+
+  - id: supply_room
+    type: ward
+    polygon: [[12.0, 22.0], [18.0, 22.0], [18.0, 30.0], [12.0, 30.0]]
+    cultural_zone: false
+    urgency_level: 1
+    default_pedestrian_density: 0.3
+    label: "Supply Room"
+
+static_obstacles:
+  # ── Nurse station desks (central hub) ────────────────────────────────────
+  - polygon: [[18.1, 12.1], [19.5, 12.1], [19.5, 12.9], [18.1, 12.9]]
+    label: "Nurse Station Desk A"
+  - polygon: [[20.5, 12.1], [21.9, 12.1], [21.9, 12.9], [20.5, 12.9]]
+    label: "Nurse Station Desk B"
+
+  # ── Corridor structural pillars ───────────────────────────────────────────
+  - polygon: [[19.5, 3.0], [20.5, 3.0], [20.5, 4.5], [19.5, 4.5]]
+    label: "Corridor Pillar N1"
+  - polygon: [[19.5, 7.0], [20.5, 7.0], [20.5, 8.5], [19.5, 8.5]]
+    label: "Corridor Pillar N2"
+  - polygon: [[19.5, 21.5], [20.5, 21.5], [20.5, 22.5], [19.5, 22.5]]
+    label: "Corridor Pillar S"
+
+  # ── OVERFLOW BEDS IN HORIZONTAL CORRIDOR ─────────────────────────────────
+  # LMIC: when ward floor space is full, beds line both sides of the corridor
+  - polygon: [[2.0, 12.1], [3.5, 12.1], [3.5, 13.1], [2.0, 13.1]]
+    label: "Corridor Bed 1"
+  - polygon: [[5.0, 12.1], [6.5, 12.1], [6.5, 13.1], [5.0, 13.1]]
+    label: "Corridor Bed 2"
+  - polygon: [[9.5, 12.1], [11.0, 12.1], [11.0, 13.1], [9.5, 13.1]]
+    label: "Corridor Bed 3"
+  - polygon: [[13.0, 12.1], [14.5, 12.1], [14.5, 13.1], [13.0, 13.1]]
+    label: "Corridor Bed 4"
+  - polygon: [[16.0, 12.1], [17.5, 12.1], [17.5, 13.1], [16.0, 13.1]]
+    label: "Corridor Bed 5"
+
+  # Nudged east 0.4 m: the gap between this bed and the female ward's SW
+  # exterior corner was the single choke both ward tasks had to thread.
+  - polygon: [[23.4, 13.9], [24.9, 13.9], [24.9, 14.9], [23.4, 14.9]]
+    label: "Corridor Bed 6"
+  - polygon: [[26.5, 13.9], [28.0, 13.9], [28.0, 14.9], [26.5, 14.9]]
+    label: "Corridor Bed 7"
+  # Shifted left (was x 30.0-31.5): the bed sat directly under the female-
+  # ward south door gap (x 30.5-32.0), leaving a 0.5 m slot no 0.5 m-wide
+  # robot could pass — even overcrowded wards keep doorway egress clear.
+  - polygon: [[28.4, 13.9], [29.9, 13.9], [29.9, 14.9], [28.4, 14.9]]
+    label: "Corridor Bed 8"
+  - polygon: [[33.5, 13.9], [35.0, 13.9], [35.0, 14.9], [33.5, 14.9]]
+    label: "Corridor Bed 9"
+  - polygon: [[37.0, 13.9], [38.5, 13.9], [38.5, 14.9], [37.0, 14.9]]
+    label: "Corridor Bed 10"
+
+  # ── EQUIPMENT CARTS (vertical corridor) ──────────────────────────────────
+  - polygon: [[18.1, 17.0], [19.5, 17.0], [19.5, 17.8], [18.1, 17.8]]
+    label: "Equipment Cart 1"
+  - polygon: [[20.5, 20.0], [21.9, 20.0], [21.9, 20.8], [20.5, 20.8]]
+    label: "Equipment Cart 2"
+  - polygon: [[18.1, 24.0], [19.5, 24.0], [19.5, 24.8], [18.1, 24.8]]
+    label: "Equipment Cart 3"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # WARD BOUNDARY WALLS
+  # Each ward is a fully enclosed room. Door gaps (1.5 m) align with the
+  # central nursing corridor inside each ward.
+  #
+  # Ward internal layout (y direction, 7 m total):
+  #   y=15.0–15.2  south wall
+  #   y=15.2–16.8  south bed row  (8 official beds × 1.8 m)
+  #   y=16.9–17.4  south Mejhe aisle  (floor patients on mattresses)
+  #   y=17.5–19.5  CENTRAL NURSING CORRIDOR  (2 m clear — door gaps align here)
+  #   y=19.6–20.1  north Mejhe aisle
+  #   y=20.3–21.9  north bed row  (8 official beds × 1.8 m)
+  #   y=21.9–22.0  north wall
+  # ═══════════════════════════════════════════════════════════════════════════
+
+  # ── MALE WARD boundary walls ──────────────────────────────────────────────
+  # East wall (x=18): door gap y=[18.0,19.5] → opens to vertical corridor
+  - polygon: [[17.9, 15.0], [18.1, 15.0], [18.1, 18.0], [17.9, 18.0]]
+    label: "Male Ward East Wall (lower)"
+  - polygon: [[17.9, 19.5], [18.1, 19.5], [18.1, 21.9], [17.9, 21.9]]
+    label: "Male Ward East Wall (upper)"
+
+  # South wall (y=15): door gap x=[7.5,9.0] → opens to horizontal corridor
+  - polygon: [[0.0, 14.9], [7.5, 14.9], [7.5, 15.1], [0.0, 15.1]]
+    label: "Male Ward South Wall (left)"
+  - polygon: [[9.0, 14.9], [17.9, 14.9], [17.9, 15.1], [9.0, 15.1]]
+    label: "Male Ward South Wall (right)"
+
+  # North wall (y=22): door gap x=[12.5,14.0] → opens to supply room
+  - polygon: [[0.0, 21.9], [12.5, 21.9], [12.5, 22.1], [0.0, 22.1]]
+    label: "Male Ward North Wall (left)"
+  - polygon: [[14.0, 21.9], [17.9, 21.9], [17.9, 22.1], [14.0, 22.1]]
+    label: "Male Ward North Wall (right)"
+
+  # ── FEMALE WARD boundary walls ────────────────────────────────────────────
+  # West wall (x=22): door gap y=[18.0,19.5] → opens to vertical corridor
+  - polygon: [[21.9, 15.0], [22.1, 15.0], [22.1, 18.0], [21.9, 18.0]]
+    label: "Female Ward West Wall (lower)"
+  - polygon: [[21.9, 19.5], [22.1, 19.5], [22.1, 21.9], [21.9, 21.9]]
+    label: "Female Ward West Wall (upper)"
+
+  # South wall (y=15): door gap x=[30.5,32.0] → opens to horizontal corridor
+  - polygon: [[22.1, 14.9], [30.5, 14.9], [30.5, 15.1], [22.1, 15.1]]
+    label: "Female Ward South Wall (left)"
+  - polygon: [[32.0, 14.9], [40.0, 14.9], [40.0, 15.1], [32.0, 15.1]]
+    label: "Female Ward South Wall (right)"
+
+  # North wall (y=22): door gap x=[29.0,31.0] → opens directly into prayer room zone
+  - polygon: [[22.1, 21.9], [29.0, 21.9], [29.0, 22.1], [22.1, 22.1]]
+    label: "Female Ward North Wall (left)"
+  - polygon: [[31.0, 21.9], [40.0, 21.9], [40.0, 22.1], [31.0, 22.1]]
+    label: "Female Ward North Wall (right)"
+
+  # ── MALE WARD internal structure ──────────────────────────────────────────
+  # South bed row: 8 metal beds along south wall (y=[15.2,16.8])
+  - polygon: [[0.2,15.2],[2.0,15.2],[2.0,16.8],[0.2,16.8]]
+    label: "Ward Bed MW-S1"
+  - polygon: [[2.2,15.2],[4.0,15.2],[4.0,16.8],[2.2,16.8]]
+    label: "Ward Bed MW-S2"
+  - polygon: [[4.2,15.2],[6.0,15.2],[6.0,16.8],[4.2,16.8]]
+    label: "Ward Bed MW-S3"
+  # MW-S4/MW-S5 removed: they flanked the male-ward south door gap
+  # (x 7.5-9.0) leaving a 0.2 m slit — doorway egress must stay clear.
+  - polygon: [[10.2,15.2],[12.0,15.2],[12.0,16.8],[10.2,16.8]]
+    label: "Ward Bed MW-S6"
+  - polygon: [[12.2,15.2],[14.0,15.2],[14.0,16.8],[12.2,16.8]]
+    label: "Ward Bed MW-S7"
+  - polygon: [[14.2,15.2],[16.0,15.2],[16.0,16.8],[14.2,16.8]]
+    label: "Ward Bed MW-S8"
+
+  # South Mejhe aisle: floor patients on mattresses (y=[16.9,17.4])
+  - polygon: [[0.8,16.9],[2.3,16.9],[2.3,17.4],[0.8,17.4]]
+    label: "Mejhe MW-S1"
+  - polygon: [[3.5,16.9],[5.0,16.9],[5.0,17.4],[3.5,17.4]]
+    label: "Mejhe MW-S2"
+  - polygon: [[6.8,16.9],[8.3,16.9],[8.3,17.4],[6.8,17.4]]
+    label: "Mejhe MW-S3"
+  - polygon: [[10.0,16.9],[11.5,16.9],[11.5,17.4],[10.0,17.4]]
+    label: "Mejhe MW-S4"
+  - polygon: [[12.8,16.9],[14.3,16.9],[14.3,17.4],[12.8,17.4]]
+    label: "Mejhe MW-S5"
+
+  # Ward nurse trolley near east door (y=[18.2,18.8], x=[15.5,17.2])
+  # Moved from mid-floor (x 15.5-17.2, y 18.2-18.8) — blocked the east-door
+  # interior approach (see Equipment Cart FW-Nurse note).
+  # West edge at 16.5 (not 16.2): 16.2 left a walkable-but-robot-unreachable
+  # pocket between the cart, bed MW-S8 and the walls where pedestrians could
+  # spawn in space the robot can never enter.
+  - polygon: [[16.5,16.0],[17.6,16.0],[17.6,16.6],[16.5,16.6]]
+    label: "Equipment Cart MW-Nurse"
+
+  # North Mejhe aisle: floor patients on mattresses (y=[19.6,20.1])
+  - polygon: [[0.5,19.6],[2.0,19.6],[2.0,20.1],[0.5,20.1]]
+    label: "Mejhe MW-N1"
+  - polygon: [[3.5,19.6],[5.0,19.6],[5.0,20.1],[3.5,20.1]]
+    label: "Mejhe MW-N2"
+  - polygon: [[7.0,19.6],[8.5,19.6],[8.5,20.1],[7.0,20.1]]
+    label: "Mejhe MW-N3"
+  - polygon: [[10.5,19.6],[12.0,19.6],[12.0,20.1],[10.5,20.1]]
+    label: "Mejhe MW-N4"
+  - polygon: [[13.0,19.6],[14.5,19.6],[14.5,20.1],[13.0,20.1]]
+    label: "Mejhe MW-N5"
+
+  # North bed row: 8 metal beds along north wall (y=[20.3,21.9])
+  - polygon: [[0.2,20.3],[2.0,20.3],[2.0,21.9],[0.2,21.9]]
+    label: "Ward Bed MW-N1"
+  - polygon: [[2.2,20.3],[4.0,20.3],[4.0,21.9],[2.2,21.9]]
+    label: "Ward Bed MW-N2"
+  - polygon: [[4.2,20.3],[6.0,20.3],[6.0,21.9],[4.2,21.9]]
+    label: "Ward Bed MW-N3"
+  - polygon: [[6.2,20.3],[8.0,20.3],[8.0,21.9],[6.2,21.9]]
+    label: "Ward Bed MW-N4"
+  - polygon: [[8.2,20.3],[10.0,20.3],[10.0,21.9],[8.2,21.9]]
+    label: "Ward Bed MW-N5"
+  - polygon: [[10.2,20.3],[12.0,20.3],[12.0,21.9],[10.2,21.9]]
+    label: "Ward Bed MW-N6"
+  # MW-N7 removed: it sat directly under the male-ward north door gap
+  # (x 12.5-14.0) — doorway egress must stay clear.
+  - polygon: [[14.2,20.3],[16.0,20.3],[16.0,21.9],[14.2,21.9]]
+    label: "Ward Bed MW-N8"
+
+  # ── FEMALE WARD internal structure ────────────────────────────────────────
+  # South bed row: 8 metal beds along south wall (y=[15.2,16.8])
+  - polygon: [[22.2,15.2],[24.0,15.2],[24.0,16.8],[22.2,16.8]]
+    label: "Ward Bed FW-S1"
+  - polygon: [[24.2,15.2],[26.0,15.2],[26.0,16.8],[24.2,16.8]]
+    label: "Ward Bed FW-S2"
+  - polygon: [[26.2,15.2],[28.0,15.2],[28.0,16.8],[26.2,16.8]]
+    label: "Ward Bed FW-S3"
+  - polygon: [[28.2,15.2],[30.0,15.2],[30.0,16.8],[28.2,16.8]]
+    label: "Ward Bed FW-S4"
+  # FW-S5 removed: it sat directly under the female-ward south door gap
+  # (x 30.5-32.0) — doorway egress must stay clear (prayer-door precedent).
+  - polygon: [[32.2,15.2],[34.0,15.2],[34.0,16.8],[32.2,16.8]]
+    label: "Ward Bed FW-S6"
+  - polygon: [[34.2,15.2],[36.0,15.2],[36.0,16.8],[34.2,16.8]]
+    label: "Ward Bed FW-S7"
+  - polygon: [[36.2,15.2],[38.0,15.2],[38.0,16.8],[36.2,16.8]]
+    label: "Ward Bed FW-S8"
+
+  # South Mejhe aisle (y=[16.9,17.4])
+  - polygon: [[23.0,16.9],[24.5,16.9],[24.5,17.4],[23.0,17.4]]
+    label: "Mejhe FW-S1"
+  - polygon: [[26.0,16.9],[27.5,16.9],[27.5,17.4],[26.0,17.4]]
+    label: "Mejhe FW-S2"
+  - polygon: [[29.0,16.9],[30.5,16.9],[30.5,17.4],[29.0,17.4]]
+    label: "Mejhe FW-S3"
+  - polygon: [[32.5,16.9],[34.0,16.9],[34.0,17.4],[32.5,17.4]]
+    label: "Mejhe FW-S4"
+  - polygon: [[35.5,16.9],[37.0,16.9],[37.0,17.4],[35.5,17.4]]
+    label: "Mejhe FW-S5"
+
+  # Ward nurse trolley near west door (y=[18.2,18.8], x=[22.8,24.5])
+  # Moved from mid-floor (x 22.8-24.5, y 18.2-18.8) where it sat directly
+  # inside the west-door lane and split the ward interior into two 0.8 m
+  # micro-aisles no robot+pedestrian pair could share (all 720 ward-task
+  # episodes ended in collision). Carts hug walls in real wards.
+  - polygon: [[38.6,18.0],[39.9,18.0],[39.9,18.6],[38.6,18.6]]
+    label: "Equipment Cart FW-Nurse"
+
+  # North Mejhe aisle (y=[19.6,20.1])
+  - polygon: [[22.5,19.6],[24.0,19.6],[24.0,20.1],[22.5,20.1]]
+    label: "Mejhe FW-N1"
+  - polygon: [[25.5,19.6],[27.0,19.6],[27.0,20.1],[25.5,20.1]]
+    label: "Mejhe FW-N2"
+  - polygon: [[28.5,19.6],[30.0,19.6],[30.0,20.1],[28.5,20.1]]
+    label: "Mejhe FW-N3"
+  - polygon: [[31.5,19.6],[33.0,19.6],[33.0,20.1],[31.5,20.1]]
+    label: "Mejhe FW-N4"
+  - polygon: [[34.5,19.6],[36.0,19.6],[36.0,20.1],[34.5,20.1]]
+    label: "Mejhe FW-N5"
+
+  # North bed row: 8 metal beds along north wall (y=[20.3,21.9])
+  - polygon: [[22.2,20.3],[24.0,20.3],[24.0,21.9],[22.2,21.9]]
+    label: "Ward Bed FW-N1"
+  - polygon: [[24.2,20.3],[26.0,20.3],[26.0,21.9],[24.2,21.9]]
+    label: "Ward Bed FW-N2"
+  - polygon: [[26.2,20.3],[28.0,20.3],[28.0,21.9],[26.2,21.9]]
+    label: "Ward Bed FW-N3"
+  # FW-N4/FW-N5 removed: they abutted the female-ward -> prayer-room door
+  # gap (x 29-31 at y=22) flush to the wall, leaving a 0.2 m slit as the
+  # only entrance to the prayer room — physically impassable for the robot
+  # and unrealistic (doorways keep egress clearance even in overcrowded
+  # wards). The prayer room must be enterable for prayer-zone violations
+  # (CVR) to be a real, measurable risk.
+  - polygon: [[32.2,20.3],[34.0,20.3],[34.0,21.9],[32.2,21.9]]
+    label: "Ward Bed FW-N6"
+  - polygon: [[34.2,20.3],[36.0,20.3],[36.0,21.9],[34.2,21.9]]
+    label: "Ward Bed FW-N7"
+  - polygon: [[36.2,20.3],[38.0,20.3],[38.0,21.9],[36.2,21.9]]
+    label: "Ward Bed FW-N8"
+
+robot_spawn_points:
+  - [20.0, 13.5]   # nurse station center (main spawn)
+  - [15.0, 13.5]   # left corridor (between beds)
+  - [25.0, 13.5]   # right corridor (between beds)
+  - [20.0, 10.0]   # vertical corridor south
+
+pedestrian_spawn_zones:
+  medical_staff:
+    - [[18.0, 12.0], [22.0, 15.0]]
+    - [[0.0, 12.0], [18.0, 15.0]]
+    - [[22.0, 12.0], [40.0, 15.0]]
+    - [[18.0, 15.0], [22.0, 22.0]]
+  patient:
+    - [[0.0, 15.0], [18.0, 22.0]]
+    - [[22.0, 15.0], [40.0, 22.0]]
+    - [[8.0, 0.0], [32.0, 12.0]]
+    - [[0.0, 12.0], [18.0, 15.0]]
+    - [[22.0, 12.0], [40.0, 15.0]]
+  family_attendant:
+    - [[0.0, 15.0], [18.0, 22.0]]
+    - [[22.0, 15.0], [40.0, 22.0]]
+    - [[8.0, 0.0], [32.0, 12.0]]
+    - [[0.0, 12.0], [18.0, 15.0]]
+    - [[22.0, 12.0], [40.0, 15.0]]
+  wheelchair:
+    - [[0.0, 12.0], [40.0, 15.0]]
+    - [[0.0, 15.0], [40.0, 22.0]]
+
+tasks:
+  STAT_medicine:
+    start_room_id: nurse_station
+    target_room_id: emergency_dept
+    urgency_level: 1.0
+    deadline_s: 45
+    label: "STAT Medicine Delivery"
+  nurse_call:
+    start_room_id: nurse_station
+    target_room_id: female_ward
+    urgency_level: 0.9
+    deadline_s: 60
+    label: "Nurse Call Response"
+  specimen:
+    start_room_id: general_ward_a
+    target_room_id: lab_specimen
+    urgency_level: 0.6
+    deadline_s: 90
+    label: "Specimen Transport"
+  restock:
+    start_room_id: supply_room
+    target_room_id: male_ward
+    urgency_level: 0.3
+    deadline_s: 180
+    label: "Routine Restock"
+  idle_return:
+    start_room_id: male_ward
+    target_room_id: nurse_station
+    urgency_level: 0.1
+    deadline_s: 300
+    label: "Return to Base"
+
+prayer_windows:
+  - {start_hour: 5.0,  end_hour: 6.5,  name: "Fajr"}
+  - {start_hour: 12.0, end_hour: 13.0, name: "Dhuhr"}
+  - {start_hour: 15.0, end_hour: 16.0, name: "Asr"}
+  - {start_hour: 17.5, end_hour: 18.5, name: "Maghrib"}
+  - {start_hour: 19.0, end_hour: 20.0, name: "Isha"}
+
+shift_change_windows:
+  - {start_hour: 7.5,  end_hour: 8.5}
+  - {start_hour: 13.5, end_hour: 14.5}
+  - {start_hour: 21.5, end_hour: 22.5}

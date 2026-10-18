@@ -1,0 +1,7 @@
+# Python deps for the Pi 5 (installed by setup_pi5.sh). ROS 2 Humble itself
+# comes from apt, not here.
+torch            # CPU wheel: pip install torch --index-url https://download.pytorch.org/whl/cpu
+stable-baselines3
+numpy
+pillow
+pyserial         # only for the self-contained lidar_node (LD19 over UART)

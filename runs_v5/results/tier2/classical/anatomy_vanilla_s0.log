@@ -1,0 +1,7 @@
+[planner] patch applied: {'mode': 'geo', 'ratio': 0.0, 'L': 2.5, 'dist': 'geo', 'progress': False, 'los': True}
+  [eval] Using VecNormalize from: vec_normalize.pkl
+tier2/vanilla_s0 + shield, 300 eps: success 90.7%, collision 5.3%, timeout 4.0%
+collisions 16: {'static': 7, 'pedestrian': 9} | commanded reverse at impact 6% | raw policy reverse 6% | mean |v_cmd| 0.71 m/s
+nearest pedestrian at impact: front(+-45) 0% | side 81% | rear(>135) 19%
+zones: {'corridor': 16}
+tasks: {'nurse_call': 7, 'specimen': 2, 'idle_return': 1, 'restock': 4, 'STAT_medicine': 2}

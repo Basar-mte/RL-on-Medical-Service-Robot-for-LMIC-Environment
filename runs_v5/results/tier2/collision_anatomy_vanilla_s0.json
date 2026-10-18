@@ -1,0 +1,169 @@
+{
+ "ends": {
+  "success": 272,
+  "collision": 16,
+  "timeout": 12
+ },
+ "rows": [
+  {
+   "task": "nurse_call",
+   "v_cmd": 0.7881397604942322,
+   "v_raw": 0.7881397604942322,
+   "reverse": false,
+   "ped_bearing_deg": -96.59578756360803,
+   "ped_dist": 1.7698752918740206,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "specimen",
+   "v_cmd": 0.7880155444145203,
+   "v_raw": 0.7880155444145203,
+   "reverse": false,
+   "ped_bearing_deg": -72.15959744960402,
+   "ped_dist": 0.5199999893968213,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "idle_return",
+   "v_cmd": 0.786354124546051,
+   "v_raw": 0.786354124546051,
+   "reverse": false,
+   "ped_bearing_deg": -67.10574819943517,
+   "ped_dist": 0.519999989263692,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "nurse_call",
+   "v_cmd": 0.7841647267341614,
+   "v_raw": 0.7841647267341614,
+   "reverse": false,
+   "ped_bearing_deg": -51.54384395857079,
+   "ped_dist": 2.1544875420849654,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "nurse_call",
+   "v_cmd": 0.7786628603935242,
+   "v_raw": 0.7786628603935242,
+   "reverse": false,
+   "ped_bearing_deg": 150.59456105786353,
+   "ped_dist": 4.207253078917113,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7890345454216003,
+   "v_raw": 0.7890345454216003,
+   "reverse": false,
+   "ped_bearing_deg": -76.8106966838234,
+   "ped_dist": 0.7199999896831374,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.6650286912918091,
+   "v_raw": 0.7855470776557922,
+   "reverse": false,
+   "ped_bearing_deg": -68.43411401852498,
+   "ped_dist": 0.5199999894279792,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "nurse_call",
+   "v_cmd": 0.7849385142326355,
+   "v_raw": 0.7849385142326355,
+   "reverse": false,
+   "ped_bearing_deg": -79.54118266358027,
+   "ped_dist": 0.5199999895997944,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "nurse_call",
+   "v_cmd": 0.7795676589012146,
+   "v_raw": 0.7795676589012146,
+   "reverse": false,
+   "ped_bearing_deg": 73.93492006460377,
+   "ped_dist": 0.519999989452391,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "STAT_medicine",
+   "v_cmd": 0.1454545557498932,
+   "v_raw": 0.7859093546867371,
+   "reverse": false,
+   "ped_bearing_deg": -46.186897661982684,
+   "ped_dist": 0.7154753712972741,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7873042225837708,
+   "v_raw": 0.7873042225837708,
+   "reverse": false,
+   "ped_bearing_deg": -77.19618714941815,
+   "ped_dist": 0.5199999895341416,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "nurse_call",
+   "v_cmd": 0.7791641354560852,
+   "v_raw": 0.7791641354560852,
+   "reverse": false,
+   "ped_bearing_deg": 174.18952269089056,
+   "ped_dist": 3.3012207779749465,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "specimen",
+   "v_cmd": -0.27111250162124634,
+   "v_raw": -0.27111250162124634,
+   "reverse": true,
+   "ped_bearing_deg": -170.94386218171584,
+   "ped_dist": 0.5199999894885213,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "nurse_call",
+   "v_cmd": 0.7853999733924866,
+   "v_raw": 0.7853999733924866,
+   "reverse": false,
+   "ped_bearing_deg": 68.37418579851139,
+   "ped_dist": 0.7199999895494026,
+   "zone": "corridor",
+   "kind": "static"
+  },
+  {
+   "task": "STAT_medicine",
+   "v_cmd": 0.7849504351615906,
+   "v_raw": 0.7849504351615906,
+   "reverse": false,
+   "ped_bearing_deg": 78.01691129051477,
+   "ped_dist": 0.5199999895680542,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  },
+  {
+   "task": "restock",
+   "v_cmd": 0.7865248322486877,
+   "v_raw": 0.7865248322486877,
+   "reverse": false,
+   "ped_bearing_deg": -73.54207892516717,
+   "ped_dist": 0.519999989517688,
+   "zone": "corridor",
+   "kind": "pedestrian"
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+room,wall_side,wall_coordinate_m,gap_from_m,gap_to_m,width_m
+male_ward,S,17.0,5.6,7.4,1.8
+general_ward_1,S,17.0,19.1,20.9,1.8
+female_ward,S,17.0,32.6,34.4,1.8
+ward_icu_emerg,N,13.0,4.1,5.9,1.8
+prayer,N,13.0,12.1,13.9,1.8
+prayer,E,17.0,6.6,8.4,1.8
+general_ward_3,N,13.0,22.6,24.4,1.8
+general_ward_2,N,13.0,30.1,31.9,1.8

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!--
+  Gazebo model of the Yahboom A1 Ackermann chassis for the LMIC-HospitalNav sim.
+
+  Simplification: driven via gazebo_ros_planar_move (linear.x + angular.z), not a
+  true Ackermann steering joint. /cmd_shielded's "steering" field is a STEERING
+  ANGLE (rad, matches scan_utils.MAX_STEER), fed here as angular.z (a yaw RATE) —
+  close enough in magnitude (<=0.52 rad/s) for a pipeline/SLAM/Nav2 demo, but not
+  physically exact Ackermann kinematics.
+-->
+<robot name="hospitalnav_robot">
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.075" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <inertial>
+      <mass value="3.0"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.03" ixy="0" ixz="0" iyy="0.05" iyz="0" izz="0.05"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.28 0.20 0.10"/>
+      </geometry>
+      <material name="body">
+        <color rgba="0.1 0.35 0.75 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.28 0.20 0.10"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- four cosmetic wheels (visual only; planar_move drives the base directly) -->
+  <link name="wheel_fl"><visual><geometry><cylinder radius="0.05" length="0.03"/></geometry><material name="wheel"><color rgba="0.05 0.05 0.05 1"/></material></visual></link>
+  <joint name="wheel_fl_joint" type="fixed">
+    <parent link="base_link"/><child link="wheel_fl"/>
+    <origin xyz="0.10 0.11 -0.035" rpy="1.5708 0 0"/>
+  </joint>
+
+  <link name="wheel_fr"><visual><geometry><cylinder radius="0.05" length="0.03"/></geometry><material name="wheel"><color rgba="0.05 0.05 0.05 1"/></material></visual></link>
+  <joint name="wheel_fr_joint" type="fixed">
+    <parent link="base_link"/><child link="wheel_fr"/>
+    <origin xyz="0.10 -0.11 -0.035" rpy="1.5708 0 0"/>
+  </joint>
+
+  <link name="wheel_rl"><visual><geometry><cylinder radius="0.05" length="0.03"/></geometry><material name="wheel"><color rgba="0.05 0.05 0.05 1"/></material></visual></link>
+  <joint name="wheel_rl_joint" type="fixed">
+    <parent link="base_link"/><child link="wheel_rl"/>
+    <origin xyz="-0.10 0.11 -0.035" rpy="1.5708 0 0"/>
+  </joint>
+
+  <link name="wheel_rr"><visual><geometry><cylinder radius="0.05" length="0.03"/></geometry><material name="wheel"><color rgba="0.05 0.05 0.05 1"/></material></visual></link>
+  <joint name="wheel_rr_joint" type="fixed">
+    <parent link="base_link"/><child link="wheel_rr"/>
+    <origin xyz="-0.10 -0.11 -0.035" rpy="1.5708 0 0"/>
+  </joint>
+
+  <!-- LD19 LiDAR mount: matches the static TF in hospitalnav_bringup.launch.py
+       (0.15, 0, 0.2, base_link -> laser) -->
+  <link name="laser">
+    <visual>
+      <geometry><cylinder radius="0.035" length="0.04"/></geometry>
+      <material name="laser"><color rgba="0.9 0.1 0.1 1"/></material>
+    </visual>
+  </link>
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser"/>
+    <origin xyz="0.10 0 0.10" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo>
+    <plugin name="planar_move" filename="libgazebo_ros_planar_move.so">
+      <ros>
+        <remapping>cmd_vel:=cmd_shielded</remapping>
+        <remapping>odom:=odom</remapping>
+      </ros>
+      <update_rate>50</update_rate>
+      <publish_rate>50</publish_rate>
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <covariance_x>0.0001</covariance_x>
+      <covariance_y>0.0001</covariance_y>
+      <covariance_yaw>0.0001</covariance_yaw>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="laser">
+    <sensor name="ld19" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1.0</resolution>
+            <min_angle>-3.14159265</min_angle>
+            <max_angle>3.14159265</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.12</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <plugin name="ld19_scan" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>laser</frame_name>
+      </plugin>
+      <!-- Same physical sensor, same 2D scan plane as the real LD19 — this is
+           NOT a 3D lidar. Publishing it as a PointCloud2 too just lets RViz
+           render the scan (and the walls' real height) in a 3D orbit view. -->
+      <plugin name="ld19_points" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <remapping>~/out:=points</remapping>
+        </ros>
+        <output_type>sensor_msgs/PointCloud2</output_type>
+        <frame_name>laser</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Blue</material>
+    <!-- planar_move drives this link by setting velocity directly every step;
+         ground contact/friction on a flat box fights that (verified: measured
+         mu=1 even after a <mu1>/<mu2> URDF extension attempt — the converter
+         didn't pick it up), blocking even pure in-place rotation. Marking the
+         link kinematic makes the plugin's velocity authoritative and skips
+         physics response to contact/friction/gravity for this body entirely. -->
+    <kinematic>true</kinematic>
+  </gazebo>
+</robot>

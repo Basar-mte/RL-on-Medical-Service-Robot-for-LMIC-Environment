@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this benchmark or navigation stack, please cite it as below."
+title: "LMIC-HospitalNav: An Open Benchmark and a Culture-Aware Navigation Stack for Service Robots in Overcrowded LMIC Hospitals"
+authors:
+  - family-names: "Roky"
+    given-names: "Md. Abul Basar"
+    affiliation: "Department of Mechatronics Engineering, Rajshahi University of Engineering & Technology, Bangladesh"
+    email: "m.a.basar.mte@gmail.com"
+type: software
+license: MIT
+repository-code: "https://github.com/Basar-mte/RL-on-Medical-Service-Robot-for-LMIC-Environment"
+version: "1.0.0"
+date-released: "2026-10-18"
+keywords:
+  - social robot navigation
+  - reinforcement learning benchmark
+  - healthcare robotics
+  - safety filter
+  - cultural norms
+  - LMIC hospitals

@@ -1,0 +1,50 @@
+15:45:55 campaign still running - waiting
+15:46:25 campaign still running - waiting
+15:46:55 campaign still running - waiting
+15:47:26 campaign still running - waiting
+15:47:56 campaign still running - waiting
+15:48:26 campaign still running - waiting
+15:48:57 campaign still running - waiting
+15:49:27 campaign still running - waiting
+15:49:57 campaign still running - waiting
+15:50:27 campaign still running - waiting
+15:50:58 campaign still running - waiting
+15:51:28 campaign still running - waiting
+15:51:58 campaign still running - waiting
+15:52:29 campaign stopped - starting the matrix
+34 jobs to run (all), 4 at a time, 200 eps each
+15:52:29 launched attention_s0 noplan_shield
+15:52:29 launched attention_s0 geo_shield
+15:52:29 launched attention_s0 cult_shield
+15:52:29 launched attention_s0 cult
+15:54:39 launched attention_s1 noplan_shield
+15:55:29 launched attention_s1 geo_shield
+15:55:39 launched attention_s1 cult_shield
+15:57:29 launched attention_s1 cult
+15:58:49 launched fixed_equal_s0 noplan_shield
+15:58:49 launched fixed_equal_s0 geo_shield
+15:59:39 launched fixed_equal_s0 cult_shield
+15:59:49 launched fixed_equal_s0 cult
+16:01:59 launched fixed_equal_s1 noplan_shield
+16:02:09 launched fixed_equal_s1 geo_shield
+16:02:49 launched fixed_equal_s1 cult_shield
+16:03:39 launched fixed_equal_s1 cult
+16:05:09 launched fixed_equal_s1 cult3_shield
+16:05:49 launched fixed_equal_s1 cult_L1.5_shield
+16:05:49 launched fixed_equal_s1 cult_L4_shield
+16:05:59 launched fixed_equal_s1 cult_geodist_shield
+16:08:09 launched fixed_equal_s1 cult_nolos_shield
+16:08:49 launched vanilla_s0 noplan_shield
+16:08:49 launched vanilla_s0 geo_shield
+16:08:59 launched vanilla_s0 cult_shield
+16:11:19 launched vanilla_s0 cult
+16:11:49 launched vanilla_s1 noplan_shield
+16:12:09 launched vanilla_s1 geo_shield
+16:13:29 launched vanilla_s1 cult_shield
+16:13:39 launched vanilla_s1 cult
+16:15:09 launched vanilla_s1 cult3_shield
+16:15:49 launched vanilla_s1 cult_L1.5_shield
+16:16:20 launched vanilla_s1 cult_L4_shield
+16:16:30 launched vanilla_s1 cult_geodist_shield
+16:18:20 launched vanilla_s1 cult_nolos_shield
+matrix done

@@ -66,7 +66,10 @@ class FloorPlan:
 
     def __init__(self, yaml_path: str | Path) -> None:
         self._path = Path(yaml_path)
-        cfg = yaml.safe_load(self._path.read_text())
+        # Explicit encoding: the YAML contains UTF-8 characters, and
+        # Path.read_text() otherwise decodes with the locale codepage on
+        # Windows (cp1252), crashing at load.
+        cfg = yaml.safe_load(self._path.read_text(encoding="utf-8"))
 
         self.width_m: float = cfg["map"]["width_m"]
         self.height_m: float = cfg["map"]["height_m"]
@@ -147,6 +150,88 @@ class FloorPlan:
         r, c = self._world_to_cell(x, y)
         return bool(self.occupancy[r, c] == 0)
 
+    # Robot body radius used for the inflated grid (matches
+    # envs.lmic_hospital_env.ROBOT_RADIUS; duplicated here to avoid a
+    # circular import — validated equal by tests/test_env.py).
+    ROBOT_RADIUS_M = 0.25
+
+    @property
+    def occupancy_inflated(self) -> np.ndarray:
+        """
+        Occupancy grid dilated by the robot's body radius: a cell is blocked
+        if any obstacle cell lies within ROBOT_RADIUS_M of it. Testing the
+        robot's CENTER against this grid is equivalent to testing its full
+        0.25 m body against the raw grid — the raw-grid point check let the
+        chassis overlap beds/walls by up to 0.25 m without registering a
+        collision (paper eq. (2) defines collision as d(p, O) <= r_r).
+        Computed lazily once; the raw grid stays in use for pedestrians and
+        LiDAR (the sensor sees true wall surfaces).
+        """
+        if getattr(self, "_occ_inflated", None) is None:
+            occ = self.occupancy.astype(bool)
+            rad_cells = self.ROBOT_RADIUS_M / self.cell_size
+            n = int(np.ceil(rad_cells))
+            inflated = occ.copy()
+            for dr in range(-n, n + 1):
+                for dc in range(-n, n + 1):
+                    if dr == 0 and dc == 0:
+                        continue
+                    if dr * dr + dc * dc > rad_cells * rad_cells:
+                        continue
+                    shifted = np.zeros_like(occ)
+                    src = occ[max(0, -dr):occ.shape[0] - max(0, dr),
+                              max(0, -dc):occ.shape[1] - max(0, dc)]
+                    shifted[max(0, dr):occ.shape[0] - max(0, -dr),
+                            max(0, dc):occ.shape[1] - max(0, -dc)] = src
+                    inflated |= shifted
+            self._occ_inflated = inflated.astype(np.uint8)
+        return self._occ_inflated
+
+    def is_walkable_robot(self, x: float, y: float) -> bool:
+        """Walkability for the ROBOT CENTER, accounting for its body radius."""
+        if x < 0 or y < 0 or x >= self.width_m or y >= self.height_m:
+            return False
+        r, c = self._world_to_cell(x, y)
+        return bool(self.occupancy_inflated[r, c] == 0)
+
+    def cultural_zone_distance(self, x: float, y: float) -> float:
+        """
+        Euclidean-ish (BFS grid) distance in metres from (x, y) to the
+        nearest cultural-zone cell (prayer / male_ward / female_ward).
+        Precomputed once as a distance field; used as a context feature so
+        a weight network can anticipate cultural zones before entering them
+        (inside a zone the distance is 0). Capped at 10 m.
+        """
+        if getattr(self, "_cult_dist", None) is None:
+            from collections import deque
+            cult_codes = {ZONE_CODES[z] for z in CULTURAL_ZONE_TYPES}
+            src = np.isin(self.zone_map, list(cult_codes))
+            H, W = src.shape
+            dist = np.full((H, W), np.inf, dtype=np.float32)
+            q = deque()
+            rs, cs = np.nonzero(src)
+            for r, c in zip(rs, cs):
+                dist[r, c] = 0.0
+                q.append((r, c))
+            step = self.cell_size
+            diag = step * 1.414
+            while q:
+                r, c = q.popleft()
+                base = dist[r, c]
+                for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1),
+                               (1, 1), (1, -1), (-1, 1), (-1, -1)):
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < H and 0 <= nc < W:
+                        nd = base + (diag if dr and dc else step)
+                        if nd < dist[nr, nc] and nd <= 10.0:
+                            dist[nr, nc] = nd
+                            q.append((nr, nc))
+            dist[np.isinf(dist)] = 10.0
+            self._cult_dist = dist
+        r, c = self._world_to_cell(min(max(x, 0), self.width_m - 1e-6),
+                                   min(max(y, 0), self.height_m - 1e-6))
+        return float(self._cult_dist[r, c])
+
     def get_zone(self, x: float, y: float) -> str:
         """Return zone type string at world position (x, y)."""
         r, c = self._world_to_cell(x, y)
@@ -159,11 +244,19 @@ class FloorPlan:
     def is_cultural_zone(self, x: float, y: float) -> bool:
         return self.get_zone(x, y) in CULTURAL_ZONE_TYPES
 
-    def nearest_walkable(self, x: float, y: float, max_radius: int = 30) -> np.ndarray:
-        """Return (x, y) of the nearest walkable cell to the given world pos."""
-        if self.is_walkable(x, y):
-            return np.array([x, y], dtype=float)
+    def nearest_walkable(self, x: float, y: float, max_radius: int = 30,
+                         grid: Optional[np.ndarray] = None) -> np.ndarray:
+        """Return (x, y) of the nearest walkable cell to the given world pos.
+
+        grid: occupancy grid to test against (default: raw). Pass
+        occupancy_inflated to find the nearest cell the ROBOT can stand on.
+        """
+        occ = self.occupancy if grid is None else grid
         r0, c0 = self._world_to_cell(x, y)
+        if (0 <= r0 < self.height_cells and 0 <= c0 < self.width_cells
+                and occ[r0, c0] == 0
+                and 0 <= x < self.width_m and 0 <= y < self.height_m):
+            return np.array([x, y], dtype=float)
         for radius in range(1, max_radius):
             for dr in range(-radius, radius + 1):
                 for dc in range(-radius, radius + 1):
@@ -171,7 +264,7 @@ class FloorPlan:
                         continue
                     r, c = r0 + dr, c0 + dc
                     if 0 <= r < self.height_cells and 0 <= c < self.width_cells:
-                        if self.occupancy[r, c] == 0:
+                        if occ[r, c] == 0:
                             return np.array(
                                 [(c + 0.5) * self.cell_size,
                                  (r + 0.5) * self.cell_size], dtype=float)
@@ -234,31 +327,40 @@ class FloorPlan:
     # A* path planner
     # ------------------------------------------------------------------
 
-    def astar(self, start: np.ndarray, goal: np.ndarray) -> Optional[List[np.ndarray]]:
+    def astar(self, start: np.ndarray, goal: np.ndarray,
+              robot: bool = True) -> Optional[List[np.ndarray]]:
         """
         A* planner on the occupancy grid.
 
         Parameters
         ----------
         start, goal : array-like (x, y) in world coords.
+        robot : plan on the radius-inflated grid (default) so returned paths
+            are physically traversable by the 0.25 m-radius chassis; pass
+            False for point-agent paths on the raw grid.
 
         Returns
         -------
         List of world-space waypoints, or None if no path found.
         """
+        occ = self.occupancy_inflated if robot else self.occupancy
         r0, c0 = self._world_to_cell(start[0], start[1])
         rg, cg = self._world_to_cell(goal[0], goal[1])
 
         # Make sure endpoints are walkable
-        if self.occupancy[r0, c0]:
-            nw = self.nearest_walkable(start[0], start[1])
+        if occ[r0, c0]:
+            nw = self.nearest_walkable(start[0], start[1], grid=occ)
             r0, c0 = self._world_to_cell(nw[0], nw[1])
-        if self.occupancy[rg, cg]:
-            nw = self.nearest_walkable(goal[0], goal[1])
+        if occ[rg, cg]:
+            nw = self.nearest_walkable(goal[0], goal[1], grid=occ)
             rg, cg = self._world_to_cell(nw[0], nw[1])
 
         def h(r, c):
-            return abs(r - rg) + abs(c - cg)
+            # Octile distance — admissible for 8-connected moves with
+            # diagonal cost 1.414 (Manhattan overestimates by up to sqrt(2),
+            # yielding suboptimal paths that inflate SPL's reference length).
+            dr, dc = abs(r - rg), abs(c - cg)
+            return max(dr, dc) + 0.414 * min(dr, dc)
 
         open_heap: list = []
         heapq.heappush(open_heap, (h(r0, c0), 0, r0, c0, None))
@@ -288,7 +390,7 @@ class FloorPlan:
                 nr, nc = r + dr, c + dc
                 if not (0 <= nr < self.height_cells and 0 <= nc < self.width_cells):
                     continue
-                if self.occupancy[nr, nc]:
+                if occ[nr, nc]:
                     continue
                 step = 1.414 if (dr != 0 and dc != 0) else 1.0
                 ng = g + step

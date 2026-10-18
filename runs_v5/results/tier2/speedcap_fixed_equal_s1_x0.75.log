@@ -1,0 +1,3 @@
+[planner] patch applied: {'mode': 'cult', 'ratio': 3.0, 'L': 2.5, 'dist': 'geo', 'progress': False, 'los': True}
+  [eval] Using VecNormalize from: vec_normalize.pkl
+fixed_equal_s1 speed x0.75: {'scale': 0.75, 'sr': 0.8333333333333334, 'collision': 0.16666666666666666, 'timeout': 0.0, 'svr': 0.039972836502415315, 'spl': 0.823509332371543, 'ct_s': 36.6652, 'n': 300}  (221 s)

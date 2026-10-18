@@ -71,8 +71,26 @@ PCLASS_PARAMS: Dict[str, dict] = {
 }
 
 # HSFM force parameters (Helbing & Molnar 1995 + Farina 2017)
-A_REPULSE = 2.0    # pedestrian repulsion amplitude (N)
-B_REPULSE = 0.08   # decay length (m)
+# Interaction-force constants. The historical values (A_REPULSE=2.0 N,
+# B_REPULSE=0.08 m on CENTER distance) were physically inert against the
+# goal-driving force, whose gain is mass/tau ~ 140 N per m/s of velocity
+# error for a 70 kg pedestrian: at any separation the repulsion changed a
+# pedestrian's velocity by <0.01 m/s per second, so pedestrians walked
+# straight through each other and through the robot. Verified empirically:
+# a robot standing perfectly still was "collided into" in 60% of episodes.
+# The constants below use the standard surface-distance form
+# A*exp(-(d - r_i - r_j)/B) + K_BODY*overlap (Helbing-style, scaled to this
+# model's masses) so repulsion is commensurate with goal attraction.
+A_REPULSE = 60.0   # pedestrian-pedestrian repulsion amplitude (N)
+B_REPULSE = 0.25   # decay length (m), measured from surface separation
+K_BODY    = 600.0  # contact spring (N per metre of body overlap)
+ROBOT_BODY_RADIUS = 0.25  # matches envs.lmic_hospital_env.ROBOT_RADIUS
+# Robot term: stronger and longer-ranged than ped-ped — any contact with the
+# robot terminates the episode, so pedestrians must start yielding while
+# still ~1m away (humans also give mobile robots a wider berth than they
+# give each other; cf. HRI proxemics).
+A_ROBOT = 200.0    # robot repulsion amplitude (N)
+B_ROBOT = 0.5      # decay length (m), measured from surface separation
 A_WALL    = 10.0   # wall repulsion amplitude (N)
 B_WALL    = 0.1    # wall decay length (m)
 GOAL_FORCE_SCALE = 1.5
@@ -128,12 +146,14 @@ class PedestrianCrowd:
         self.rng = rng or np.random.default_rng()
         self.agents: List[Pedestrian] = []
         self._group_counter = 0
+        self._wall_field: Optional[np.ndarray] = None  # built lazily per fp
 
     # ------------------------------------------------------------------
     # Spawning
     # ------------------------------------------------------------------
 
-    def reset(self, counts: Dict[str, int], rng: Optional[np.random.Generator] = None) -> None:
+    def reset(self, counts: Dict[str, int], rng: Optional[np.random.Generator] = None,
+              avoid_pos: Optional[np.ndarray] = None, avoid_radius: float = 1.5) -> None:
         """
         Re-spawn all pedestrians.
 
@@ -141,9 +161,14 @@ class PedestrianCrowd:
         ----------
         counts : dict  {pclass: n_agents}
         rng    : optional new RNG seed
+        avoid_pos : optional (2,) position (the robot spawn) no pedestrian may
+            spawn within `avoid_radius` of — prevents instant, policy-
+            independent spawn collisions (changelog known gap).
         """
         if rng is not None:
             self.rng = rng
+        self._avoid_pos = None if avoid_pos is None else np.asarray(avoid_pos, dtype=float)
+        self._avoid_radius = float(avoid_radius)
         self.agents = []
         self._group_counter = 0
         total = sum(counts.values())
@@ -156,7 +181,13 @@ class PedestrianCrowd:
             params = PCLASS_PARAMS[pclass]
             gs_min, gs_max = params["group_size"]
             spawned = 0
-            while spawned < n:
+            # Bounded attempts: _spawn_one returning None (spawn zones
+            # saturated by the 0.8 m inter-agent spacing and the robot
+            # avoid-radius) previously left `spawned` unchanged and this
+            # loop spun forever — a hard hang inside env.reset().
+            attempts = 0
+            while spawned < n and attempts < 50 * n + 200:
+                attempts += 1
                 # Group size
                 gs = self.rng.integers(gs_min, gs_max + 1) if gs_max > 1 else 1
                 gs = min(gs, n - spawned)
@@ -168,6 +199,9 @@ class PedestrianCrowd:
                     if agent is not None:
                         self.agents.append(agent)
                         spawned += 1
+            if spawned < n:
+                print(f"[PedestrianCrowd] WARNING: spawned {spawned}/{n} "
+                      f"'{pclass}' agents (spawn space saturated)")
 
     def _spawn_one(self, pclass: str, group_id: int) -> Optional[Pedestrian]:
         params = PCLASS_PARAMS[pclass]
@@ -186,6 +220,11 @@ class PedestrianCrowd:
                 for a in self.agents
             )
             if too_close:
+                continue
+
+            # Avoid the robot's spawn area (see reset(avoid_pos=...))
+            if (getattr(self, "_avoid_pos", None) is not None
+                    and np.linalg.norm(pos - self._avoid_pos) < self._avoid_radius):
                 continue
 
             # Pick a random goal from a different room/area
@@ -258,19 +297,49 @@ class PedestrianCrowd:
             mask[i] = False
             if mask.any():
                 directions = dvec[mask] / (d[mask, None] + 1e-8)
-                overlap = radii[i] + radii[mask] - d[mask]
-                # Farina 2017: anisotropic factor (front-weighted repulsion)
+                overlap = radii[i] + radii[mask] - d[mask]  # >0 = touching
+                # Farina 2017: anisotropic factor (front-weighted repulsion).
+                # `directions` points FROM the other pedestrian TO agent i,
+                # so an other IN FRONT of i has directions . goal_dir < 0 —
+                # hence the minus sign (0.5 + 0.5*cos_phi weighted people
+                # BEHIND more strongly, the exact inverse of the model).
                 cos_phi = np.einsum('ij,j->i', directions, goal_dir_norm[i])
-                lambda_factor = 0.5 + 0.5 * cos_phi  # [0.5, 1.0]
-                strength = A_REPULSE * np.exp(-d[mask] / B_REPULSE) + 2.0 * np.maximum(overlap, 0)
+                lambda_factor = 0.5 - 0.5 * cos_phi  # [0,1], 1 = dead ahead
+                # Surface-distance exponential + contact spring (see constants
+                # block above for why the old center-distance form was inert).
+                strength = (A_REPULSE * np.exp(np.minimum(overlap, 0.0) / B_REPULSE)
+                            + K_BODY * np.maximum(overlap, 0))
                 ped_force[i] += ((strength * lambda_factor)[:, None] * directions).sum(axis=0)
 
-        # --- Wall repulsion ---
-        wall_force = np.zeros_like(pos)
-        margin = 0.5  # meters from wall to feel force
-        for i in range(n):
-            wf = self._wall_force(pos[i], radii[i])
-            wall_force[i] = wf
+        # --- Robot repulsion (pedestrians see and avoid the robot) ---
+        # robot_pos was previously accepted but never used: pedestrians were
+        # blind to the robot and walked straight through its footprint, and
+        # each such contact terminated the episode as a "collision" that no
+        # policy could avoid (measured consequence: trained agents scored the
+        # same success rate as a random policy). Same functional form as the
+        # pedestrian-pedestrian term above, with the robot as one more body.
+        if robot_pos is not None:
+            dvec_r = pos - np.asarray(robot_pos, dtype=float)[None, :]
+            d_r = np.linalg.norm(dvec_r, axis=1)
+            mask_r = d_r < 4.0
+            if mask_r.any():
+                dirs_r = dvec_r[mask_r] / (d_r[mask_r, None] + 1e-8)
+                surf_r = d_r[mask_r] - (radii[mask_r] + ROBOT_BODY_RADIUS)
+                strength_r = A_ROBOT * np.exp(-np.maximum(surf_r, 0.0) / B_ROBOT) \
+                             + K_BODY * np.maximum(-surf_r, 0)
+                ped_force[mask_r] += strength_r[:, None] * dirs_r
+
+        # --- Wall repulsion (precomputed per-cell field) ---
+        # Replaces the per-agent Python loop of _wall_force (45 agents x 8
+        # probes x is_walkable per step, ~41% of crowd.step wall time) with
+        # one vectorized lookup into a field built once per floor plan. The
+        # field replicates _wall_force at cell-centre resolution (0.1 m).
+        if self._wall_field is None:
+            self._build_wall_force_field()
+        cell = self.fp.cell_size
+        rows_p = np.clip((pos[:, 1] / cell).astype(int), 0, self.fp.height_cells - 1)
+        cols_p = np.clip((pos[:, 0] / cell).astype(int), 0, self.fp.width_cells - 1)
+        wall_force = self._wall_field[rows_p, cols_p].astype(float)
 
         # --- Group cohesion force (family_attendant only) ---
         cohesion_force = np.zeros_like(pos)
@@ -317,6 +386,28 @@ class PedestrianCrowd:
                 new_vel[i] = -vel[i] * 0.5  # bounce back
                 new_pos[i] = pos[i]
 
+        # Clamp out of the robot's footprint (position-level guarantee, like
+        # the wall clamp above): even in a dense jam where body-contact
+        # springs push pedestrians around, a pedestrian can never step into
+        # contact range of the robot. The episode-terminating collision check
+        # therefore only ever fires when the ROBOT moves into a pedestrian —
+        # i.e. collisions are attributable to the policy, not to the crowd.
+        if robot_pos is not None:
+            rp = np.asarray(robot_pos, dtype=float)
+            for i in range(n):
+                clearance = ROBOT_BODY_RADIUS + radii[i] + 0.02
+                if np.linalg.norm(new_pos[i] - rp) < clearance:
+                    if np.linalg.norm(pos[i] - rp) >= clearance:
+                        new_pos[i] = pos[i]      # stay put rather than enter
+                        new_vel[i] = vel[i] * 0.0
+                    else:
+                        # Already inside (e.g. robot drove in): push straight
+                        # out to the clearance ring so the overlap resolves.
+                        away = pos[i] - rp
+                        nrm = np.linalg.norm(away) + 1e-8
+                        new_pos[i] = rp + away / nrm * clearance
+                        new_vel[i] = vel[i] * 0.0
+
         # Update agents
         for i, a in enumerate(self.agents):
             a.pos = new_pos[i]
@@ -327,6 +418,44 @@ class PedestrianCrowd:
             # Check goal reached → pick new goal
             if np.linalg.norm(a.pos - a.goal) < 1.0:
                 a.goal = self._pick_goal(a.pos, a.pclass)
+            # Stall recovery: _pick_goal has no reachability check, so an
+            # agent whose goal lies behind a wall pushes into it forever and
+            # the crowd gradually freezes solid. 10 s without meaningful
+            # motion → resample the goal.
+            if spd < 0.05:
+                a._stall_steps = getattr(a, "_stall_steps", 0) + 1
+                if a._stall_steps > 100:
+                    a.goal = self._pick_goal(a.pos, a.pclass)
+                    a._stall_steps = 0
+            else:
+                a._stall_steps = 0
+
+    def _build_wall_force_field(self) -> None:
+        """
+        Precompute the per-cell wall-repulsion vector: for every grid cell,
+        the sum over its 8 neighbours of A_WALL * exp(-dist/B_WALL) pointing
+        away from each wall neighbour — exactly what _wall_force computes
+        per agent per step, evaluated once at cell-centre resolution.
+        """
+        occ = self.fp.occupancy.astype(bool)
+        H, W = occ.shape
+        cell = self.fp.cell_size
+        field = np.zeros((H, W, 2), dtype=np.float32)
+        for dxs in (-1, 0, 1):
+            for dys in (-1, 0, 1):
+                if dxs == 0 and dys == 0:
+                    continue
+                hyp = float(np.hypot(dxs, dys))
+                dist = hyp * cell
+                strength = A_WALL * float(np.exp(-dist / B_WALL))
+                dir_x, dir_y = -dxs / hyp, -dys / hyp
+                # shifted[r, c] = occ[r + dys, c + dxs] (True = wall neighbour)
+                shifted = np.zeros_like(occ)
+                shifted[max(0, -dys):H - max(0, dys), max(0, -dxs):W - max(0, dxs)] = \
+                    occ[max(0, dys):H - max(0, -dys), max(0, dxs):W - max(0, -dxs)]
+                field[shifted, 0] += strength * dir_x
+                field[shifted, 1] += strength * dir_y
+        self._wall_field = field
 
     def _wall_force(self, pos: np.ndarray, radius: float) -> np.ndarray:
         """Approximate wall repulsion by probing cells around the agent."""

@@ -1,0 +1,7 @@
+newmtl tex
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 0.13999999999999999 0.13999999999999999 0.13999999999999999
+Ns 28.0
+illum 2
+map_Kd decal_female_ward.png

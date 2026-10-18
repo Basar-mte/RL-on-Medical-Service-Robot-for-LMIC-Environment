@@ -63,15 +63,19 @@ def build_masked_cultural_reward(no_prayer: bool, no_gender: bool, no_attendant:
 def run_ablations(runs_dir: Path, n_episodes: int, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Find CWN seed0 model
-    cwn_dirs = sorted(runs_dir.glob("cwn_seed0_*"))
+    # Find CWN seed0 model — LATEST run directory by mtime (lexicographic
+    # [0] picked the OLDEST run, i.e. a stale dir from a superseded campaign
+    # whenever any older cwn_seed0_* remained in runs/), directories only
+    # (the same glob also matches cwn_seed0_train.log launcher logs).
+    cwn_dirs = sorted((p for p in runs_dir.glob("cwn_seed0_*") if p.is_dir()),
+                      key=lambda p: p.stat().st_mtime)
     if not cwn_dirs:
         print("[ablations] No cwn_seed0_* run found — skipping model-based ablations.")
         return
 
-    cwn_run = cwn_dirs[0]
-    model_path = cwn_run / "best_model" / "best_model.zip"
-    vn_path = cwn_run / "vec_normalize.pkl"
+    cwn_run = cwn_dirs[-1]
+    model_dir = cwn_run / "best_model"
+    model_path = model_dir / "best_model.zip"
     config = str(Path(__file__).parent.parent / "configs" / "dmch_hospital.yaml")
 
     if not model_path.exists():
@@ -84,12 +88,15 @@ def run_ablations(runs_dir: Path, n_episodes: int, output_dir: Path) -> None:
     print("\n[ablations] Density ablations...")
     for density in DENSITY_ABLATIONS:
         print(f"  density={density}")
-        m = evaluate_model(str(model_path), str(vn_path), config,
-                           n_episodes=n_episodes, density=density)
-        records = m.pop("records")
+        # evaluate_model(model_dir, config_path, ...) — takes the directory
+        # containing the .zip (VecNormalize stats are auto-discovered via
+        # _find_vecnormalize), not the .zip file path itself. Its return now
+        # includes a "records" list (per-episode diagnostics) — serialized
+        # as-is below on purpose.
+        m = evaluate_model(str(model_dir), config, n_episodes=n_episodes, density=density)
         results[f"density_{density}"] = m
         with open(output_dir / f"ablation_density_{density}.json", "w") as f:
-            json.dump({"summary": m, "episodes": records}, f, indent=2)
+            json.dump({"summary": m}, f, indent=2)
 
     # Save combined
     with open(output_dir / "ablations_summary.json", "w") as f:

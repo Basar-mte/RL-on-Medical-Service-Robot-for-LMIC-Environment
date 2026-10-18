@@ -1,0 +1,94 @@
+Panels: []
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Background Color: 254; 254; 254
+    Fixed Frame: map
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/Map
+      Name: Map
+      Enabled: true
+      Topic:
+        Value: /map
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+      Color Scheme: map
+      Alpha: 1.0
+      Draw Behind: true
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Room labels, start/goal, travelled path
+      Enabled: true
+      Topic:
+        Value: /sim_markers
+        Durability Policy: Transient Local
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Pedestrians
+      Enabled: true
+      Topic:
+        Value: /pedestrian_markers
+        Durability Policy: Volatile
+    - Class: rviz_default_plugins/Path
+      Name: Cultural route
+      Enabled: true
+      Topic:
+        Value: /rl_route
+        Durability Policy: Volatile
+      Color: 20; 100; 220
+      Line Style: Billboards
+      Line Width: 0.1
+      Alpha: 0.9
+    - Class: rviz_default_plugins/PointStamped
+      Name: Policy waypoint
+      Enabled: true
+      Topic:
+        Value: /rl_goal
+      Color: 130; 60; 200
+      Radius: 0.18
+      Alpha: 1.0
+    - Class: rviz_default_plugins/LaserScan
+      Name: LD19 scan
+      Enabled: true
+      Topic:
+        Value: /scan
+        Reliability Policy: Best Effort
+      Color: 0; 150; 190
+      Color Transformer: FlatColor
+      Size (m): 0.05
+      Size (Pixels): 3
+      Style: Spheres
+      Alpha: 1.0
+      Decay Time: 0
+    - Class: rviz_default_plugins/RobotModel
+      Name: MentorPi
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+        Durability Policy: Transient Local
+      Alpha: 1.0
+      Visual Enabled: true
+      Collision Enabled: false
+
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Name: Chase
+      Target Frame: base_link
+      Distance: 6.5
+      Focal Point:
+        X: 0.8
+        Y: 0.0
+        Z: 0.0
+      Pitch: 0.95
+      Yaw: 3.1416
+      Near Clip Distance: 0.01
+Window Geometry:
+  Height: 2160
+  Width: 3840
+  X: 0
+  Y: 0
+  Hide Left Dock: true
+  Hide Right Dock: true
