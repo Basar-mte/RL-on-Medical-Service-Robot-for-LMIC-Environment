@@ -9,8 +9,8 @@ authors:
 type: software
 license: MIT
 repository-code: "https://github.com/Basar-mte/RL-on-Medical-Service-Robot-for-LMIC-Environment"
-version: "1.0.0"
-date-released: "2026-10-18"
+version: "1.1.0"
+date-released: "2026-11-02"
 keywords:
   - social robot navigation
   - reinforcement learning benchmark
@@ -18,3 +18,27 @@ keywords:
   - safety filter
   - cultural norms
   - LMIC hospitals
+preferred-citation:
+  type: article
+  title: "Culture-Aware Service Robot Navigation in Overcrowded Hospitals: A Benchmark and a Price-and-Veto Framework"
+  year: 2026
+  notes: "Manuscript under review."
+  authors:
+    - family-names: "Roky"
+      given-names: "Md. Abul Basar"
+      affiliation: "Department of Mechatronics Engineering, Rajshahi University of Engineering & Technology, Bangladesh"
+    - family-names: "Rahman"
+      given-names: "Md. Musfiqur"
+      affiliation: "Department of Mechatronics Engineering, Rajshahi University of Engineering & Technology, Bangladesh"
+    - family-names: "Sardar"
+      given-names: "Md. Asif"
+      affiliation: "Department of Mechanical Engineering, Rajshahi University of Engineering & Technology, Bangladesh"
+    - family-names: "Sifa"
+      given-names: "Most. Sadia"
+      affiliation: "Rajshahi Medical College, Bangladesh"
+    - family-names: "Bappy"
+      given-names: "Ohidur Rahman"
+      affiliation: "Gopalganj Science and Technology University, Bangladesh"
+    - family-names: "Sarker"
+      given-names: "Subrata Kumar"
+      affiliation: "Department of Mechatronics Engineering, Rajshahi University of Engineering & Technology, Bangladesh"

@@ -2,13 +2,14 @@
 
 **An open benchmark and a culture-aware navigation stack for service robots in overcrowded LMIC hospitals**
 
-Public hospitals in low- and middle-income countries (LMICs) run far beyond capacity. Dhaka Medical College Hospital (DMCH) has held about 4,300 inpatients in 2,600 beds, and Rajshahi Medical College Hospital (RMCH) often holds more than 5,000 patients in 1,200 beds. A delivery robot in such a hospital must cross packed corridors on time, respect prayer rooms and gender-segregated wards, and never touch anyone.
+Public hospitals in low- and middle-income countries (LMICs) run far beyond capacity. Dhaka Medical College Hospital (DMCH) has held about 4,300 patients in 2,600 beds, and Rajshahi Medical College Hospital (RMCH) often holds more than 5,000 patients in 1,200 beds. A service robot in such a hospital must cross packed corridors on time, respect prayer rooms and gender-segregated wards, and never touch anyone.
 
 This repository contains everything behind our study of that problem:
 
-* **LMIC-HospitalNav-v1**, an open Gymnasium benchmark based on data from DMCH and RMCH, with two floor plans, up to 74 pedestrians of four kinds, five logistics tasks with deadlines and an Ackermann (car-like) robot.
+* **LMIC-HospitalNav-v1**, an open Gymnasium benchmark based on data from DMCH and RMCH, with two floor plans, up to 74 pedestrians of four kinds, five logistics tasks with deadlines and an Ackermann-steered service robot.
 * **A three-level navigation stack**: a planner that prices cultural zones, a local driver (learned, classical or residual) that handles people, and a swept-path safety filter that vetoes any command whose path would touch someone.
-* **The full training campaign** (96 runs), the trained models, per-episode results, a robustness suite, and a **480-run Gazebo study** with the real MentorPi robot model in ROS 2.
+* **The full training campaign** (96 runs), the trained models, per-episode results, a robustness suite, and a **480-run Gazebo study** with the MentorPi robot model in ROS 2.
+* **Nine feasibility trials on an Ackermann-steering mobile robot** (Hiwonder MentorPi). We had no hospital service robot, so this small robot stood in for one, in an apartment with hospital roles assigned to its rooms.
 
 ![The two benchmark tiers](docs/figures/fig_tiers.png)
 
@@ -114,6 +115,12 @@ What the results show:
 
 ![Prayer-room crossing in Gazebo](docs/figures/fig_gzprayer.png)
 
+**Feasibility trials on a mobile robot.** We had no hospital service robot, so a Hiwonder MentorPi, an Ackermann-steering mobile robot, stood in for one. The simulation-trained residual policy ran with unchanged weights in an apartment with hospital roles assigned to its rooms, from a nurse station to an emergency-room goal (10.53 m route, 0.45 m/s cap, 2 to 11 walking people).
+
+* The robot reached the goal in 8 of 9 single trials, 6 of them without help.
+* Five components the benchmark does not contain were added one at a time, each after an observed failure. With all five in place, the robot arrived unaided in each of its 3 trials.
+* These are single runs on one day and one route with a changing configuration. No zone map was loaded and people were not tracked, so the trials show feasibility only. They give no success rate, no prayer-room result and no contact measure. The logs are in [`real_robot/`](real_robot/).
+
 ## Quick start
 
 ### Install
@@ -172,6 +179,7 @@ See [`ros_sim/README.md`](ros_sim/README.md). It covers the ROS 2 Humble (Gazebo
 * `experiments/planner/results/`: the evaluation-only screen that fixed the planner settings.
 * `ros_sim/paper_data/`: all numbers of the Gazebo study as CSV (one row per run, per-configuration statistics, the robot's 10 Hz logs, routes, seeds, crowd statistics, scan-invariance checks, model parameters). See `ros_sim/paper_data/DATA_README.md`.
 * `ros_sim/results_summary/`: the Gazebo campaign and repeated-campaign reports.
+* `real_robot/`: the nine feasibility trials on the mobile robot, one row per trial and the 5 Hz run logs. See `real_robot/README.md`.
 
 Not included because of size: the checkpoints and replay buffers of all 96 training runs, the per-run pedestrian logs of the Gazebo study (0.6 GB), the raw Gazebo run folders, renders and videos (about 5 GB). They are available from the authors on request.
 
@@ -189,6 +197,7 @@ experiments/             earlier and side experiments (stability pilots, TD3, PP
 scripts/                 campaign orchestration, classical evaluation, paper tables and audits
 runs_v5/results/         aggregated results of the final campaign
 ros_sim/                 ROS 2 package, Gazebo plugins and worlds, trained models, Gazebo data
+real_robot/              logs of the nine feasibility trials on the MentorPi mobile robot
 deploy/                  MentorPi deployment guide, older ROS 2 stack, Isaac Sim tools
 stakeholder_validation/  questionnaire for hospital stakeholders
 docs/                    stakeholder protocol, simulation changelog, README figures
@@ -198,6 +207,7 @@ tests/                   environment smoke tests
 ## Limitations
 
 * All benchmark evaluations use the medium crowd of 45 people, one floor plan per tier, and pedestrians that give way to the robot.
+* The physical trials used a small Ackermann-steering mobile robot in an apartment, not a hospital service robot in a ward. Testing a hospital-grade service robot in DMCH and RMCH wards needs written permission from the hospital authorities, ethics approval, a stakeholder survey and funding.
 * The planner settings, `kappa = 3` included, were fixed on pilot policies with the protocol episode seeds.
 * The swept-path filter is tested, not proven.
 * The Gazebo study uses ground-truth localisation on a prebuilt map and one route, and the stall recovery is an intervention the benchmark does not have.
